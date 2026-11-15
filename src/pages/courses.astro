@@ -1,0 +1,20 @@
+---
+import { getCollection } from 'astro:content';
+
+const courses = (await getCollection('blog'))
+  .filter((post) => post.data.type === 'course')
+  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+---
+<html lang="en">
+  <body>
+    <h1>Course reviews</h1>
+    <ul>
+      {courses.map((post) => (
+        <li>
+          <a href={`/blog/${post.id}/`}>{post.data.course}</a>
+          : {post.data.score} (rating {post.data.rating}/5)
+        </li>
+      ))}
+    </ul>
+  </body>
+</html>
