@@ -1,7 +1,7 @@
 ---
-heroImage: ../../assets/blog-placeholder-3.jpg
 title: First post
 description: Lorem ipsum dolor sit amet
+heroImage: ../../assets/uploads/pxl_20261114_125806588.jpg
 pubDate: Jul 08 2022
 type: course
 course: Carnoustie
