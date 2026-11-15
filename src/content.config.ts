@@ -14,6 +14,10 @@ const blog = defineCollection({
 			pubDate: z.coerce.date(),
 			updatedDate: z.coerce.date().optional(),
 			heroImage: z.optional(image()),
+			gallery: z.array(z.object({
+				image: image(),
+				caption: z.string().optional(),
+			})).default([]),
 			type: z.enum(['round', 'course', 'equipment']).default('round'),
 			course: z.string().optional(),
 			score: z.number().optional(),

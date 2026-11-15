@@ -2,7 +2,9 @@
 import BaseHead from '../components/BaseHead.astro';
 import Footer from '../components/Footer.astro';
 import Header from '../components/Header.astro';
+import Latest from '../components/Latest.astro';
 import { SITE_DESCRIPTION, SITE_TITLE } from '../consts';
+
 ---
 
 <!doctype html>
@@ -13,7 +15,43 @@ import { SITE_DESCRIPTION, SITE_TITLE } from '../consts';
 	<body>
 		<Header />
 		<main>
-			<h1>🧑‍🚀 Hello, Astronaut!</h1>
+			<Latest /> 
+
+			<!-- {latest && (
+				<article>
+					<div class="text-xs font-bold text-olive-500">Played <FormattedDate date={latest.data.pubDate} /></div>
+					<h1 class="font-display text-4xl font-bold leading-none tracking-tighter text-ink md:text-7xl mb-3">{latest.data.title}</h1>
+					<p class="text-olive-600">{latest.data.description}</p> 
+					 <a href={`/blog/${latest.id}/`} class="block">
+						{latest.data.heroImage && (
+							<Image
+								src={latest.data.heroImage}
+								alt=""
+								class="aspect-2/1 w-full object-cover rounded-3xl"
+							/>
+						)}
+					</a>
+
+					{ <a href={`/blog/${latest.id}/`} class="block">
+						{latest.data.heroImage && (
+							<Image
+								src={latest.data.heroImage}
+								alt=""
+								width={1600}
+								height={800}
+								class="aspect-[2/1] w-full object-cover"
+							/>
+						)}
+						<h1 class="mt-6 text-5xl font-bold tracking-tight">{latest.data.title}</h1>
+					</a>
+					<p class="mt-4 text-sm text-neutral-500">
+						<FormattedDate date={latest.data.pubDate} />
+					</p>
+					<p class="mt-4 max-w-2xl text-lg text-neutral-600">{latest.data.description}</p> }
+				</article>
+			)} -->
+
+			<!-- <h1>🧑‍🚀 Hello, Astronaut!</h1>
 			<p>
 				Welcome to the official <a href="https://astro.build/">Astro</a> blog starter template. This
 				template serves as a lightweight, minimally-styled starting point for anyone looking to
@@ -52,8 +90,10 @@ import { SITE_DESCRIPTION, SITE_TITLE } from '../consts';
 				Looking for a blog template with a bit more personality? Check out{' '}
 				<a href="https://github.com/Charca/astro-blog-template">astro-blog-template</a> by{' '}
 				<a href="https://twitter.com/Charca">Maxi Ferreira</a>.
-			</p>
+			</p> -->
+			
 		</main>
 		<Footer />
+		
 	</body>
 </html>
