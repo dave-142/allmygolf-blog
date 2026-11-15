@@ -1,0 +1,32 @@
+backend:
+  name: github
+  repo: dave-142/allmygolf-blog
+  branch: main
+  base_url: https://www.allmy.golf
+  auth_endpoint: api/auth
+
+media_folder: public/images/uploads
+public_folder: /images/uploads
+
+collections:
+  - name: blog
+    label: Posts
+    folder: src/content/blog
+    create: true
+    extension: md
+    fields:
+      - { label: Title, name: title, widget: string }
+      - { label: Description, name: description, widget: string }
+      - { label: Date, name: pubDate, widget: datetime }
+      - label: Type
+        name: type
+        widget: select
+        options: [round, course, equipment]
+        default: round
+      - { label: Course, name: course, widget: string, required: false }
+      - { label: Score, name: score, widget: number, value_type: int, required: false }
+      - { label: Rating (1 to 5), name: rating, widget: number, value_type: int, min: 1, max: 5, required: false }
+      - { label: Latitude, name: lat, widget: number, value_type: float, required: false }
+      - { label: Longitude, name: lng, widget: number, value_type: float, required: false }
+      - { label: Tags, name: tags, widget: list, required: false }
+      - { label: Body, name: body, widget: markdown }
