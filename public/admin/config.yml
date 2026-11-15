@@ -5,8 +5,8 @@ backend:
   base_url: https://www.allmy.golf
   auth_endpoint: api/auth
 
-media_folder: public/images/uploads
-public_folder: /images/uploads
+media_folder: src/assets/uploads
+public_folder: ../../assets/uploads
 
 collections:
   - name: blog
@@ -17,6 +17,7 @@ collections:
     fields:
       - { label: Title, name: title, widget: string }
       - { label: Description, name: description, widget: string }
+      - { label: Hero image, name: heroImage, widget: image, required: false }
       - { label: Date, name: pubDate, widget: datetime }
       - label: Type
         name: type
