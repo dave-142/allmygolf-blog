@@ -1,0 +1,65 @@
+---
+import { Image } from 'astro:assets';
+import { getCollection } from 'astro:content';
+import FormattedDate from './FormattedDate.astro';
+
+// The 12 most recent posts
+const posts = (await getCollection('blog'))
+	.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
+	.slice(0, 12);
+
+const tiles = posts.map((post) => ({
+	href: `/blog/${post.id}/`,
+	title: post.data.title,
+	description: post.data.description,
+	date: post.data.pubDate,
+	// First gallery photo, then the hero image, otherwise none
+	photo: post.data.gallery[0]?.image ?? post.data.heroImage,
+	featured: post.data.featured,
+}));
+---
+
+<div class="grid grid-flow-dense auto-rows-65 grid-cols-1 gap-4 sm:auto-rows-70 sm:grid-cols-2 lg:auto-rows-80 lg:grid-cols-3">
+	{tiles.map((tile) => (
+		<a
+			href={tile.href}
+			class:list={[
+				'group relative block overflow-hidden rounded-2xl bg-neutral-800',
+				tile.featured && 'sm:col-span-2',
+			]}
+		>
+			{tile.photo && (
+				<Image
+					src={tile.photo}
+					alt=""
+					width={tile.featured ? 1600 : 900}
+					class="h-full w-full object-cover object-center transition-transform duration-500 group-hover:scale-105"
+				/>
+			)}
+
+			<div class="absolute inset-x-0 bottom-0 bg-linear-to-t from-black/80 via-black/40 to-transparent p-5 pt-24">
+				<p class="mb-1.5 text-xs font-semibold tracking-wider text-olive-300 uppercase">
+					<FormattedDate date={tile.date} />
+				</p>
+				<h2
+					class:list={[
+						'font-semibold leading-tight text-balance text-white',
+						tile.featured ? 'text-2xl md:text-3xl' : 'text-lg',
+					]}
+				>
+					{tile.title}
+				</h2>
+				{tile.description && (
+					<p
+						class:list={[
+							'mt-1.5 line-clamp-2 text-white/80',
+							tile.featured ? 'max-w-xl text-base' : 'text-sm',
+						]}
+					>
+						{tile.description}
+					</p>
+				)}
+			</div>
+		</a>
+	))}
+</div>

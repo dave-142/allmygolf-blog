@@ -1,0 +1,95 @@
+---
+import 'leaflet/dist/leaflet.css';
+import 'leaflet.markercluster/dist/MarkerCluster.css';
+import { getCollection } from 'astro:content';
+
+const courses = (await getCollection('blog'))
+	.filter((p) => p.data.type === 'course' && p.data.lat != null && p.data.lng != null)
+	.sort((a, b) => a.data.pubDate.valueOf() - b.data.pubDate.valueOf());
+
+const pins = courses.map((post, i) => ({
+	lat: post.data.lat!,
+	lng: post.data.lng!,
+	n: i + 1,
+	name: post.data.course ?? post.data.title,
+	href: `/blog/${post.id}/`,
+}));
+---
+
+<div class="container mx-auto max-w-7xl px-6">
+    <div class="text-3xl leading-tight font-bold tracking-tight text-balance md:text-3xl pb-6">Where I've walked</div>
+    <div
+        data-course-map
+        data-pins={JSON.stringify(pins)}
+        class="isolate h-[40vh]  w-full rounded-2xl border border-olive-100"
+    >
+    </div>
+</div>
+<script>
+	import L from 'leaflet';
+	import 'leaflet.markercluster';
+
+	const CARTO_KEY = 'cb1_59px_1_ec461914e02617913133312d';
+
+	document.querySelectorAll<HTMLDivElement>('[data-course-map]').forEach((el) => {
+		const pins: { lat: number; lng: number; n: number; name: string; href: string }[] = JSON.parse(
+			el.dataset.pins ?? '[]',
+		);
+
+		const map = L.map(el, { worldCopyJump: true }).setView([30, 0], 2);
+
+		L.tileLayer(`https://basemaps.cartocdn.com/rastertiles/light_all/{z}/{x}/{y}{r}.png?key=${CARTO_KEY}`, {
+			attribution:
+				'© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, ' +
+				'© <a href="https://carto.com/attribution/">CARTO</a>',
+			maxNativeZoom: 18,
+			maxZoom: 20,
+		}).addTo(map);
+
+		// Nearby courses group into one bubble showing how many, and split apart as you zoom in
+		const clusters = L.markerClusterGroup({
+			showCoverageOnHover: false,
+			maxClusterRadius: 40,
+			iconCreateFunction: (cluster) =>
+				L.divIcon({
+					html: `<span class="grid size-11 place-items-center rounded-full border-2 border-white bg-olive-500 text-sm font-bold text-white shadow">${cluster.getChildCount()}</span>`,
+					className: '',
+					iconSize: [44, 44],
+				}),
+		});
+
+		pins.forEach((pin) => {
+			const marker = L.marker([pin.lat, pin.lng], {
+				title: pin.name,
+				alt: `Open the ${pin.name} review`,
+				icon: L.divIcon({
+					html: `<span class="grid size-8 cursor-pointer place-items-center rounded-full border-2 border-white bg-olive-500 text-xs font-bold text-white shadow transition-colors hover:bg-forest">${pin.n}</span>`,
+					className: '',
+					iconSize: [32, 32],
+				}),
+			});
+
+			// Course name on hover
+			marker.bindTooltip(pin.name, { direction: 'top', offset: [0, -18] });
+
+			// Click goes straight to the review; Ctrl or Cmd click opens a new tab
+			marker.on('click', (event) => {
+				const original = event.originalEvent as MouseEvent | undefined;
+				if (original && (original.ctrlKey || original.metaKey)) {
+					window.open(pin.href, '_blank');
+				} else {
+					window.location.href = pin.href;
+				}
+			});
+
+			clusters.addLayer(marker);
+		});
+
+		map.addLayer(clusters);
+
+		// Start zoomed to fit all your courses
+		if (pins.length > 0) {
+			map.fitBounds(clusters.getBounds(), { padding: [40, 40], maxZoom: 8 });
+		}
+	});
+</script>

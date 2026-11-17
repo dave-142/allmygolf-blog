@@ -9,7 +9,10 @@ gallery:
   - image: ../../assets/uploads/pxl_20211118_153830140.jpg
   - image: ../../assets/uploads/pxl_20211118_153824048.jpg
 pubDate: Jun 19 2024
-type: round
+type: course
+lat: 56.32035
+lng: -2.73043
+featured: true
 ---
 
 Here is a sample of some basic Markdown syntax that can be used when writing Markdown content in Astro.

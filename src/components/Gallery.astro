@@ -30,7 +30,7 @@ const restCols: Record<number, string> = {
 				alt={main.caption ?? ''}
 				width={1600}
 				loading="eager"
-				class="aspect-video w-full rounded-md object-cover"
+				class="aspect-video w-full rounded-2xl object-cover"
 			/>
 			{main.caption && (
 				<figcaption class="mt-3 text-sm italic text-neutral-500">{main.caption}</figcaption>
@@ -44,7 +44,7 @@ const restCols: Record<number, string> = {
 						src={photo.image}
 						alt={photo.caption ?? ''}
 						width={600}
-						class="aspect-16/10 w-full rounded-md object-cover"
+						class="aspect-16/10 w-full rounded-xl object-cover"
 					/>
 				))}
 			</div>

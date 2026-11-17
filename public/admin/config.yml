@@ -40,3 +40,4 @@ collections:
       - { label: Longitude, name: lng, widget: number, value_type: float, required: false }
       - { label: Tags, name: tags, widget: list, required: false }
       - { label: Body, name: body, widget: markdown }
+      - { label: Featured, name: featured, widget: boolean, required: false, default: false }
