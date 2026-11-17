@@ -16,12 +16,12 @@ const pins = courses.map((post, i) => ({
 }));
 ---
 
-<div class="container mx-auto max-w-7xl px-6">
-    <div class="text-3xl leading-tight font-bold tracking-tight text-balance md:text-3xl pb-6">Where I've walked</div>
+<div class="container mx-auto px-6">
+    <div class="text-3xl md:text-4xl font-bold pb-6 md:pb-8">Where I've played</div>
     <div
         data-course-map
         data-pins={JSON.stringify(pins)}
-        class="isolate h-[40vh]  w-full rounded-2xl border border-olive-100"
+        class="isolate h-[40vh]  w-full rounded-2xl border border-olive-400"
     >
     </div>
 </div>
