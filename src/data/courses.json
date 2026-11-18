@@ -2,7 +2,7 @@
   "courses": [
     {
       "par": 72,
-      "lng": -2.8060,
+      "lng": -2.806,
       "yardage": 7230,
       "name": "Fairmont St Andrews, Torrance Course",
       "town": "St Andrews",
@@ -12,7 +12,7 @@
     },
     {
       "par": 72,
-      "lng": -2.8060,
+      "lng": -2.806,
       "yardage": 7230,
       "name": "Fairmont St Andrews, Kittocks Course",
       "town": "St Andrews",
@@ -264,7 +264,7 @@
       "id": "dunfermline-pitfirrane",
       "name": "Dunfermline Golf Club, Pitfirrane",
       "town": "Dunfermline",
-      "lat": 56.0690,
+      "lat": 56.069,
       "lng": -3.5042,
       "par": 0,
       "holes": 18,
@@ -303,6 +303,7 @@
     {
       "id": "harburn",
       "name": "Harburn Golf Club",
+      "town": "West Calder",
       "lat": 55.8372,
       "lng": -3.5366,
       "par": 0,
