@@ -47,6 +47,8 @@ jobs:
           restore-keys: astro-images-
       - name: Build site
         run: npm run build
+      - name: Point image links at Blob Storage
+        run: node scripts/use-image-host.js
         env:
           IMAGE_HOST: https://saallmygolfblogprod.blob.core.windows.net/images
       # Images are served from Blob Storage. Files already there are skipped, since names change when an image does

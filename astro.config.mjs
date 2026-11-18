@@ -9,19 +9,6 @@ export default defineConfig({
 	site: 'https://www.allmy.golf',
 	integrations: [sitemap()],
 	image: { layout: 'constrained' },
-	// On GitHub, IMAGE_HOST is set to the Blob Storage container, so built pages load images from there.
-	// Locally it is not set, so images are served from the site as usual.
-	build: process.env.IMAGE_HOST
-		? {
-				assetsPrefix: {
-					webp: process.env.IMAGE_HOST,
-					jpg: process.env.IMAGE_HOST,
-					jpeg: process.env.IMAGE_HOST,
-					png: process.env.IMAGE_HOST,
-					fallback: '',
-				},
-			}
-		: {},
 	vite: {
 		plugins: [tailwindcss()],
 	},
