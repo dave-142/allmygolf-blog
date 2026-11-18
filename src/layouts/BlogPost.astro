@@ -44,7 +44,7 @@ const hero = heroImage ?? gallery[0]?.image;
 const photos = await Promise.all(
 	gallery.map(async (photo) => ({
 		...photo,
-		full: (await getImage({ src: photo.image, width: 2000 })).src,
+		full: (await getImage({ src: photo.image, width: 1600 })).src,
 	})),
 );
 
@@ -179,7 +179,8 @@ const scorecard = [
 							<Image
 								src={photo.image}
 								alt={photo.caption ?? ''}
-								width={900}
+								widths={[600, 1200]}
+								sizes="(min-width: 1024px) 410px, (min-width: 640px) 50vw, 100vw"
 								class:list={[
 									'w-full object-cover transition-transform duration-[1.2s] ease-out group-hover:scale-105',
 									i % 3 === 0 ? 'aspect-4/5' : 'aspect-4/3',

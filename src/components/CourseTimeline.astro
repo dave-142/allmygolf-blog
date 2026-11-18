@@ -48,7 +48,8 @@ const formatMonth = (date: Date) => date.toLocaleDateString('en-GB', { month: 's
 										<Image
 											src={photo}
 											alt=""
-											width={700}
+											widths={[700, 1400]}
+											sizes="(min-width: 640px) 240px, 100vw"
 											class="absolute inset-0 h-full w-full object-cover transition-transform duration-[1.2s] ease-out group-hover:scale-110"
 										/>
 									)}
