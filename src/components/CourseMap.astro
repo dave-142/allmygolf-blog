@@ -16,13 +16,6 @@ const pins = summaries.map(({ course }, i) => ({
 	latest: i === 0,
 }));
 
-// The list beside the map, grouped by country
-const byCountry = new Map<string, typeof summaries>();
-for (const s of summaries) {
-	const country = s.course.data.country ?? 'Elsewhere';
-	byCountry.set(country, [...(byCountry.get(country) ?? []), s]);
-}
-const countries = [...byCountry].sort((a, b) => b[1].length - a[1].length);
 ---
 
 <div class="grid gap-4 lg:grid-cols-[1fr_22rem]">
@@ -40,28 +33,23 @@ const countries = [...byCountry].sort((a, b) => b[1].length - a[1].length);
 		</p>
 		<!-- -mx-3 px-3 makes room for the links' -mx-3 hover backgrounds, so nothing overflows sideways -->
 		<div class="-mx-3 overflow-x-hidden overflow-y-auto px-3 [scrollbar-color:var(--color-night-700)_transparent] [scrollbar-width:thin]">
-			{countries.map(([country, list]) => (
-				<div class="pt-4">
-					<p class="mb-1 text-xs font-semibold tracking-wider text-paper/50 uppercase">{country}</p>
-					<ul>
-						{list.map(({ course, rounds }) => (
-							<li>
-								<a
-									href={courseHref(course.id)}
-									data-map-link={course.id}
-									class="group flex items-center justify-between gap-3 rounded-xl px-3 py-2.5 -mx-3 transition-colors hover:bg-paper/5"
-								>
-									<span class="font-medium text-paper group-hover:text-accent">{course.data.name}</span>
-									<span class="flex shrink-0 items-center gap-2 text-xs text-paper/50">
-										{rounds.length > 0 && <span class="tabular-nums">{rounds.length}&times;</span>}
-										<ArrowUpRight class="size-4 opacity-0 transition-opacity group-hover:opacity-100" aria-hidden="true" />
-									</span>
-								</a>
-							</li>
-						))}
-					</ul>
-				</div>
-			))}
+			<ul class="pt-3">
+				{summaries.map(({ course, rounds }) => (
+					<li>
+						<a
+							href={courseHref(course.id)}
+							data-map-link={course.id}
+							class="group flex items-center justify-between gap-3 rounded-xl px-3 py-2.5 -mx-3 transition-colors hover:bg-paper/5"
+						>
+							<span class="font-medium text-paper group-hover:text-accent">{course.data.name}</span>
+							<span class="flex shrink-0 items-center gap-2 text-xs text-paper/50">
+								{rounds.length > 0 && <span class="tabular-nums">{rounds.length}&times;</span>}
+								<ArrowUpRight class="size-4 opacity-0 transition-opacity group-hover:opacity-100" aria-hidden="true" />
+							</span>
+						</a>
+					</li>
+				))}
+			</ul>
 		</div>
 	</div>
 </div>

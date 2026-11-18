@@ -11,7 +11,7 @@ import PageHero from '../components/PageHero.astro';
 import PostGrid from '../components/PostGrid.astro';
 import SectionHeader from '../components/SectionHeader.astro';
 import Stars from '../components/Stars.astro';
-import { bestScore, courseHref, courseLocation, getCourseMap, getPosts, getRounds, postTile } from '../lib/courses';
+import { bestScore, courseHref, getCourseMap, getPosts, getRounds, postTile } from '../lib/courses';
 import Page from './Page.astro';
 
 // The about page uses this layout too, so everything beyond title, description and date is optional
@@ -76,7 +76,7 @@ const scorecard = [
 ---
 
 <Page title={title} description={description} image={hero}>
-	<PageHero eyebrow={course ? courseLocation(course) || course.data.name : undefined} title={title} image={hero} tall={!!hero}>
+	<PageHero eyebrow={course?.data.name} title={title} image={hero} tall={!!hero}>
 		<div class="mt-6 flex flex-wrap items-center gap-x-4 gap-y-2 text-sm text-paper/70">
 			<FormattedDate date={pubDate} />
 			{readingTime && (

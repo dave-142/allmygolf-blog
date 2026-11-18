@@ -29,10 +29,6 @@ export const postHref = (id: string) => `/blog/${id}/`;
 export const coverPhoto = (post: Post): ImageMetadata | undefined =>
 	post.data.heroImage ?? post.data.gallery?.[0]?.image;
 
-// "St Andrews, Scotland", or whichever parts exist
-export const courseLocation = (course: Course) =>
-	[course.data.area, course.data.country].filter(Boolean).join(', ');
-
 export const bestScore = (rounds: Post[]) => {
 	const scores = rounds.map((r) => r.data.score).filter((s): s is number => s != null);
 	return scores.length > 0 ? Math.min(...scores) : undefined;
@@ -92,6 +88,5 @@ export async function getStats() {
 		rounds: rounds.length,
 		courses: played.length,
 		best: bestScore(rounds),
-		countries: new Set(played.map((s) => s.course.data.country).filter(Boolean)).size,
 	};
 }

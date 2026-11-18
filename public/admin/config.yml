@@ -63,8 +63,7 @@ collections:
             fields:
               - { label: 'ID (URL slug, for example north-berwick)', name: id, widget: string, pattern: ['^[a-z0-9]+(-[a-z0-9]+)*$', 'Lowercase letters, numbers and hyphens only'] }
               - { label: Name, name: name, widget: string }
-              - { label: Town or area, name: area, widget: string, required: false }
-              - { label: Country, name: country, widget: string, required: false }
+              - { label: 'Town (only used to look up coordinates)', name: town, widget: string, required: false }
               - { label: Latitude, name: lat, widget: number, value_type: float, required: false }
               - { label: Longitude, name: lng, widget: number, value_type: float, required: false }
               - { label: Par, name: par, widget: number, value_type: int, required: false }

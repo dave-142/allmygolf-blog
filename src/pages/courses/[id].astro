@@ -3,7 +3,7 @@ import { type CollectionEntry, getCollection } from 'astro:content';
 import PageHero from '../../components/PageHero.astro';
 import { SITE_TITLE } from '../../consts';
 import Page from '../../layouts/Page.astro';
-import { courseLocation, coverPhoto, getRounds } from '../../lib/courses';
+import { coverPhoto, getRounds } from '../../lib/courses';
 
 export async function getStaticPaths() {
 	const courses = await getCollection('courses');
@@ -17,7 +17,6 @@ type Props = CollectionEntry<'courses'>;
 const course = Astro.props;
 const latest = (await getRounds()).find((r) => r.data.course?.id === course.id);
 const photo = latest && coverPhoto(latest);
-const location = courseLocation(course);
 
 // Small facts shown as chips under the name
 const facts = [
@@ -28,7 +27,7 @@ const facts = [
 ---
 
 <Page title={`${course.data.name} | ${SITE_TITLE}`} description={`My rounds at ${course.data.name}.`} image={photo}>
-	<PageHero eyebrow={location || 'Course'} title={course.data.name} image={photo} tall={!!photo}>
+	<PageHero eyebrow="Course" title={course.data.name} image={photo} tall={!!photo}>
 		{facts.length > 0 && (
 			<ul class="mt-8 flex flex-wrap gap-2">
 				{facts.map((fact) => (

@@ -13,8 +13,8 @@ const courses = defineCollection({
 	}),
 	schema: z.object({
 		name: z.string(),
-		area: optional(z.string()),
-		country: optional(z.string()),
+		// Only used by the find-coords script, never shown on the site
+		town: optional(z.string()),
 		lat: optional(z.number()),
 		lng: optional(z.number()),
 		par: optional(z.number()),

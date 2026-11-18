@@ -9,7 +9,9 @@
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "astro": "astro"
+    "astro": "astro",
+    "import-photos": "node scripts/import-photos.js",
+    "find-coords": "node scripts/find-coords.js"
   },
   "dependencies": {
     "@astrojs/rss": "^4.0.19",

@@ -2,98 +2,90 @@
   "courses": [
     {
       "par": 72,
-      "lng": -2.73043,
+      "lng": -2.8060,
       "yardage": 7230,
       "name": "Fairmont St Andrews, Torrance Course",
-      "area": "St Andrews",
+      "town": "St Andrews",
       "holes": 18,
-      "country": "Scotland",
       "id": "fairmont-torrance",
-      "lat": 56.32035
+      "lat": 56.3427
     },
     {
       "par": 72,
-      "lng": -2.73043,
+      "lng": -2.8060,
       "yardage": 7230,
       "name": "Fairmont St Andrews, Kittocks Course",
-      "area": "St Andrews",
+      "town": "St Andrews",
       "holes": 18,
-      "country": "Scotland",
       "id": "fairmont-kittocks",
-      "lat": 56.32035
+      "lat": 56.3427
     },
     {
       "par": 72,
-      "lng": -2.6539,
+      "lng": -2.647297,
       "yardage": 7224,
       "name": "Kingsbarns Golf Links",
-      "area": "Kingsbarns",
+      "town": "Kingsbarns",
       "holes": 18,
-      "country": "Scotland",
       "id": "kingsbarns",
-      "lat": 56.2969
+      "lat": 56.299436
     },
     {
       "par": 70,
-      "lng": -3.745,
+      "lng": -3.757258,
       "yardage": 6790,
       "name": "Gleneagles, King's Course",
-      "area": "Auchterarder",
+      "town": "Auchterarder",
       "holes": 18,
-      "country": "Scotland",
       "id": "gleneagles-kings",
-      "lat": 56.2856
+      "lat": 56.279294
     },
     {
       "par": 70,
-      "lng": -4.02,
+      "lng": -4.027303,
       "yardage": 6732,
       "name": "Royal Dornoch, Championship",
-      "area": "Dornoch",
+      "town": "Dornoch",
       "holes": 18,
-      "country": "Scotland",
       "id": "royal-dornoch",
-      "lat": 57.88
+      "lat": 57.873341
     },
     {
       "par": 70,
-      "lng": -1.853,
+      "lng": -1.863736,
       "yardage": 6609,
       "name": "Cruden Bay",
-      "area": "Cruden Bay",
+      "town": "Cruden Bay",
       "holes": 18,
-      "country": "Scotland",
       "id": "cruden-bay",
-      "lat": 57.414
+      "lat": 57.406473
     },
     {
       "par": 71,
-      "lng": -4.835,
+      "lng": -4.836571,
       "yardage": 7489,
       "name": "Turnberry, Ailsa Course",
-      "area": "Turnberry",
+      "town": "Turnberry",
       "holes": 18,
-      "country": "Scotland",
       "id": "turnberry-ailsa",
-      "lat": 55.315
+      "lat": 55.321987
     },
     {
       "par": 71,
-      "lng": -4.835,
+      "lng": -4.836571,
       "yardage": 7489,
       "name": "Turnberry, King Robert the Bruce Course",
-      "area": "Turnberry",
+      "town": "Turnberry",
       "holes": 18,
-      "country": "Scotland",
       "id": "turnberry-king-robert-the-bruce",
-      "lat": 55.315
+      "lat": 55.321987
     },
     {
       "id": "the-glen",
-      "name": "The Glen Golf Club",
-      "area": "North Berwick",
-      "lat": 56.057344,
-      "lng": -2.703273,
+      "name": "The Glen Golf Club, East Links",
+      "town": "North Berwick",
+      "lat": 56.058734,
+      "lng": -2.685661,
       "par": 70,
       "holes": 18,
       "yardage": 6048
@@ -101,12 +93,361 @@
     {
       "id": "banchory",
       "name": "Banchory Golf Club",
-      "area": "Banchory",
-      "lat": 57.050246,
-      "lng": -2.507063,
+      "town": "Banchory",
+      "lat": 57.051708,
+      "lng": -2.516954,
       "par": 69,
       "holes": 18,
       "yardage": 5850
+    },
+    {
+      "id": "craigielaw",
+      "name": "Craigielaw Golf Club",
+      "town": "Aberlady",
+      "lat": 56.008702,
+      "lng": -2.876813,
+      "par": 0,
+      "holes": 18,
+      "yardage": 0
+    },
+    {
+      "id": "burntisland",
+      "name": "Burntisland Golf Club",
+      "town": "Burntisland",
+      "lat": 56.068342,
+      "lng": -3.214389,
+      "par": 0,
+      "holes": 18,
+      "yardage": 0
+    },
+    {
+      "id": "strathmore",
+      "name": "Strathmore Golf Club",
+      "town": "Alyth",
+      "lat": 56.600461,
+      "lng": -3.219555,
+      "par": 0,
+      "holes": 18,
+      "yardage": 0
+    },
+    {
+      "id": "carnwath",
+      "name": "Carnwath Golf Club",
+      "town": "Carnwath",
+      "lat": 55.700945,
+      "lng": -3.636781,
+      "par": 0,
+      "holes": 18,
+      "yardage": 0
+    },
+    {
+      "id": "charleton",
+      "name": "Charleton Golf Club",
+      "town": "Colinsburgh",
+      "lat": 56.222689,
+      "lng": -2.863854,
+      "par": 0,
+      "holes": 18,
+      "yardage": 0
+    },
+    {
+      "id": "dumbarnie",
+      "name": "Dumbarnie Links",
+      "town": "Lower Largo",
+      "lat": 56.208089,
+      "lng": -2.886722,
+      "par": 0,
+      "holes": 18,
+      "yardage": 0
+    },
+    {
+      "id": "craigiehill",
+      "name": "Craigiehill Golf Club",
+      "town": "Perth",
+      "lat": 56.3856,
+      "lng": -3.4582,
+      "par": 0,
+      "holes": 18,
+      "yardage": 0
+    },
+    {
+      "id": "drumoig",
+      "name": "Drumoig Golf Club",
+      "town": "Leuchars",
+      "lat": 56.412727,
+      "lng": -2.902454,
+      "par": 0,
+      "holes": 18,
+      "yardage": 0
+    },
+    {
+      "id": "cardrona-hotel",
+      "name": "Cardrona Hotel, Golf & Spa",
+      "town": "Peebles",
+      "lat": 55.640127,
+      "lng": -3.125467,
+      "par": 0,
+      "holes": 18,
+      "yardage": 0
+    },
+    {
+      "id": "crail-balcomie",
+      "name": "Crail Golfing Society, Balcomie Links",
+      "town": "Crail",
+      "lat": 56.282977,
+      "lng": -2.599786,
+      "par": 0,
+      "holes": 18,
+      "yardage": 0
+    },
+    {
+      "id": "balnagask",
+      "name": "Balnagask Golf Club",
+      "town": "Aberdeen",
+      "lat": 57.138886,
+      "lng": -2.060816,
+      "par": 0,
+      "holes": 18,
+      "yardage": 0
+    },
+    {
+      "id": "royal-aberdeen",
+      "name": "Royal Aberdeen Golf Club",
+      "town": "Aberdeen",
+      "lat": 57.187504,
+      "lng": -2.076019,
+      "par": 0,
+      "holes": 18,
+      "yardage": 0
+    },
+    {
+      "id": "murcar-links",
+      "name": "Murcar Links Golf Club",
+      "town": "Aberdeen",
+      "lat": 57.205542,
+      "lng": -2.070352,
+      "par": 0,
+      "holes": 18,
+      "yardage": 0
+    },
+    {
+      "id": "hazelhead",
+      "name": "Hazelhead Golf Club",
+      "town": "Aberdeen",
+      "lat": 57.1422,
+      "lng": -2.1706,
+      "par": 0,
+      "holes": 18,
+      "yardage": 0
+    },
+    {
+      "id": "forres",
+      "name": "Forres Golf Club",
+      "town": "Forres",
+      "lat": 57.607633,
+      "lng": -3.589316,
+      "par": 0,
+      "holes": 18,
+      "yardage": 0
+    },
+    {
+      "id": "ratho-park",
+      "name": "Ratho Park Golf Club",
+      "town": "Ratho",
+      "lat": 55.921597,
+      "lng": -3.359474,
+      "par": 0,
+      "holes": 18,
+      "yardage": 0
+    },
+    {
+      "id": "dunfermline-pitfirrane",
+      "name": "Dunfermline Golf Club, Pitfirrane",
+      "town": "Dunfermline",
+      "lat": 56.0690,
+      "lng": -3.5042,
+      "par": 0,
+      "holes": 18,
+      "yardage": 0
+    },
+    {
+      "id": "salgados",
+      "name": "Salgados Golf Club",
+      "town": "Albufeira",
+      "lat": 37.095912,
+      "lng": -8.328318,
+      "par": 0,
+      "holes": 18,
+      "yardage": 0
+    },
+    {
+      "id": "gullane-no2",
+      "name": "Gullane Golf Club, No. 2 Course",
+      "town": "Gullane",
+      "lat": 56.030191,
+      "lng": -2.845539,
+      "par": 0,
+      "holes": 18,
+      "yardage": 0
+    },
+    {
+      "id": "dundonald-links",
+      "name": "Dundonald Links",
+      "town": "Irvine",
+      "lat": 55.585159,
+      "lng": -4.652831,
+      "par": 0,
+      "holes": 18,
+      "yardage": 0
+    },
+    {
+      "id": "harburn",
+      "name": "Harburn Golf Club",
+      "lat": 55.8372,
+      "lng": -3.5366,
+      "par": 0,
+      "holes": 18,
+      "yardage": 0
+    },
+    {
+      "id": "ladybank",
+      "name": "Ladybank Golf Club",
+      "town": "Ladybank",
+      "lat": 56.286199,
+      "lng": -3.122826,
+      "par": 0,
+      "holes": 18,
+      "yardage": 0
+    },
+    {
+      "id": "machrihanish-dunes",
+      "name": "Machrihanish Dunes",
+      "town": "Machrihanish",
+      "lat": 55.450817,
+      "lng": -5.710559,
+      "par": 0,
+      "holes": 18,
+      "yardage": 0
+    },
+    {
+      "id": "kinross-mongomerie",
+      "name": "Kinross Golf Club, Montgomerie Course",
+      "town": "Kinross",
+      "lat": 56.2047,
+      "lng": -3.4214,
+      "par": 0,
+      "holes": 18,
+      "yardage": 0
+    },
+    {
+      "id": "lundin-links",
+      "name": "Lundin Golf Club",
+      "town": "Lundin Links",
+      "lat": 56.208761,
+      "lng": -2.970442,
+      "par": 0,
+      "holes": 18,
+      "yardage": 0
+    },
+    {
+      "id": "leven-links",
+      "name": "Leven Links Golf Club",
+      "town": "Leven",
+      "lat": 56.202544,
+      "lng": -2.983581,
+      "par": 0,
+      "holes": 18,
+      "yardage": 0
+    },
+    {
+      "id": "tulliallan",
+      "name": "Tulliallan Golf Club",
+      "town": "Kincardine",
+      "lat": 56.082968,
+      "lng": -3.718205,
+      "par": 0,
+      "holes": 18,
+      "yardage": 0
+    },
+    {
+      "id": "moray-old",
+      "name": "Moray Golf Club, Old Course",
+      "town": "Lossiemouth",
+      "lat": 57.719244,
+      "lng": -3.315384,
+      "par": 0,
+      "holes": 18,
+      "yardage": 0
+    },
+    {
+      "id": "standrews-craigtoun",
+      "name": "The Craigtoun Course, St Andrews",
+      "town": "St Andrews",
+      "lat": 56.319424,
+      "lng": -2.849532,
+      "par": 0,
+      "holes": 18,
+      "yardage": 0
+    },
+    {
+      "id": "royal-musselburgh",
+      "name": "Royal Musselburgh Golf Club",
+      "town": "Prestonpans",
+      "lat": 55.951262,
+      "lng": -2.998055,
+      "par": 0,
+      "holes": 18,
+      "yardage": 0
+    },
+    {
+      "id": "portlethen",
+      "name": "Portlethen Golf Club",
+      "town": "Portlethen",
+      "lat": 57.06576,
+      "lng": -2.14301,
+      "par": 0,
+      "holes": 18,
+      "yardage": 0
+    },
+    {
+      "id": "meldrum-house",
+      "name": "Meldrum House Hotel",
+      "town": "Oldmeldrum",
+      "lat": 57.347452,
+      "lng": -2.316175,
+      "par": 0,
+      "holes": 18,
+      "yardage": 0
+    },
+    {
+      "id": "west-linton",
+      "name": "West Linton Golf Club",
+      "town": "West Linton",
+      "lat": 55.753174,
+      "lng": -3.379163,
+      "par": 0,
+      "holes": 18,
+      "yardage": 0
+    },
+    {
+      "id": "newburgh-on-ythan",
+      "name": "Newburgh on Ythan Golf Club",
+      "town": "Newburgh, Aberdeenshire",
+      "lat": 57.312736,
+      "lng": -1.999336,
+      "par": 0,
+      "holes": 18,
+      "yardage": 0
+    },
+    {
+      "id": "dunfermline-pitreavie",
+      "name": "Pitreavie Golf Club, Dunfermline",
+      "town": "Dunfermline",
+      "lat": 56.053963,
+      "lng": -3.426419,
+      "par": 0,
+      "holes": 18,
+      "yardage": 0
     }
   ]
 }

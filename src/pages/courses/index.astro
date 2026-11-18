@@ -3,7 +3,7 @@ import PageHero from '../../components/PageHero.astro';
 import PostGrid from '../../components/PostGrid.astro';
 import { SITE_TITLE } from '../../consts';
 import Page from '../../layouts/Page.astro';
-import { type Tile, courseHref, courseLocation, coverPhoto, getCourseSummaries, getStats } from '../../lib/courses';
+import { type Tile, courseHref, coverPhoto, getCourseSummaries, getStats } from '../../lib/courses';
 
 const [summaries, stats] = await Promise.all([getCourseSummaries(), getStats()]);
 
@@ -11,7 +11,6 @@ const tiles: Tile[] = summaries.map(({ course, rounds, latest, best }) => ({
 	href: courseHref(course.id),
 	title: course.data.name,
 	eyebrow: rounds.length === 1 ? 'Played once' : rounds.length > 1 ? `Played ${rounds.length} times` : 'Not played yet',
-	description: courseLocation(course),
 	photo: latest && coverPhoto(latest),
 	badge: best,
 	badgeLabel: best != null ? 'Best' : undefined,
@@ -20,7 +19,7 @@ const tiles: Tile[] = summaries.map(({ course, rounds, latest, best }) => ({
 
 <Page title={`Courses | ${SITE_TITLE}`} description="Every course I have played.">
 	<PageHero
-		eyebrow={`${stats.courses} courses, ${stats.countries} ${stats.countries === 1 ? 'country' : 'countries'}`}
+		eyebrow={`${stats.courses} ${stats.courses === 1 ? 'course' : 'courses'}`}
 		title="The courses"
 		intro="Every course I have walked, with my best score there. Most recent first."
 	/>
