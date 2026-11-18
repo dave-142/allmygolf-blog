@@ -4,16 +4,17 @@
 @theme {
 	--font-sans: var(--font-outfit);
 
-	/* Brand palette: deep greens, warm paper, one bright accent */
-	--color-forest-deep: #0b1d14;
-	--color-forest: #143424;
-	--color-forest-700: #1d4a33;
-	--color-forest-600: #2a6345;
-	--color-cream: #f4f1e9;
-	--color-sand: #e6ddc8;
-	--color-ink: #0f1712;
-	--color-accent: #cdf26b;
-	--color-accent-dark: #a6cf38;
+	/* Brand palette: cool paper, near-black night, Timberwolf panels and one Butterscotch accent */
+	--color-paper: #eef2f4; /* page background, and light text on dark */
+	--color-panel: #d6c8c0; /* soft panels and tags (Timberwolf) */
+	--color-night: #1c2326; /* dark sections and photo overlays */
+	--color-night-800: #262f33; /* panels inside dark sections */
+	--color-night-700: #333d41; /* borders inside dark sections */
+	--color-slate: #4e6b7b; /* small labels on light backgrounds */
+	--color-mist: #a9c0cc; /* small labels on dark backgrounds */
+	--color-ink: #222b2e; /* body text */
+	--color-accent: #ef9e4b; /* Butterscotch */
+	--color-accent-dark: #d07f2c;
 
 	--animate-kenburns: kenburns 22s ease-out forwards;
 	--animate-ping-slow: ping 2.4s cubic-bezier(0, 0, 0.2, 1) infinite;
@@ -35,12 +36,12 @@
 	}
 
 	body {
-		@apply bg-cream text-ink antialiased;
+		@apply bg-paper text-ink antialiased;
 		font-feature-settings: 'ss01';
 	}
 
 	::selection {
-		@apply bg-accent text-forest-deep;
+		@apply bg-accent text-night;
 	}
 
 	:focus-visible {
@@ -84,25 +85,25 @@
 
 /* Leaflet, themed to match the site */
 .leaflet-container {
-	@apply bg-forest-deep font-sans;
+	@apply bg-night font-sans;
 }
 
 .leaflet-tooltip {
-	@apply rounded-full border-0 bg-cream px-3 py-1 text-xs font-semibold text-ink shadow-lg;
+	@apply rounded-full border-0 bg-paper px-3 py-1 text-xs font-semibold text-ink shadow-lg;
 }
 
 .leaflet-tooltip-top::before {
-	border-top-color: var(--color-cream);
+	border-top-color: var(--color-paper);
 }
 
 .leaflet-control-zoom a {
-	@apply bg-forest! text-cream! border-forest-700!;
+	@apply bg-night-800! text-paper! border-night-700!;
 }
 
 .leaflet-control-attribution {
-	@apply bg-forest-deep/70! text-cream/50!;
+	@apply bg-night/70! text-paper/50!;
 }
 
 .leaflet-control-attribution a {
-	@apply text-cream/70!;
+	@apply text-paper/70!;
 }

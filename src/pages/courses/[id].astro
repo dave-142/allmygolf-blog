@@ -1,10 +1,9 @@
 ---
 import { type CollectionEntry, getCollection } from 'astro:content';
-import ExternalLink from '@lucide/astro/icons/external-link';
 import PageHero from '../../components/PageHero.astro';
 import { SITE_TITLE } from '../../consts';
 import Page from '../../layouts/Page.astro';
-import { capitalise, courseLocation, coverPhoto, getRounds } from '../../lib/courses';
+import { courseLocation, coverPhoto, getRounds } from '../../lib/courses';
 
 export async function getStaticPaths() {
 	const courses = await getCollection('courses');
@@ -22,33 +21,19 @@ const location = courseLocation(course);
 
 // Small facts shown as chips under the name
 const facts = [
-	course.data.type && capitalise(course.data.type),
 	course.data.par != null && `Par ${course.data.par}`,
 	course.data.holes != null && `${course.data.holes} holes`,
 	course.data.yardage != null && `${course.data.yardage.toLocaleString('en-GB')} yards`,
-	course.data.architect,
 ].filter(Boolean);
 ---
 
 <Page title={`${course.data.name} | ${SITE_TITLE}`} description={`My rounds at ${course.data.name}.`} image={photo}>
 	<PageHero eyebrow={location || 'Course'} title={course.data.name} image={photo} tall={!!photo}>
-		{(facts.length > 0 || course.data.website) && (
+		{facts.length > 0 && (
 			<ul class="mt-8 flex flex-wrap gap-2">
 				{facts.map((fact) => (
-					<li class="rounded-full border border-cream/20 bg-cream/10 px-4 py-2 text-sm font-medium backdrop-blur">{fact}</li>
+					<li class="rounded-full border border-paper/20 bg-paper/10 px-4 py-2 text-sm font-medium backdrop-blur">{fact}</li>
 				))}
-				{course.data.website && (
-					<li>
-						<a
-							href={course.data.website}
-							target="_blank"
-							rel="noopener"
-							class="inline-flex items-center gap-2 rounded-full bg-accent px-4 py-2 text-sm font-semibold text-forest-deep transition-transform hover:-translate-y-0.5"
-						>
-							Website <ExternalLink class="size-4" aria-hidden="true" />
-						</a>
-					</li>
-				)}
 			</ul>
 		)}
 	</PageHero>

@@ -18,7 +18,7 @@ const isActive = (href: string) => !href.includes('#') && current.startsWith(hre
 -->
 <header data-site-header class="group fixed inset-x-0 top-0 z-50 text-white transition-colors duration-300 data-scrolled:text-ink data-open:text-white">
 	<div
-		class="absolute inset-0 -z-10 border-b border-transparent transition-all duration-300 group-data-scrolled:border-ink/5 group-data-scrolled:bg-cream/80 group-data-scrolled:shadow-[0_8px_30px_-12px_rgb(0_0_0/0.15)] group-data-scrolled:backdrop-blur-xl group-data-open:bg-forest-deep!"
+		class="absolute inset-0 -z-10 border-b border-transparent transition-all duration-300 group-data-scrolled:border-ink/5 group-data-scrolled:bg-paper/80 group-data-scrolled:shadow-[0_8px_30px_-12px_rgb(0_0_0/0.15)] group-data-scrolled:backdrop-blur-xl group-data-open:bg-night!"
 	>
 	</div>
 	<div class="mx-auto flex max-w-7xl items-center justify-between px-5 py-4 md:px-8 md:py-5">
@@ -34,7 +34,7 @@ const isActive = (href: string) => !href.includes('#') && current.startsWith(hre
 						<a
 							href={link.href}
 							aria-current={isActive(link.href) ? 'page' : undefined}
-							class="block rounded-full px-4 py-2 transition-colors hover:bg-white/15 group-data-scrolled:hover:bg-ink/5 aria-[current=page]:bg-accent! aria-[current=page]:text-forest-deep"
+							class="block rounded-full px-4 py-2 transition-colors hover:bg-white/15 group-data-scrolled:hover:bg-ink/5 aria-[current=page]:bg-accent! aria-[current=page]:text-night"
 						>
 							{link.label}
 						</a>
@@ -60,7 +60,7 @@ const isActive = (href: string) => !href.includes('#') && current.startsWith(hre
 	<nav
 		id="mobile-menu"
 		aria-label="Main"
-		class="invisible fixed inset-x-0 top-19 bottom-0 bg-forest-deep px-5 pt-6 pb-10 opacity-0 transition-all duration-300 group-data-open:visible group-data-open:opacity-100 md:hidden"
+		class="invisible fixed inset-x-0 top-19 bottom-0 bg-night px-5 pt-6 pb-10 opacity-0 transition-all duration-300 group-data-open:visible group-data-open:opacity-100 md:hidden"
 	>
 		<ul class="flex flex-col gap-1">
 			{links.map((link, i) => (

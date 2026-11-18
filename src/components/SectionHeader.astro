@@ -15,14 +15,14 @@ const { index, label, title, intro, link, dark = false } = Astro.props;
 
 <div data-reveal class="mb-10 flex flex-col gap-6 md:mb-14 md:flex-row md:items-end md:justify-between">
 	<div class="max-w-3xl">
-		<p class:list={['flex items-center gap-3 text-xs font-semibold tracking-[0.2em] uppercase', dark ? 'text-accent' : 'text-forest-600']}>
-			{index && <span class:list={['rounded-full px-2 py-0.5 tabular-nums', dark ? 'bg-accent text-forest-deep' : 'bg-forest text-accent']}>{index}</span>}
+		<p class:list={['flex items-center gap-3 text-xs font-semibold tracking-[0.2em] uppercase', dark ? 'text-mist' : 'text-slate']}>
+			{index && <span class:list={['rounded-full px-2 py-0.5 tabular-nums', dark ? 'bg-accent text-night' : 'bg-night-800 text-accent']}>{index}</span>}
 			{label}
 		</p>
-		<h2 class:list={['mt-4 text-4xl leading-[0.95] font-semibold tracking-tighter text-balance md:text-6xl', dark ? 'text-cream' : 'text-ink']}>
+		<h2 class:list={['mt-4 text-4xl leading-[0.95] font-semibold tracking-tighter text-balance md:text-6xl', dark ? 'text-paper' : 'text-ink']}>
 			{title}
 		</h2>
-		{intro && <p class:list={['mt-4 max-w-xl text-lg', dark ? 'text-cream/60' : 'text-ink/60']}>{intro}</p>}
+		{intro && <p class:list={['mt-4 max-w-xl text-lg', dark ? 'text-paper/60' : 'text-ink/60']}>{intro}</p>}
 	</div>
 	{link && (
 		<a
@@ -30,8 +30,8 @@ const { index, label, title, intro, link, dark = false } = Astro.props;
 			class:list={[
 				'group inline-flex shrink-0 items-center gap-2 self-start rounded-full border px-5 py-3 text-sm font-semibold transition-colors md:self-auto',
 				dark
-					? 'border-cream/20 text-cream hover:border-accent hover:bg-accent hover:text-forest-deep'
-					: 'border-ink/15 text-ink hover:border-forest hover:bg-forest hover:text-cream',
+					? 'border-paper/20 text-paper hover:border-accent hover:bg-accent hover:text-night'
+					: 'border-ink/15 text-ink hover:border-night-800 hover:bg-night-800 hover:text-paper',
 			]}
 		>
 			{link.label}

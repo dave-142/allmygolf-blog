@@ -15,18 +15,18 @@ const links = [
 ];
 ---
 
-<footer class="relative isolate overflow-hidden bg-forest-deep text-cream">
+<footer class="relative isolate overflow-hidden bg-night text-paper">
 	<Contours class="text-accent/7" />
 
 	<div class="mx-auto max-w-7xl px-5 pt-20 pb-10 md:px-8 md:pt-28">
 		<div class="grid gap-12 md:grid-cols-[1.5fr_1fr_auto]">
 			<div>
 				<Logo class="size-12" />
-				<p class="mt-6 max-w-sm text-2xl leading-snug font-light text-balance text-cream/80">{SITE_DESCRIPTION}</p>
+				<p class="mt-6 max-w-sm text-2xl leading-snug font-light text-balance text-paper/80">{SITE_DESCRIPTION}</p>
 			</div>
 
 			<nav aria-label="Footer">
-				<p class="mb-4 text-xs font-semibold tracking-[0.2em] text-accent uppercase">Explore</p>
+				<p class="mb-4 text-xs font-semibold tracking-[0.2em] text-mist uppercase">Explore</p>
 				<ul class="space-y-2 text-lg">
 					{links.map((link) => (
 						<li>
@@ -41,14 +41,14 @@ const links = [
 			<div class="flex items-start gap-3">
 				<a
 					href="/rss.xml"
-					class="grid size-12 place-items-center rounded-full border border-cream/20 transition-colors hover:border-accent hover:bg-accent hover:text-forest-deep"
+					class="grid size-12 place-items-center rounded-full border border-paper/20 transition-colors hover:border-accent hover:bg-accent hover:text-night"
 				>
 					<Rss class="size-5" aria-hidden="true" />
 					<span class="sr-only">RSS feed</span>
 				</a>
 				<a
 					href="#main"
-					class="grid size-12 place-items-center rounded-full bg-accent text-forest-deep transition-transform hover:-translate-y-1"
+					class="grid size-12 place-items-center rounded-full bg-accent text-night transition-transform hover:-translate-y-1"
 				>
 					<ArrowUp class="size-5" aria-hidden="true" />
 					<span class="sr-only">Back to top</span>
@@ -58,12 +58,12 @@ const links = [
 
 		<p
 			aria-hidden="true"
-			class="mt-20 -mb-[0.18em] text-[clamp(4.5rem,17vw,15rem)] leading-none font-black tracking-tighter whitespace-nowrap text-transparent select-none [-webkit-text-stroke:1px_rgb(244_241_233/0.25)]"
+			class="mt-20 -mb-[0.18em] text-[clamp(4.5rem,17vw,15rem)] leading-none font-black tracking-tighter whitespace-nowrap text-transparent select-none [-webkit-text-stroke:1px_rgb(238_242_244/0.25)]"
 		>
 			All My Golf
 		</p>
 
-		<div class="flex flex-col gap-2 border-t border-cream/10 pt-6 text-sm text-cream/50 sm:flex-row sm:justify-between">
+		<div class="flex flex-col gap-2 border-t border-paper/10 pt-6 text-sm text-paper/50 sm:flex-row sm:justify-between">
 			<p>&copy; {year} All My Golf</p>
 			<p>Played, walked and written up by me.</p>
 		</div>

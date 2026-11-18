@@ -26,32 +26,32 @@ const countries = [...byCountry].sort((a, b) => b[1].length - a[1].length);
 ---
 
 <div class="grid gap-4 lg:grid-cols-[1fr_22rem]">
-	<div data-reveal class="relative overflow-hidden rounded-[1.75rem] border border-cream/10 shadow-2xl shadow-black/30">
+	<div data-reveal class="relative overflow-hidden rounded-[1.75rem] border border-paper/10 shadow-2xl shadow-black/30">
 		<div data-course-map data-pins={JSON.stringify(pins)} class="isolate h-[380px] w-full md:h-[520px]"></div>
-		<p class="pointer-events-none absolute bottom-3 left-3 z-500 rounded-full bg-forest-deep/80 px-3 py-1 text-xs text-cream/70 backdrop-blur" data-map-hint>
+		<p class="pointer-events-none absolute bottom-3 left-3 z-500 rounded-full bg-night/80 px-3 py-1 text-xs text-paper/70 backdrop-blur" data-map-hint>
 			Click the map to zoom with your mouse wheel
 		</p>
 	</div>
 
-	<div data-reveal style="--reveal-delay: 120ms" class="flex max-h-[520px] flex-col rounded-[1.75rem] border border-cream/10 bg-forest/60 p-5 backdrop-blur">
-		<p class="flex items-baseline justify-between border-b border-cream/10 pb-4">
-			<span class="text-xs font-semibold tracking-[0.2em] text-accent uppercase">The list</span>
-			<span class="text-sm text-cream/60"><strong class="text-cream">{summaries.length}</strong> courses</span>
+	<div data-reveal style="--reveal-delay: 120ms" class="flex max-h-[520px] flex-col rounded-[1.75rem] border border-paper/10 bg-night-800/60 p-5 backdrop-blur">
+		<p class="flex items-baseline justify-between border-b border-paper/10 pb-4">
+			<span class="text-xs font-semibold tracking-[0.2em] text-mist uppercase">The list</span>
+			<span class="text-sm text-paper/60"><strong class="text-paper">{summaries.length}</strong> courses</span>
 		</p>
-		<div class="-mr-2 overflow-y-auto pr-2 [scrollbar-color:var(--color-forest-600)_transparent] [scrollbar-width:thin]">
+		<div class="-mr-2 overflow-y-auto pr-2 [scrollbar-color:var(--color-night-700)_transparent] [scrollbar-width:thin]">
 			{countries.map(([country, list]) => (
 				<div class="pt-4">
-					<p class="mb-1 text-xs font-semibold tracking-wider text-cream/50 uppercase">{country}</p>
+					<p class="mb-1 text-xs font-semibold tracking-wider text-paper/50 uppercase">{country}</p>
 					<ul>
 						{list.map(({ course, rounds }) => (
 							<li>
 								<a
 									href={courseHref(course.id)}
 									data-map-link={course.id}
-									class="group flex items-center justify-between gap-3 rounded-xl px-3 py-2.5 -mx-3 transition-colors hover:bg-cream/5"
+									class="group flex items-center justify-between gap-3 rounded-xl px-3 py-2.5 -mx-3 transition-colors hover:bg-paper/5"
 								>
-									<span class="font-medium text-cream group-hover:text-accent">{course.data.name}</span>
-									<span class="flex shrink-0 items-center gap-2 text-xs text-cream/50">
+									<span class="font-medium text-paper group-hover:text-accent">{course.data.name}</span>
+									<span class="flex shrink-0 items-center gap-2 text-xs text-paper/50">
 										{rounds.length > 0 && <span class="tabular-nums">{rounds.length}&times;</span>}
 										<ArrowUpRight class="size-4 opacity-0 transition-opacity group-hover:opacity-100" aria-hidden="true" />
 									</span>
@@ -99,7 +99,7 @@ const countries = [...byCountry].sort((a, b) => b[1].length - a[1].length);
 			maxClusterRadius: 40,
 			iconCreateFunction: (cluster) =>
 				L.divIcon({
-					html: `<span class="grid size-11 place-items-center rounded-full bg-accent text-sm font-bold text-forest-deep shadow-[0_0_0_6px_rgb(205_242_107/0.25)]">${cluster.getChildCount()}</span>`,
+					html: `<span class="grid size-11 place-items-center rounded-full bg-accent text-sm font-bold text-night shadow-[0_0_0_6px_rgb(239_158_75/0.25)]">${cluster.getChildCount()}</span>`,
 					className: '',
 					iconSize: [44, 44],
 				}),
@@ -115,7 +115,7 @@ const countries = [...byCountry].sort((a, b) => b[1].length - a[1].length);
 				title: pin.name,
 				alt: `Open the ${pin.name} course page`,
 				icon: L.divIcon({
-					html: `<span class="relative block size-5 cursor-pointer">${pulse}<span class="absolute inset-0 rounded-full border-[3px] border-forest-deep bg-accent shadow-[0_0_0_2px_rgb(205_242_107/0.5)] transition-transform hover:scale-125"></span></span>`,
+					html: `<span class="relative block size-5 cursor-pointer">${pulse}<span class="absolute inset-0 rounded-full border-[3px] border-night bg-accent shadow-[0_0_0_2px_rgb(239_158_75/0.5)] transition-transform hover:scale-125"></span></span>`,
 					className: '',
 					iconSize: [20, 20],
 				}),

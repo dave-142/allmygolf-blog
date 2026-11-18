@@ -72,7 +72,7 @@ const scorecard = [
 
 <Page title={title} description={description} image={hero}>
 	<PageHero eyebrow={course ? courseLocation(course) || course.data.name : undefined} title={title} image={hero} tall={!!hero}>
-		<div class="mt-6 flex flex-wrap items-center gap-x-4 gap-y-2 text-sm text-cream/70">
+		<div class="mt-6 flex flex-wrap items-center gap-x-4 gap-y-2 text-sm text-paper/70">
 			<FormattedDate date={pubDate} />
 			{readingTime && (
 				<>
@@ -94,7 +94,7 @@ const scorecard = [
 			<div class="mx-auto -mt-10 max-w-5xl px-5 md:-mt-14 md:px-8">
 				<dl
 					data-reveal
-					class="grid grid-cols-2 gap-px overflow-hidden rounded-[1.75rem] bg-ink/10 shadow-[0_30px_60px_-30px_rgb(11_29_20/0.45)] ring-1 ring-ink/5 md:grid-flow-col md:auto-cols-fr md:grid-cols-none"
+					class="grid grid-cols-2 gap-px overflow-hidden rounded-[1.75rem] bg-ink/10 shadow-[0_30px_60px_-30px_rgb(28_35_38/0.45)] ring-1 ring-ink/5 md:grid-flow-col md:auto-cols-fr md:grid-cols-none"
 				>
 					{scorecard.map((cell, i) => (
 						<div
@@ -106,14 +106,14 @@ const scorecard = [
 							<dt class="text-[0.65rem] font-semibold tracking-[0.2em] text-ink/40 uppercase">{cell.label}</dt>
 							<dd class:list={[cell.big ? 'text-4xl font-extralight tracking-tighter tabular-nums' : 'text-lg leading-tight font-semibold']}>
 								{cell.href ? (
-									<a href={cell.href} class="group inline-flex items-start gap-1 hover:text-forest-600">
+									<a href={cell.href} class="group inline-flex items-start gap-1 hover:text-slate">
 										{cell.value}
 										<ArrowUpRight class="size-4 shrink-0 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" aria-hidden="true" />
 									</a>
 								) : cell.date ? (
 									<FormattedDate date={cell.date} />
 								) : cell.rating != null ? (
-									<Stars rating={cell.rating} class="text-xl text-forest-600" />
+									<Stars rating={cell.rating} class="text-xl text-slate" />
 								) : (
 									cell.value
 								)}
@@ -129,14 +129,14 @@ const scorecard = [
 				<figure data-reveal class="relative mb-14 pl-8 md:pl-12">
 					<span aria-hidden="true" class="absolute -top-3 left-0 font-serif text-8xl leading-none text-accent-dark md:-top-5 md:text-9xl">&ldquo;</span>
 					<blockquote class="text-3xl leading-tight font-medium tracking-tight text-balance md:text-4xl">{verdict}</blockquote>
-					<figcaption class="mt-4 text-xs font-semibold tracking-[0.2em] text-forest-600 uppercase">The verdict</figcaption>
+					<figcaption class="mt-4 text-xs font-semibold tracking-[0.2em] text-slate uppercase">The verdict</figcaption>
 				</figure>
 			)}
 
 			<p class="mb-10 text-xl leading-relaxed text-ink/70 md:text-2xl">{description}</p>
 
 			<div
-				class="prose prose-lg max-w-none prose-neutral prose-headings:font-semibold prose-headings:tracking-tight prose-h2:mt-14 prose-h2:text-3xl prose-a:text-forest-600 prose-a:decoration-accent-dark prose-a:decoration-2 prose-a:underline-offset-4 prose-blockquote:border-l-4 prose-blockquote:border-accent-dark prose-blockquote:font-medium prose-blockquote:text-ink prose-blockquote:not-italic prose-img:rounded-2xl prose-li:marker:text-forest-600"
+				class="prose prose-lg max-w-none prose-neutral prose-headings:font-semibold prose-headings:tracking-tight prose-h2:mt-14 prose-h2:text-3xl prose-a:text-slate prose-a:decoration-accent-dark prose-a:decoration-2 prose-a:underline-offset-4 prose-blockquote:border-l-4 prose-blockquote:border-accent-dark prose-blockquote:font-medium prose-blockquote:text-ink prose-blockquote:not-italic prose-img:rounded-2xl prose-li:marker:text-slate"
 			>
 				<slot />
 			</div>
@@ -144,7 +144,7 @@ const scorecard = [
 			{tags.length > 0 && (
 				<ul class="mt-12 flex flex-wrap gap-2 border-t border-ink/10 pt-8">
 					{tags.map((tag) => (
-						<li class="rounded-full bg-sand px-4 py-1.5 text-sm font-medium text-forest">#{tag}</li>
+						<li class="rounded-full bg-panel px-4 py-1.5 text-sm font-medium text-night-800">#{tag}</li>
 					))}
 				</ul>
 			)}
@@ -161,7 +161,7 @@ const scorecard = [
 							data-lightbox-open={photo.full}
 							data-caption={photo.caption ?? ''}
 							style={`--reveal-delay: ${(i % 3) * 80}ms`}
-							class="group relative mb-4 block w-full cursor-zoom-in break-inside-avoid overflow-hidden rounded-3xl bg-forest"
+							class="group relative mb-4 block w-full cursor-zoom-in break-inside-avoid overflow-hidden rounded-3xl bg-night-800"
 						>
 							<Image
 								src={photo.image}
@@ -172,11 +172,11 @@ const scorecard = [
 									i % 3 === 0 ? 'aspect-4/5' : 'aspect-4/3',
 								]}
 							/>
-							<span class="absolute top-3 right-3 grid size-10 place-items-center rounded-full bg-forest-deep/60 text-cream opacity-0 backdrop-blur transition-opacity group-hover:opacity-100">
+							<span class="absolute top-3 right-3 grid size-10 place-items-center rounded-full bg-night/60 text-paper opacity-0 backdrop-blur transition-opacity group-hover:opacity-100">
 								<Expand class="size-4" aria-hidden="true" />
 							</span>
 							{photo.caption && (
-								<span class="absolute inset-x-0 bottom-0 bg-linear-to-t from-forest-deep/90 to-transparent p-4 pt-10 text-left text-sm text-cream">
+								<span class="absolute inset-x-0 bottom-0 bg-linear-to-t from-night/90 to-transparent p-4 pt-10 text-left text-sm text-paper">
 									{photo.caption}
 								</span>
 							)}
@@ -189,7 +189,7 @@ const scorecard = [
 	</article>
 
 	{more.length > 0 && (
-		<section class="bg-sand/60 py-20 md:py-24">
+		<section class="bg-panel/60 py-20 md:py-24">
 			<div class="mx-auto max-w-7xl px-5 md:px-8">
 				<SectionHeader label="Keep reading" title="More rounds" link={{ href: '/blog/', label: 'All rounds' }} />
 				<PostGrid tiles={more.map((t) => ({ ...t, featured: false }))} columns={3} />
@@ -199,7 +199,7 @@ const scorecard = [
 
 	{id && (
 		<div class="mx-auto max-w-7xl px-5 py-10 md:px-8">
-			<a href="/blog/" class="group inline-flex items-center gap-2 text-sm font-semibold text-forest-600">
+			<a href="/blog/" class="group inline-flex items-center gap-2 text-sm font-semibold text-slate">
 				<ArrowLeft class="size-4 transition-transform group-hover:-translate-x-1" aria-hidden="true" />
 				Back to all rounds
 			</a>
@@ -209,14 +209,14 @@ const scorecard = [
 	{photos.length > 0 && (
 		<dialog
 			data-lightbox
-			class="m-auto max-h-none max-w-none bg-transparent p-0 backdrop:bg-forest-deep/95 backdrop:backdrop-blur-sm"
+			class="m-auto max-h-none max-w-none bg-transparent p-0 backdrop:bg-night/95 backdrop:backdrop-blur-sm"
 		>
 			<figure class="flex h-svh w-screen flex-col items-center justify-center gap-4 p-4 md:p-10">
 				<img data-lightbox-img alt="" class="max-h-[85svh] max-w-full rounded-2xl object-contain shadow-2xl" />
-				<figcaption data-lightbox-caption class="text-sm text-cream/70"></figcaption>
+				<figcaption data-lightbox-caption class="text-sm text-paper/70"></figcaption>
 			</figure>
 			<form method="dialog">
-				<button class="fixed top-4 right-4 grid size-12 place-items-center rounded-full bg-accent text-forest-deep transition-transform hover:rotate-90">
+				<button class="fixed top-4 right-4 grid size-12 place-items-center rounded-full bg-accent text-night transition-transform hover:rotate-90">
 					<X class="size-5" aria-hidden="true" />
 					<span class="sr-only">Close</span>
 				</button>

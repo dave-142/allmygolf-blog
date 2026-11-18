@@ -20,9 +20,6 @@ const courses = defineCollection({
 		par: optional(z.number()),
 		holes: optional(z.number()),
 		yardage: optional(z.number()),
-		type: optional(z.enum(['links', 'parkland', 'heathland', 'moorland'])),
-		architect: optional(z.string()),
-		website: optional(z.string()),
 	}),
 });
 

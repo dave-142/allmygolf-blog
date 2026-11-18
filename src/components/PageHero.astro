@@ -17,7 +17,7 @@ const { eyebrow, title, intro, image, tall = false } = Astro.props;
 
 <section
 	class:list={[
-		'relative isolate flex overflow-hidden bg-forest-deep text-cream',
+		'relative isolate flex overflow-hidden bg-night text-paper',
 		tall ? 'min-h-[78svh] md:min-h-[86svh]' : image ? 'min-h-[60svh]' : 'min-h-[46svh]',
 	]}
 >
@@ -32,25 +32,25 @@ const { eyebrow, title, intro, image, tall = false } = Astro.props;
 				fetchpriority="high"
 				class="absolute inset-0 -z-20 h-full w-full animate-kenburns object-cover"
 			/>
-			<div class="absolute inset-0 -z-10 bg-linear-to-t from-forest-deep via-forest-deep/50 to-forest-deep/30"></div>
+			<div class="absolute inset-0 -z-10 bg-linear-to-t from-night via-night/50 to-night/30"></div>
 		</>
 	) : (
 		<>
 			<Contours class="text-accent/10" />
-			<div class="absolute -top-40 -right-40 -z-10 size-[40rem] rounded-full bg-forest-600/40 blur-3xl"></div>
+			<div class="absolute -top-40 -right-40 -z-10 size-[40rem] rounded-full bg-slate/40 blur-3xl"></div>
 		</>
 	)}
 
 	<div class="mx-auto mt-auto w-full max-w-7xl px-5 pt-36 pb-12 md:px-8 md:pb-20">
 		{eyebrow && (
-			<p class="mb-5 inline-flex items-center gap-2 rounded-full border border-cream/20 bg-cream/10 px-3 py-1 text-xs font-semibold tracking-[0.2em] text-accent uppercase backdrop-blur">
+			<p class="mb-5 inline-flex items-center gap-2 rounded-full border border-paper/20 bg-paper/10 px-3 py-1 text-xs font-semibold tracking-[0.2em] text-mist uppercase backdrop-blur">
 				{eyebrow}
 			</p>
 		)}
 		<h1 class="max-w-5xl text-5xl leading-[0.9] font-semibold tracking-tighter text-balance sm:text-6xl md:text-8xl">
 			{title}
 		</h1>
-		{intro && <p class="mt-6 max-w-2xl text-lg text-cream/75 md:text-xl">{intro}</p>}
+		{intro && <p class="mt-6 max-w-2xl text-lg text-paper/75 md:text-xl">{intro}</p>}
 		<slot />
 	</div>
 </section>

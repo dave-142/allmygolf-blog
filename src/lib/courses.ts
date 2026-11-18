@@ -33,8 +33,6 @@ export const coverPhoto = (post: Post): ImageMetadata | undefined =>
 export const courseLocation = (course: Course) =>
 	[course.data.area, course.data.country].filter(Boolean).join(', ');
 
-export const capitalise = (text: string) => text.charAt(0).toUpperCase() + text.slice(1);
-
 export const bestScore = (rounds: Post[]) => {
 	const scores = rounds.map((r) => r.data.score).filter((s): s is number => s != null);
 	return scores.length > 0 ? Math.min(...scores) : undefined;

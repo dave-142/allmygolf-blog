@@ -40,7 +40,7 @@ const tiles: Tile[] =
 				data-year={tile.year}
 				style={`--reveal-delay: ${(i % 4) * 70}ms`}
 				class:list={[
-					'group relative isolate block overflow-hidden rounded-[1.75rem] bg-forest text-white shadow-[0_20px_50px_-30px_rgb(11_29_20/0.6)] transition-shadow duration-500 hover:shadow-[0_30px_70px_-25px_rgb(11_29_20/0.7)]',
+					'group relative isolate block overflow-hidden rounded-[1.75rem] bg-night-800 text-white shadow-[0_20px_50px_-30px_rgb(28_35_38/0.6)] transition-shadow duration-500 hover:shadow-[0_30px_70px_-25px_rgb(28_35_38/0.7)]',
 					lead && 'sm:col-span-2 lg:row-span-2',
 					wide && 'sm:col-span-2',
 				]}
@@ -53,12 +53,12 @@ const tiles: Tile[] =
 						class="absolute inset-0 -z-10 h-full w-full object-cover transition-transform duration-[1.2s] ease-out group-hover:scale-110"
 					/>
 				) : (
-					<div class="absolute inset-0 -z-10 bg-linear-to-br from-forest-600 to-forest-deep"></div>
+					<div class="absolute inset-0 -z-10 bg-linear-to-br from-night-700 to-night"></div>
 				)}
-				<div class="absolute inset-0 -z-10 bg-linear-to-t from-forest-deep/95 via-forest-deep/35 to-transparent transition-opacity duration-500 group-hover:from-forest-deep"></div>
+				<div class="absolute inset-0 -z-10 bg-linear-to-t from-night/95 via-night/35 to-transparent transition-opacity duration-500 group-hover:from-night"></div>
 
 				{tile.badge != null && (
-					<div class="absolute top-4 right-4 flex flex-col items-center rounded-2xl bg-accent px-3 py-2 text-forest-deep shadow-lg">
+					<div class="absolute top-4 right-4 flex flex-col items-center rounded-2xl bg-accent px-3 py-2 text-night shadow-lg">
 						<span class="text-2xl leading-none font-bold tabular-nums">{tile.badge}</span>
 						{tile.badgeLabel && <span class="mt-0.5 text-[0.6rem] font-semibold tracking-widest uppercase">{tile.badgeLabel}</span>}
 					</div>
@@ -69,7 +69,7 @@ const tiles: Tile[] =
 				</div>
 
 				<div class="flex h-full flex-col justify-end p-6">
-					<p class="mb-2 flex flex-wrap items-center gap-x-2 text-xs font-semibold tracking-wider text-accent uppercase">
+					<p class="mb-2 flex flex-wrap items-center gap-x-2 text-xs font-semibold tracking-wider text-mist uppercase">
 						{tile.date && <FormattedDate date={tile.date} />}
 						{tile.date && tile.eyebrow && <span aria-hidden="true" class="size-1 rounded-full bg-accent/60"></span>}
 						{tile.eyebrow && <span class="text-white/80">{tile.eyebrow}</span>}
