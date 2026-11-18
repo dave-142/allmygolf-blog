@@ -13,6 +13,17 @@
     },
     {
       "par": 72,
+      "lng": -2.73043,
+      "yardage": 7230,
+      "name": "Fairmont St Andrews, Kittocks Course",
+      "area": "St Andrews",
+      "holes": 18,
+      "country": "Scotland",
+      "id": "fairmont-kittocks",
+      "lat": 56.32035
+    },
+    {
+      "par": 72,
       "lng": -2.6539,
       "yardage": 7224,
       "name": "Kingsbarns Golf Links",
@@ -86,6 +97,16 @@
       "par": 70,
       "holes": 18,
       "yardage": 6048
+    },
+    {
+      "id": "banchory",
+      "name": "Banchory Golf Club",
+      "area": "Banchory",
+      "lat": 57.050246,
+      "lng": -2.507063,
+      "par": 69,
+      "holes": 18,
+      "yardage": 5850
     }
   ]
 }
