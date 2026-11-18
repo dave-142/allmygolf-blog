@@ -26,7 +26,8 @@ const { eyebrow, title, intro, image, tall = false } = Astro.props;
 			<Image
 				src={image}
 				alt=""
-				widths={[800, 1400, 2200]}
+				widths={[800, 1600]}
+				quality={70}
 				sizes="100vw"
 				loading="eager"
 				fetchpriority="high"

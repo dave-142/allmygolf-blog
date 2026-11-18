@@ -1,5 +1,5 @@
 ---
-import { Image, getImage } from 'astro:assets';
+import { Image } from 'astro:assets';
 import { type CollectionEntry, getEntry } from 'astro:content';
 import ArrowLeft from '@lucide/astro/icons/arrow-left';
 import ArrowUpRight from '@lucide/astro/icons/arrow-up-right';
@@ -40,13 +40,7 @@ const {
 const course = courseRef && (await getEntry(courseRef));
 const hero = heroImage ?? gallery[0]?.image;
 
-// Large versions for the lightbox
-const photos = await Promise.all(
-	gallery.map(async (photo) => ({
-		...photo,
-		full: (await getImage({ src: photo.image, width: 1600 })).src,
-	})),
-);
+const photos = gallery;
 
 // Three more recent posts to keep reading
 const more = id
@@ -171,7 +165,7 @@ const scorecard = [
 						<button
 							type="button"
 							data-reveal
-							data-lightbox-open={photo.full}
+							data-lightbox-open
 							data-caption={photo.caption ?? ''}
 							style={`--reveal-delay: ${(i % 3) * 80}ms`}
 							class="group relative mb-4 block w-full cursor-zoom-in break-inside-avoid overflow-hidden rounded-3xl bg-night-800"
@@ -180,6 +174,7 @@ const scorecard = [
 								src={photo.image}
 								alt={photo.caption ?? ''}
 								widths={[600, 1200]}
+								quality={70}
 								sizes="(min-width: 1024px) 410px, (min-width: 640px) 50vw, 100vw"
 								class:list={[
 									'w-full object-cover transition-transform duration-[1.2s] ease-out group-hover:scale-105',
@@ -247,7 +242,14 @@ const scorecard = [
 	if (dialog && img && caption) {
 		document.querySelectorAll<HTMLButtonElement>('[data-lightbox-open]').forEach((button) =>
 			button.addEventListener('click', () => {
-				img.src = button.dataset.lightboxOpen ?? '';
+				// Show the largest version the gallery photo already has, so no extra copy is needed
+				const thumb = button.querySelector('img');
+				const largest = (thumb?.srcset ?? '')
+					.split(',')
+					.map((entry) => entry.trim().split(/\s+/))
+					.filter(([url]) => url)
+					.sort((a, b) => parseInt(b[1] ?? '0') - parseInt(a[1] ?? '0'))[0]?.[0];
+				img.src = largest ?? thumb?.currentSrc ?? '';
 				img.alt = button.dataset.caption ?? '';
 				caption.textContent = button.dataset.caption ?? '';
 				dialog.showModal();

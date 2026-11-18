@@ -8,7 +8,7 @@
 // - Only folders named exactly like a course id in src/data/courses.json are imported. Others are ignored.
 // - Each date folder becomes one round post. If a post for that course and date already exists, it is skipped,
 //   so running this again is safe.
-// - Photos are resized to a 2400px long edge, turned the right way up, and stripped of metadata (including GPS),
+// - Photos are resized to a 1600px long edge, turned the right way up, and stripped of metadata (including GPS),
 //   then saved in src/assets/uploads/ with lowercase names, the same way Decap saves uploads.
 
 import fs from 'node:fs';
@@ -21,7 +21,7 @@ const COURSES_FILE = path.join(ROOT, 'src/data/courses.json');
 const POSTS_DIR = path.join(ROOT, 'src/content/blog');
 const UPLOADS_DIR = path.join(ROOT, 'src/assets/uploads');
 const UPLOADS_PUBLIC = '../../assets/uploads'; // how posts reference uploads, matching public_folder in Decap
-const MAX_EDGE = 2400;
+const MAX_EDGE = 1600;
 const PHOTO_EXTENSIONS = new Set(['.jpg', '.jpeg']);
 const DATE_FOLDER = /^\d{4}-\d{2}-\d{2}$/;
 
