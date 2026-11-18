@@ -2,18 +2,17 @@
 import 'leaflet/dist/leaflet.css';
 import 'leaflet.markercluster/dist/MarkerCluster.css';
 import { getCollection } from 'astro:content';
+import { courseHref } from '../lib/courses';
 
-const courses = (await getCollection('blog'))
-	.filter((p) => p.data.type === 'course' && p.data.lat != null && p.data.lng != null)
-	.sort((a, b) => a.data.pubDate.valueOf() - b.data.pubDate.valueOf());
-
-const pins = courses.map((post, i) => ({
-	lat: post.data.lat!,
-	lng: post.data.lng!,
-	n: i + 1,
-	name: post.data.course ?? post.data.title,
-	href: `/blog/${post.id}/`,
-}));
+// One pin per course that has coordinates
+const pins = (await getCollection('courses'))
+	.filter((course) => course.data.lat != null && course.data.lng != null)
+	.map((course) => ({
+		lat: course.data.lat!,
+		lng: course.data.lng!,
+		name: course.data.name,
+		href: courseHref(course.id),
+	}));
 ---
 
 <div class="container mx-auto px-6">
@@ -32,7 +31,7 @@ const pins = courses.map((post, i) => ({
 	const CARTO_KEY = 'cb1_59px_1_ec461914e02617913133312d';
 
 	document.querySelectorAll<HTMLDivElement>('[data-course-map]').forEach((el) => {
-		const pins: { lat: number; lng: number; n: number; name: string; href: string }[] = JSON.parse(
+		const pins: { lat: number; lng: number; name: string; href: string }[] = JSON.parse(
 			el.dataset.pins ?? '[]',
 		);
 
@@ -61,18 +60,18 @@ const pins = courses.map((post, i) => ({
 		pins.forEach((pin) => {
 			const marker = L.marker([pin.lat, pin.lng], {
 				title: pin.name,
-				alt: `Open the ${pin.name} review`,
+				alt: `Open the ${pin.name} course page`,
 				icon: L.divIcon({
-					html: `<span class="grid size-8 cursor-pointer place-items-center rounded-full border-2 border-white bg-olive-500 text-xs font-bold text-white shadow transition-colors hover:bg-forest">${pin.n}</span>`,
+					html: `<span class="block size-5 cursor-pointer rounded-full border-2 border-white bg-olive-500 shadow transition-colors hover:bg-forest"></span>`,
 					className: '',
-					iconSize: [32, 32],
+					iconSize: [20, 20],
 				}),
 			});
 
 			// Course name on hover
-			marker.bindTooltip(pin.name, { direction: 'top', offset: [0, -18] });
+			marker.bindTooltip(pin.name, { direction: 'top', offset: [0, -12] });
 
-			// Click goes straight to the review; Ctrl or Cmd click opens a new tab
+			// Click goes straight to the course page; Ctrl or Cmd click opens a new tab
 			marker.on('click', (event) => {
 				const original = event.originalEvent as MouseEvent | undefined;
 				if (original && (original.ctrlKey || original.metaKey)) {

@@ -9,9 +9,8 @@ gallery:
   - image: ../../assets/uploads/pxl_20211118_153830140.jpg
   - image: ../../assets/uploads/pxl_20211118_153824048.jpg
 pubDate: Jun 19 2024
-type: course
-lat: 56.32035
-lng: -2.73043
+type: round
+course: fairmont-torrance
 featured: true
 ---
 

@@ -1,0 +1,16 @@
+{
+  "courses": [
+    {
+      "id": "carnoustie",
+      "name": "Carnoustie",
+      "lat": 56.4975,
+      "lng": -2.7119
+    },
+    {
+      "id": "fairmont-torrance",
+      "name": "Fairmont St Andrews, Torrance Course",
+      "lat": 56.32035,
+      "lng": -2.73043
+    }
+  ]
+}

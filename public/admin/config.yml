@@ -31,13 +31,49 @@ collections:
       - label: Type
         name: type
         widget: select
-        options: [round, course, equipment]
+        options: [round, equipment]
         default: round
-      - { label: Course, name: course, widget: string, required: false }
+      - label: Course
+        name: course
+        widget: relation
+        collection: courses
+        file: courses
+        search_fields: ["courses.*.name"]
+        display_fields: ["courses.*.name"]
+        value_field: "courses.*.id"
+        required: false
       - { label: Score, name: score, widget: number, value_type: int, required: false }
       - { label: Rating (1 to 5), name: rating, widget: number, value_type: int, min: 1, max: 5, required: false }
-      - { label: Latitude, name: lat, widget: number, value_type: float, required: false }
-      - { label: Longitude, name: lng, widget: number, value_type: float, required: false }
+      - { label: Verdict, name: verdict, widget: string, required: false }
       - { label: Tags, name: tags, widget: list, required: false }
       - { label: Body, name: body, widget: markdown }
       - { label: Featured, name: featured, widget: boolean, required: false, default: false }
+  - name: courses
+    label: Courses
+    files:
+      - name: courses
+        label: Courses
+        file: src/data/courses.json
+        fields:
+          - label: Courses
+            name: courses
+            label_singular: Course
+            widget: list
+            summary: "{{fields.name}}"
+            fields:
+              - { label: 'ID (URL slug, for example north-berwick)', name: id, widget: string, pattern: ['^[a-z0-9]+(-[a-z0-9]+)*$', 'Lowercase letters, numbers and hyphens only'] }
+              - { label: Name, name: name, widget: string }
+              - { label: Town or area, name: area, widget: string, required: false }
+              - { label: Country, name: country, widget: string, required: false }
+              - { label: Latitude, name: lat, widget: number, value_type: float, required: false }
+              - { label: Longitude, name: lng, widget: number, value_type: float, required: false }
+              - { label: Par, name: par, widget: number, value_type: int, required: false }
+              - { label: Holes, name: holes, widget: number, value_type: int, required: false }
+              - { label: Yardage, name: yardage, widget: number, value_type: int, required: false }
+              - label: Course type
+                name: type
+                widget: select
+                options: [links, parkland, heathland, moorland]
+                required: false
+              - { label: Architect, name: architect, widget: string, required: false }
+              - { label: Website, name: website, widget: string, required: false }

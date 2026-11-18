@@ -2,21 +2,38 @@
 import { Image } from 'astro:assets';
 import { getCollection } from 'astro:content';
 import FormattedDate from './FormattedDate.astro';
+import { coverPhoto } from '../lib/courses';
 
-// The 12 most recent posts
-const posts = (await getCollection('blog'))
-	.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
-	.slice(0, 12);
+export interface Tile {
+	href: string;
+	title: string;
+	description?: string;
+	// Small line above the title: a date, or any short text
+	date?: Date;
+	eyebrow?: string;
+	photo?: ImageMetadata;
+	featured?: boolean;
+}
 
-const tiles = posts.map((post) => ({
-	href: `/blog/${post.id}/`,
-	title: post.data.title,
-	description: post.data.description,
-	date: post.data.pubDate,
-	// First gallery photo, then the hero image, otherwise none
-	photo: post.data.gallery[0]?.image ?? post.data.heroImage,
-	featured: post.data.featured,
-}));
+interface Props {
+	// Defaults to the 12 most recent posts
+	tiles?: Tile[];
+}
+
+const posts = Astro.props.tiles
+	? []
+	: (await getCollection('blog')).sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()).slice(0, 12);
+
+const tiles: Tile[] =
+	Astro.props.tiles ??
+	posts.map((post) => ({
+		href: `/blog/${post.id}/`,
+		title: post.data.title,
+		description: post.data.description,
+		date: post.data.pubDate,
+		photo: coverPhoto(post),
+		featured: post.data.featured,
+	}));
 ---
 
 <div class="grid grid-flow-dense auto-rows-65 grid-cols-1 gap-4 sm:auto-rows-70 sm:grid-cols-2 lg:auto-rows-80 lg:grid-cols-3">
@@ -39,7 +56,7 @@ const tiles = posts.map((post) => ({
 
 			<div class="absolute inset-x-0 bottom-0 bg-linear-to-t from-black/80 via-black/40 to-transparent p-5 pt-24">
 				<p class="mb-1.5 text-xs font-semibold tracking-wider text-olive-300 uppercase">
-					<FormattedDate date={tile.date} />
+					{tile.date ? <FormattedDate date={tile.date} /> : tile.eyebrow}
 				</p>
 				<h2
 					class:list={[

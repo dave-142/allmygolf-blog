@@ -3,12 +3,10 @@ title: First post
 description: Lorem ipsum dolor sit amet
 heroImage: ../../assets/uploads/pxl_20261114_125806588.jpg
 pubDate: Jul 08 2022
-type: course
-course: Carnoustie
+type: round
+course: carnoustie
 score: 88
 rating: 5
-lat: 56.4975
-lng: -2.7119
 ---
 This is a decap edit.  This is a mobile edit. 
 

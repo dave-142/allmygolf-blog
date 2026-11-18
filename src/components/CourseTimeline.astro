@@ -1,0 +1,91 @@
+---
+import { Image } from 'astro:assets';
+import { getCollection } from 'astro:content';
+import ArrowRight from '@lucide/astro/icons/arrow-right';
+import { type Round, bestScore, courseHref, courseLocation, coverPhoto, getRounds } from '../lib/courses';
+
+const [rounds, courses] = await Promise.all([getRounds(), getCollection('courses')]);
+const courseById = new Map(courses.map((course) => [course.id, course]));
+
+// Year (newest first) -> course id -> that year's rounds there (newest first)
+const years = new Map<number, Map<string, Round[]>>();
+for (const round of rounds) {
+	const year = round.data.pubDate.getFullYear();
+	const id = round.data.course!.id;
+	const byCourse = years.get(year) ?? new Map<string, Round[]>();
+	byCourse.set(id, [...(byCourse.get(id) ?? []), round]);
+	years.set(year, byCourse);
+}
+
+const capitalise = (text: string) => text.charAt(0).toUpperCase() + text.slice(1);
+---
+
+	<div class="flex flex-col gap-1  pb-6 md:pb-8">
+		<h2 class="text-3xl font-bold md:text-4xl">Every course, year by year</h2>
+	</div>
+
+	{[...years].map(([year, byCourse]) => (
+		<section class="grid grid-cols-1 gap-4 py-8 md:grid-cols-[12rem_1fr] md:gap-10 md:py-12">
+			<div class="md:sticky md:top-6 md:self-start">
+				<p class="text-5xl font-light tracking-tight text-olive-500 md:text-6xl">{year}</p>
+				<p class="mt-1 text-sm text-olive-600">
+					{byCourse.size} {byCourse.size === 1 ? 'course' : 'courses'} played
+				</p>
+			</div>
+
+			<ol class="divide-y divide-olive-200 border-t border-olive-300">
+				{[...byCourse].map(([id, yearRounds]) => {
+					const course = courseById.get(id);
+					if (!course) return null;
+					const photo = coverPhoto(yearRounds[0]);
+					const best = bestScore(yearRounds);
+					const details = [courseLocation(course), course.data.type && capitalise(course.data.type)].filter(Boolean);
+					return (
+						<li>
+							<a href={courseHref(id)} class="group grid grid-cols-1 gap-4 py-6 sm:grid-cols-[14rem_1fr] sm:gap-6">
+								<div class="aspect-4/3 overflow-hidden rounded-2xl bg-neutral-800">
+									{photo && (
+										<Image
+											src={photo}
+											alt=""
+											width={600}
+											class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+										/>
+									)}
+								</div>
+
+								<div class="flex flex-col">
+									{details.length > 0 && (
+										<p class="text-xs font-semibold tracking-wider text-olive-500 uppercase">
+											{details.join(' · ')}
+										</p>
+									)}
+									<h3 class="mt-1.5 text-xl leading-tight font-semibold text-balance md:text-2xl">
+										{course.data.name}
+									</h3>
+
+									<div class="mt-auto flex items-end justify-between gap-4 pt-4 text-sm">
+										<p class="text-olive-600">
+											<span>
+												<strong class="font-semibold text-neutral-900">{yearRounds.length}</strong>
+												{yearRounds.length === 1 ? ' round' : ' rounds'}
+											</span>
+											{best != null && (
+												<span>
+													{' · '}Best <strong class="font-semibold text-neutral-900">{best}</strong>
+												</span>
+											)}
+										</p>
+										<span class="inline-flex shrink-0 items-center gap-1.5 font-medium underline-offset-4 group-hover:underline">
+											View course
+											<ArrowRight class="size-4 transition-transform group-hover:translate-x-0.5" aria-hidden="true" />
+										</span>
+									</div>
+								</div>
+							</a>
+						</li>
+					);
+				})}
+			</ol>
+		</section>
+	))}
