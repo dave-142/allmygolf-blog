@@ -5,12 +5,13 @@ import ArrowLeft from '@lucide/astro/icons/arrow-left';
 import ArrowUpRight from '@lucide/astro/icons/arrow-up-right';
 import Expand from '@lucide/astro/icons/expand';
 import X from '@lucide/astro/icons/x';
+import GolferCelebrating from '../assets/illustrations/golfer-celebrating.svg';
 import FormattedDate from '../components/FormattedDate.astro';
 import PageHero from '../components/PageHero.astro';
 import PostGrid from '../components/PostGrid.astro';
 import SectionHeader from '../components/SectionHeader.astro';
 import Stars from '../components/Stars.astro';
-import { courseHref, courseLocation, getCourseMap, getPosts, postTile } from '../lib/courses';
+import { bestScore, courseHref, courseLocation, getCourseMap, getPosts, getRounds, postTile } from '../lib/courses';
 import Page from './Page.astro';
 
 // The about page uses this layout too, so everything beyond title, description and date is optional
@@ -57,17 +58,21 @@ const more = id
 		)
 	: [];
 
+// Course best: this round matches your lowest score at the course, and you have played it more than once
+const roundsHere = course ? (await getRounds()).filter((r) => r.data.course?.id === course.id) : [];
+const courseBest = score != null && roundsHere.length > 1 && score === bestScore(roundsHere);
+
 const scorecard = [
 	course && { label: 'Course', value: course.data.name, href: courseHref(course.id) },
 	{ label: 'Played', date: pubDate },
-	score != null && { label: 'Score', value: String(score), big: true },
+	score != null && { label: 'Score', value: String(score), big: true, best: courseBest },
 	course?.data.par != null && score != null && {
 		label: 'To par',
 		value: `${score - course.data.par > 0 ? '+' : ''}${score - course.data.par}`,
 		big: true,
 	},
 	rating != null && { label: 'Rating', rating },
-].filter(Boolean) as { label: string; value?: string; href?: string; date?: Date; big?: boolean; rating?: number }[];
+].filter(Boolean) as { label: string; value?: string; href?: string; date?: Date; big?: boolean; rating?: number; best?: boolean }[];
 ---
 
 <Page title={title} description={description} image={hero}>
@@ -114,10 +119,18 @@ const scorecard = [
 									<FormattedDate date={cell.date} />
 								) : cell.rating != null ? (
 									<Stars rating={cell.rating} class="text-xl text-slate" />
+								) : cell.best ? (
+									<span class="flex items-end justify-between gap-3">
+										{cell.value}
+										<GolferCelebrating class="-mb-1 h-14 w-auto text-ink" />
+									</span>
 								) : (
 									cell.value
 								)}
 							</dd>
+							{cell.best && (
+								<p class="-mt-1 text-[0.65rem] font-semibold tracking-[0.2em] text-accent-dark uppercase">Course best</p>
+							)}
 						</div>
 					))}
 				</dl>

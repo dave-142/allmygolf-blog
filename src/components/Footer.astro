@@ -1,6 +1,7 @@
 ---
 import ArrowUp from '@lucide/astro/icons/arrow-up';
 import Rss from '@lucide/astro/icons/rss';
+import GolferWithBag from '../assets/illustrations/golfer-with-bag.svg';
 import { SITE_DESCRIPTION } from '../consts';
 import Contours from './Contours.astro';
 import Logo from './Logo.astro';
@@ -56,9 +57,14 @@ const links = [
 			</div>
 		</div>
 
+		<!-- A golfer leaning on his bag, standing on a line above the wordmark -->
+		<div class="mt-16 flex justify-end border-b border-paper/15 pr-2 md:pr-10">
+			<GolferWithBag class="-mb-px h-24 w-auto text-paper/85 md:h-32" />
+		</div>
+
 		<p
 			aria-hidden="true"
-			class="mt-20 -mb-[0.18em] text-[clamp(4.5rem,17vw,15rem)] leading-none font-black tracking-tighter whitespace-nowrap text-transparent select-none [-webkit-text-stroke:1px_rgb(238_242_244/0.25)]"
+			class="mt-6 -mb-[0.18em] text-[clamp(4.5rem,17vw,15rem)] leading-none font-black tracking-tighter whitespace-nowrap text-transparent select-none [-webkit-text-stroke:1px_rgb(238_242_244/0.25)]"
 		>
 			All My Golf
 		</p>

@@ -1,114 +1,91 @@
 {
   "courses": [
     {
-      "id": "carnoustie",
-      "name": "Carnoustie",
-      "area": "Carnoustie",
-      "country": "Scotland",
-      "lat": 56.4975,
-      "lng": -2.7119,
       "par": 72,
-      "holes": 18,
-      "yardage": 7394
-    },
-    {
-      "id": "fairmont-torrance",
+      "lng": -2.73043,
+      "yardage": 7230,
       "name": "Fairmont St Andrews, Torrance Course",
       "area": "St Andrews",
-      "country": "Scotland",
-      "lat": 56.32035,
-      "lng": -2.73043,
-      "par": 72,
       "holes": 18,
-      "yardage": 7230
+      "country": "Scotland",
+      "id": "fairmont-torrance",
+      "lat": 56.32035
     },
     {
-      "id": "st-andrews-old",
-      "name": "The Old Course",
-      "area": "St Andrews",
-      "country": "Scotland",
-      "lat": 56.3433,
-      "lng": -2.803,
       "par": 72,
-      "holes": 18,
-      "yardage": 7305
-    },
-    {
-      "id": "kingsbarns",
+      "lng": -2.6539,
+      "yardage": 7224,
       "name": "Kingsbarns Golf Links",
       "area": "Kingsbarns",
-      "country": "Scotland",
-      "lat": 56.2969,
-      "lng": -2.6539,
-      "par": 72,
       "holes": 18,
-      "yardage": 7224
+      "country": "Scotland",
+      "id": "kingsbarns",
+      "lat": 56.2969
     },
     {
-      "id": "north-berwick",
-      "name": "North Berwick West Links",
-      "area": "North Berwick",
-      "country": "Scotland",
-      "lat": 56.059,
-      "lng": -2.73,
-      "par": 71,
-      "holes": 18,
-      "yardage": 6506
-    },
-    {
-      "id": "gleneagles-kings",
+      "par": 70,
+      "lng": -3.745,
+      "yardage": 6790,
       "name": "Gleneagles, King's Course",
       "area": "Auchterarder",
-      "country": "Scotland",
-      "lat": 56.2856,
-      "lng": -3.745,
-      "par": 70,
       "holes": 18,
-      "yardage": 6790
+      "country": "Scotland",
+      "id": "gleneagles-kings",
+      "lat": 56.2856
     },
     {
-      "id": "royal-dornoch",
+      "par": 70,
+      "lng": -4.02,
+      "yardage": 6732,
       "name": "Royal Dornoch, Championship",
       "area": "Dornoch",
-      "country": "Scotland",
-      "lat": 57.88,
-      "lng": -4.02,
-      "par": 70,
       "holes": 18,
-      "yardage": 6732
+      "country": "Scotland",
+      "id": "royal-dornoch",
+      "lat": 57.88
     },
     {
-      "id": "cruden-bay",
+      "par": 70,
+      "lng": -1.853,
+      "yardage": 6609,
       "name": "Cruden Bay",
       "area": "Cruden Bay",
-      "country": "Scotland",
-      "lat": 57.414,
-      "lng": -1.853,
-      "par": 70,
       "holes": 18,
-      "yardage": 6609
+      "country": "Scotland",
+      "id": "cruden-bay",
+      "lat": 57.414
     },
     {
-      "id": "turnberry-ailsa",
+      "par": 71,
+      "lng": -4.835,
+      "yardage": 7489,
       "name": "Turnberry, Ailsa Course",
       "area": "Turnberry",
-      "country": "Scotland",
-      "lat": 55.315,
-      "lng": -4.835,
-      "par": 71,
       "holes": 18,
-      "yardage": 7489
+      "country": "Scotland",
+      "id": "turnberry-ailsa",
+      "lat": 55.315
     },
     {
-      "id": "royal-county-down",
-      "name": "Royal County Down",
-      "area": "Newcastle",
-      "country": "Northern Ireland",
-      "lat": 54.218,
-      "lng": -5.884,
       "par": 71,
+      "lng": -4.835,
+      "yardage": 7489,
+      "name": "Turnberry, King Robert the Bruce Course",
+      "area": "Turnberry",
       "holes": 18,
-      "yardage": 7186
+      "country": "Scotland",
+      "id": "turnberry-king-robert-the-bruce",
+      "lat": 55.315
+    },
+    {
+      "id": "the-glen",
+      "name": "The Glen Golf Club",
+      "area": "North Berwick",
+      "lat": 56.057344,
+      "lng": -2.703273,
+      "par": 70,
+      "holes": 18,
+      "yardage": 6048
     }
   ]
 }

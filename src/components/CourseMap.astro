@@ -38,7 +38,8 @@ const countries = [...byCountry].sort((a, b) => b[1].length - a[1].length);
 			<span class="text-xs font-semibold tracking-[0.2em] text-mist uppercase">The list</span>
 			<span class="text-sm text-paper/60"><strong class="text-paper">{summaries.length}</strong> courses</span>
 		</p>
-		<div class="-mr-2 overflow-y-auto pr-2 [scrollbar-color:var(--color-night-700)_transparent] [scrollbar-width:thin]">
+		<!-- -mx-3 px-3 makes room for the links' -mx-3 hover backgrounds, so nothing overflows sideways -->
+		<div class="-mx-3 overflow-x-hidden overflow-y-auto px-3 [scrollbar-color:var(--color-night-700)_transparent] [scrollbar-width:thin]">
 			{countries.map(([country, list]) => (
 				<div class="pt-4">
 					<p class="mb-1 text-xs font-semibold tracking-wider text-paper/50 uppercase">{country}</p>
