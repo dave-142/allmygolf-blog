@@ -1,8 +1,8 @@
 ---
 import { Image } from 'astro:assets';
 import { getCollection } from 'astro:content';
-import ArrowRight from '@lucide/astro/icons/arrow-right';
-import { type Round, bestScore, courseHref, courseLocation, coverPhoto, getRounds } from '../lib/courses';
+import ArrowUpRight from '@lucide/astro/icons/arrow-up-right';
+import { type Round, bestScore, capitalise, courseHref, courseLocation, coverPhoto, getRounds } from '../lib/courses';
 
 const [rounds, courses] = await Promise.all([getRounds(), getCollection('courses')]);
 const courseById = new Map(courses.map((course) => [course.id, course]));
@@ -17,70 +17,87 @@ for (const round of rounds) {
 	years.set(year, byCourse);
 }
 
-const capitalise = (text: string) => text.charAt(0).toUpperCase() + text.slice(1);
+const formatMonth = (date: Date) => date.toLocaleDateString('en-GB', { month: 'short', year: 'numeric' });
 ---
 
-	<div class="flex flex-col gap-1  pb-6 md:pb-8">
-		<h2 class="text-3xl font-bold md:text-4xl">Every course, year by year</h2>
-	</div>
-
+<div class="relative">
 	{[...years].map(([year, byCourse]) => (
-		<section class="grid grid-cols-1 gap-4 py-8 md:grid-cols-[12rem_1fr] md:gap-10 md:py-12">
-			<div class="md:sticky md:top-6 md:self-start">
-				<p class="text-5xl font-light tracking-tight text-olive-500 md:text-6xl">{year}</p>
-				<p class="mt-1 text-sm text-olive-600">
-					{byCourse.size} {byCourse.size === 1 ? 'course' : 'courses'} played
+		<section class="relative grid grid-cols-1 gap-6 border-t border-ink/10 py-10 md:grid-cols-[14rem_1fr] md:gap-12 md:py-16">
+			<div class="md:sticky md:top-28 md:self-start">
+				<p class="text-7xl leading-none font-extralight tracking-tighter text-forest tabular-nums md:text-8xl">{year}</p>
+				<p class="mt-3 inline-flex items-center gap-2 rounded-full bg-forest px-3 py-1 text-xs font-semibold text-accent">
+					{byCourse.size} {byCourse.size === 1 ? 'course' : 'courses'}
 				</p>
 			</div>
 
-			<ol class="divide-y divide-olive-200 border-t border-olive-300">
-				{[...byCourse].map(([id, yearRounds]) => {
+			<ol class="grid gap-4">
+				{[...byCourse].map(([id, yearRounds], i) => {
 					const course = courseById.get(id);
 					if (!course) return null;
-					const photo = coverPhoto(yearRounds[0]);
+					const latest = yearRounds[0];
+					const photo = coverPhoto(latest);
 					const best = bestScore(yearRounds);
-					const details = [courseLocation(course), course.data.type && capitalise(course.data.type)].filter(Boolean);
+					const location = courseLocation(course);
 					return (
-						<li>
-							<a href={courseHref(id)} class="group grid grid-cols-1 gap-4 py-6 sm:grid-cols-[14rem_1fr] sm:gap-6">
-								<div class="aspect-4/3 overflow-hidden rounded-2xl bg-neutral-800">
+						<li data-reveal style={`--reveal-delay: ${i * 80}ms`}>
+							<a
+								href={courseHref(id)}
+								class="group grid grid-cols-1 overflow-hidden rounded-[1.75rem] bg-white shadow-[0_1px_0_rgb(0_0_0/0.04),0_20px_40px_-30px_rgb(11_29_20/0.35)] ring-1 ring-ink/5 transition-all duration-500 hover:-translate-y-1 hover:shadow-[0_30px_60px_-30px_rgb(11_29_20/0.45)] sm:grid-cols-[15rem_1fr]"
+							>
+								<div class="relative aspect-16/10 overflow-hidden bg-forest sm:aspect-auto sm:min-h-52">
 									{photo && (
 										<Image
 											src={photo}
 											alt=""
-											width={600}
-											class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+											width={700}
+											class="absolute inset-0 h-full w-full object-cover transition-transform duration-[1.2s] ease-out group-hover:scale-110"
 										/>
+									)}
+									{course.data.type && (
+										<span class="absolute top-3 left-3 rounded-full bg-forest-deep/70 px-3 py-1 text-[0.65rem] font-semibold tracking-widest text-accent uppercase backdrop-blur">
+											{capitalise(course.data.type)}
+										</span>
 									)}
 								</div>
 
-								<div class="flex flex-col">
-									{details.length > 0 && (
-										<p class="text-xs font-semibold tracking-wider text-olive-500 uppercase">
-											{details.join(' · ')}
-										</p>
-									)}
-									<h3 class="mt-1.5 text-xl leading-tight font-semibold text-balance md:text-2xl">
-										{course.data.name}
-									</h3>
-
-									<div class="mt-auto flex items-end justify-between gap-4 pt-4 text-sm">
-										<p class="text-olive-600">
-											<span>
-												<strong class="font-semibold text-neutral-900">{yearRounds.length}</strong>
-												{yearRounds.length === 1 ? ' round' : ' rounds'}
-											</span>
-											{best != null && (
-												<span>
-													{' · '}Best <strong class="font-semibold text-neutral-900">{best}</strong>
-												</span>
-											)}
-										</p>
-										<span class="inline-flex shrink-0 items-center gap-1.5 font-medium underline-offset-4 group-hover:underline">
-											View course
-											<ArrowRight class="size-4 transition-transform group-hover:translate-x-0.5" aria-hidden="true" />
+								<div class="flex flex-col p-5 md:p-7">
+									<div class="flex items-start justify-between gap-4">
+										<div>
+											<p class="text-xs font-semibold tracking-wider text-forest-600 uppercase">
+												{formatMonth(latest.data.pubDate)}
+												{location && <span class="text-ink/40"> / {location}</span>}
+											</p>
+											<h3 class="mt-1.5 text-2xl leading-tight font-semibold tracking-tight text-balance md:text-3xl">
+												{course.data.name}
+											</h3>
+										</div>
+										<span class="grid size-10 shrink-0 place-items-center rounded-full border border-ink/10 transition-colors group-hover:border-forest group-hover:bg-forest group-hover:text-accent">
+											<ArrowUpRight class="size-4" aria-hidden="true" />
 										</span>
 									</div>
+
+									{latest.data.verdict && (
+										<p class="mt-3 text-lg text-ink/60 italic">"{latest.data.verdict}"</p>
+									)}
+
+									<dl class="mt-auto flex gap-8 border-t border-ink/10 pt-4 text-sm md:mt-6">
+										<div>
+											<dt class="text-[0.65rem] font-semibold tracking-widest text-ink/40 uppercase">Rounds</dt>
+											<dd class="text-2xl font-semibold tabular-nums">{yearRounds.length}</dd>
+										</div>
+										{best != null && (
+											<div>
+												<dt class="text-[0.65rem] font-semibold tracking-widest text-ink/40 uppercase">Best</dt>
+												<dd class="text-2xl font-semibold tabular-nums">{best}</dd>
+											</div>
+										)}
+										{course.data.par != null && (
+											<div>
+												<dt class="text-[0.65rem] font-semibold tracking-widest text-ink/40 uppercase">Par</dt>
+												<dd class="text-2xl font-semibold tabular-nums">{course.data.par}</dd>
+											</div>
+										)}
+									</dl>
 								</div>
 							</a>
 						</li>
@@ -89,3 +106,4 @@ const capitalise = (text: string) => text.charAt(0).toUpperCase() + text.slice(1
 			</ol>
 		</section>
 	))}
+</div>

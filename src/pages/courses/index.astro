@@ -1,35 +1,33 @@
 ---
-import BaseHead from '../../components/BaseHead.astro';
-import Footer from '../../components/Footer.astro';
-import Header from '../../components/Header.astro';
-import PostGrid, { type Tile } from '../../components/PostGrid.astro';
+import PageHero from '../../components/PageHero.astro';
+import PostGrid from '../../components/PostGrid.astro';
 import { SITE_TITLE } from '../../consts';
-import { courseHref, courseLocation, coverPhoto, getCourseSummaries } from '../../lib/courses';
+import Page from '../../layouts/Page.astro';
+import { type Tile, courseHref, courseLocation, coverPhoto, getCourseSummaries, getStats } from '../../lib/courses';
 
-const summaries = await getCourseSummaries();
+const [summaries, stats] = await Promise.all([getCourseSummaries(), getStats()]);
 
-const tiles: Tile[] = summaries.map(({ course, rounds, latest }) => ({
+const tiles: Tile[] = summaries.map(({ course, rounds, latest, best }) => ({
 	href: courseHref(course.id),
 	title: course.data.name,
 	eyebrow: rounds.length === 1 ? 'Played once' : rounds.length > 1 ? `Played ${rounds.length} times` : 'Not played yet',
 	description: courseLocation(course),
 	photo: latest && coverPhoto(latest),
+	badge: best,
+	badgeLabel: best != null ? 'Best' : undefined,
 }));
 ---
 
-<!doctype html>
-<html lang="en">
-	<head>
-		<BaseHead title={`Courses | ${SITE_TITLE}`} description="Every course I have played." />
-	</head>
-	<body>
-		<Header />
-		<main>
-			<div class="container mx-auto px-6 py-8 md:py-12">
-				<h1 class="pb-6 text-3xl font-bold md:pb-8 md:text-4xl">Courses</h1>
-				<PostGrid tiles={tiles} />
-			</div>
-		</main>
-		<Footer />
-	</body>
-</html>
+<Page title={`Courses | ${SITE_TITLE}`} description="Every course I have played.">
+	<PageHero
+		eyebrow={`${stats.courses} courses, ${stats.countries} ${stats.countries === 1 ? 'country' : 'countries'}`}
+		title="The courses"
+		intro="Every course I have walked, with my best score there. Most recent first."
+	/>
+
+	<section class="py-12 md:py-20">
+		<div class="mx-auto max-w-7xl px-5 md:px-8">
+			<PostGrid tiles={tiles} />
+		</div>
+	</section>
+</Page>

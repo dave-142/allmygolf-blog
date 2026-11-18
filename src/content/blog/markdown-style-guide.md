@@ -2,12 +2,8 @@
 title: Fairmont Torrance Course
 description: Here is a sample of some basic Markdown syntax that can be used
   when writing Markdown content in Astro.
-heroImage: ../../assets/uploads/pxl_20211118_153859382.jpg
 gallery:
   - image: ../../assets/uploads/pxl_20261114_125806588.jpg
-  - image: ../../assets/uploads/pxl_20211118_153824048.jpg
-  - image: ../../assets/uploads/pxl_20211118_153830140.jpg
-  - image: ../../assets/uploads/pxl_20211118_153824048.jpg
 pubDate: Jun 19 2024
 type: round
 course: fairmont-torrance

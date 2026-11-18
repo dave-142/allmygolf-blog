@@ -1,112 +1,53 @@
 ---
-import { Image } from 'astro:assets';
-import { getCollection } from 'astro:content';
-import BaseHead from '../../components/BaseHead.astro';
-import Footer from '../../components/Footer.astro';
-import FormattedDate from '../../components/FormattedDate.astro';
-import Header from '../../components/Header.astro';
-import { SITE_DESCRIPTION, SITE_TITLE } from '../../consts';
+import PageHero from '../../components/PageHero.astro';
+import PostGrid from '../../components/PostGrid.astro';
+import { SITE_TITLE } from '../../consts';
+import Page from '../../layouts/Page.astro';
+import { getCourseMap, getPosts, postTile } from '../../lib/courses';
 
-const posts = (await getCollection('blog')).sort(
-	(a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
-);
+const [posts, courses] = await Promise.all([getPosts(), getCourseMap()]);
+const tiles = posts.map((post) => postTile(post, courses));
+const years = [...new Set(tiles.map((t) => t.year))];
 ---
 
-<!doctype html>
-<html lang="en">
-	<head>
-		<BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
-		<style>
-			main {
-				width: 960px;
-			}
-			ul {
-				display: flex;
-				flex-wrap: wrap;
-				gap: 2rem;
-				list-style-type: none;
-				margin: 0;
-				padding: 0;
-			}
-			ul li {
-				width: calc(50% - 1rem);
-			}
-			ul li * {
-				text-decoration: none;
-				transition: 0.2s ease;
-			}
-			ul li:first-child {
-				width: 100%;
-				margin-bottom: 1rem;
-				text-align: center;
-			}
-			ul li:first-child img {
-				width: 100%;
-			}
-			ul li:first-child .title {
-				font-size: 2.369rem;
-			}
-			ul li img {
-				margin-bottom: 0.5rem;
-				border-radius: 12px;
-			}
-			ul li a {
-				display: block;
-			}
-			.title {
-				margin: 0;
-				color: rgb(var(--black));
-				line-height: 1;
-			}
-			.date {
-				margin: 0;
-				color: rgb(var(--gray));
-			}
-			ul li a:hover h4,
-			ul li a:hover .date {
-				color: rgb(var(--accent));
-			}
-			ul a:hover img {
-				box-shadow: var(--box-shadow);
-			}
-			@media (max-width: 720px) {
-				ul {
-					gap: 0.5em;
-				}
-				ul li {
-					width: 100%;
-					text-align: center;
-				}
-				ul li:first-child {
-					margin-bottom: 0;
-				}
-				ul li:first-child .title {
-					font-size: 1.563em;
-				}
-			}
-		</style>
-	</head>
-	<body>
-		<Header />
-		<main>
-			<section>
-				<ul>
-					{posts.map((post) => (
-						<li>
-							<a href={`/blog/${post.id}/`}>
-								{post.data.heroImage && (
-									<Image width={720} height={360} src={post.data.heroImage} alt="" />
-								)}
-								<h4 class="title">{post.data.title}</h4>
-								<p class="date">
-									<FormattedDate date={post.data.pubDate} />
-								</p>
-							</a>
-						</li>
-					))}
-				</ul>
-			</section>
-		</main>
-		<Footer />
-	</body>
-</html>
+<Page title={`Rounds | ${SITE_TITLE}`} description="Every round, newest first.">
+	<PageHero eyebrow={`${posts.length} posts`} title="Every round" intro="Scores, write ups and photos from every round, newest first." />
+
+	<section class="py-12 md:py-20">
+		<div class="mx-auto max-w-7xl px-5 md:px-8">
+			{years.length > 1 && (
+				<div class="-mx-5 mb-8 overflow-x-auto px-5 md:mx-0 md:px-0" role="group" aria-label="Filter by year">
+					<div class="flex w-max gap-2 rounded-full border border-ink/10 bg-white p-1.5 shadow-sm">
+						{['All', ...years].map((year, i) => (
+							<button
+								type="button"
+								data-year-filter={year}
+								aria-pressed={i === 0 ? 'true' : 'false'}
+								class="rounded-full px-5 py-2 text-sm font-semibold text-ink/60 transition-colors hover:text-ink aria-pressed:bg-forest aria-pressed:text-accent"
+							>
+								{year}
+							</button>
+						))}
+					</div>
+				</div>
+			)}
+			<PostGrid tiles={tiles} leadFirst />
+		</div>
+	</section>
+</Page>
+
+<script>
+	const buttons = document.querySelectorAll<HTMLButtonElement>('[data-year-filter]');
+	const cards = document.querySelectorAll<HTMLElement>('[data-post-grid] > [data-year]');
+
+	buttons.forEach((button) =>
+		button.addEventListener('click', () => {
+			const year = button.dataset.yearFilter;
+			buttons.forEach((b) => b.setAttribute('aria-pressed', String(b === button)));
+			cards.forEach((card) => {
+				card.hidden = year !== 'All' && card.dataset.year !== year;
+				card.classList.add('is-visible');
+			});
+		}),
+	);
+</script>

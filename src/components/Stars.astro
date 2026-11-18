@@ -1,0 +1,16 @@
+---
+// Rating out of 5 as filled and empty stars
+interface Props {
+	rating: number;
+	class?: string;
+}
+const { rating, class: className } = Astro.props;
+---
+
+<span class:list={['inline-flex items-center gap-0.5', className]} role="img" aria-label={`Rated ${rating} out of 5`}>
+	{[1, 2, 3, 4, 5].map((n) => (
+		<svg viewBox="0 0 20 20" aria-hidden="true" class:list={['size-[1em]', n <= rating ? 'fill-current' : 'fill-current opacity-20']}>
+			<path d="M10 1.5l2.6 5.4 5.9.8-4.3 4.1 1 5.9L10 14.9l-5.2 2.8 1-5.9L1.5 7.7l5.9-.8z" />
+		</svg>
+	))}
+</span>

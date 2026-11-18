@@ -3,4 +3,106 @@
 
 @theme {
 	--font-sans: var(--font-outfit);
+
+	/* Brand palette: deep greens, warm paper, one bright accent */
+	--color-forest-deep: #0b1d14;
+	--color-forest: #143424;
+	--color-forest-700: #1d4a33;
+	--color-forest-600: #2a6345;
+	--color-cream: #f4f1e9;
+	--color-sand: #e6ddc8;
+	--color-ink: #0f1712;
+	--color-accent: #cdf26b;
+	--color-accent-dark: #a6cf38;
+
+	--animate-kenburns: kenburns 22s ease-out forwards;
+	--animate-ping-slow: ping 2.4s cubic-bezier(0, 0, 0.2, 1) infinite;
+
+	@keyframes kenburns {
+		from {
+			transform: scale(1.12);
+		}
+		to {
+			transform: scale(1);
+		}
+	}
+}
+
+@layer base {
+	html {
+		scroll-behavior: smooth;
+		-webkit-tap-highlight-color: transparent;
+	}
+
+	body {
+		@apply bg-cream text-ink antialiased;
+		font-feature-settings: 'ss01';
+	}
+
+	::selection {
+		@apply bg-accent text-forest-deep;
+	}
+
+	:focus-visible {
+		@apply outline-2 outline-offset-2 outline-accent-dark;
+	}
+}
+
+/* Scroll reveal. Only hides content when JS has run, so nothing is lost without it */
+.js [data-reveal] {
+	opacity: 0;
+	transform: translateY(28px);
+	transition:
+		opacity 0.8s cubic-bezier(0.2, 0.7, 0.2, 1),
+		transform 0.8s cubic-bezier(0.2, 0.7, 0.2, 1);
+	transition-delay: var(--reveal-delay, 0ms);
+}
+
+.js [data-reveal].is-visible {
+	opacity: 1;
+	transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+	html {
+		scroll-behavior: auto;
+	}
+
+	.js [data-reveal] {
+		opacity: 1;
+		transform: none;
+		transition: none;
+	}
+
+	*,
+	*::before,
+	*::after {
+		animation-duration: 0.01ms !important;
+		animation-iteration-count: 1 !important;
+	}
+}
+
+/* Leaflet, themed to match the site */
+.leaflet-container {
+	@apply bg-forest-deep font-sans;
+}
+
+.leaflet-tooltip {
+	@apply rounded-full border-0 bg-cream px-3 py-1 text-xs font-semibold text-ink shadow-lg;
+}
+
+.leaflet-tooltip-top::before {
+	border-top-color: var(--color-cream);
+}
+
+.leaflet-control-zoom a {
+	@apply bg-forest! text-cream! border-forest-700!;
+}
+
+.leaflet-control-attribution {
+	@apply bg-forest-deep/70! text-cream/50!;
+}
+
+.leaflet-control-attribution a {
+	@apply text-cream/70!;
 }

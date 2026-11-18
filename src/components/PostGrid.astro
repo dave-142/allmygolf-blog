@@ -1,82 +1,99 @@
 ---
 import { Image } from 'astro:assets';
-import { getCollection } from 'astro:content';
+import ArrowUpRight from '@lucide/astro/icons/arrow-up-right';
 import FormattedDate from './FormattedDate.astro';
-import { coverPhoto } from '../lib/courses';
-
-export interface Tile {
-	href: string;
-	title: string;
-	description?: string;
-	// Small line above the title: a date, or any short text
-	date?: Date;
-	eyebrow?: string;
-	photo?: ImageMetadata;
-	featured?: boolean;
-}
+import { type Tile, getCourseMap, getPosts, postTile } from '../lib/courses';
 
 interface Props {
-	// Defaults to the 12 most recent posts
+	// Defaults to the most recent posts
 	tiles?: Tile[];
+	limit?: number;
+	// Makes the first card a large 2 by 2 tile on wide screens
+	leadFirst?: boolean;
+	// Columns on wide screens
+	columns?: 3 | 4;
 }
 
-const posts = Astro.props.tiles
-	? []
-	: (await getCollection('blog')).sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()).slice(0, 12);
+const { limit = 12, leadFirst = false, columns = 4 } = Astro.props;
 
 const tiles: Tile[] =
 	Astro.props.tiles ??
-	posts.map((post) => ({
-		href: `/blog/${post.id}/`,
-		title: post.data.title,
-		description: post.data.description,
-		date: post.data.pubDate,
-		photo: coverPhoto(post),
-		featured: post.data.featured,
-	}));
+	(await Promise.all([getPosts(), getCourseMap()]).then(([posts, courses]) =>
+		posts.slice(0, limit).map((post) => postTile(post, courses)),
+	));
 ---
 
-<div class="grid grid-flow-dense auto-rows-65 grid-cols-1 gap-4 sm:auto-rows-70 sm:grid-cols-2 lg:auto-rows-80 lg:grid-cols-3">
-	{tiles.map((tile) => (
-		<a
-			href={tile.href}
-			class:list={[
-				'group relative block overflow-hidden rounded-2xl bg-neutral-800',
-				tile.featured && 'sm:col-span-2',
-			]}
-		>
-			{tile.photo && (
-				<Image
-					src={tile.photo}
-					alt=""
-					width={tile.featured ? 1600 : 900}
-					class="h-full w-full object-cover object-center transition-transform duration-500 group-hover:scale-105"
-				/>
-			)}
+<div
+	data-post-grid
+	class:list={[
+		'grid grid-flow-dense auto-rows-[22rem] grid-cols-1 gap-4 sm:grid-cols-2 lg:auto-rows-[20rem]',
+		columns === 3 ? 'lg:grid-cols-3' : 'lg:grid-cols-4',
+	]}
+>
+	{tiles.map((tile, i) => {
+		const lead = leadFirst && i === 0;
+		const wide = !lead && tile.featured;
+		return (
+			<a
+				href={tile.href}
+				data-reveal
+				data-year={tile.year}
+				style={`--reveal-delay: ${(i % 4) * 70}ms`}
+				class:list={[
+					'group relative isolate block overflow-hidden rounded-[1.75rem] bg-forest text-white shadow-[0_20px_50px_-30px_rgb(11_29_20/0.6)] transition-shadow duration-500 hover:shadow-[0_30px_70px_-25px_rgb(11_29_20/0.7)]',
+					lead && 'sm:col-span-2 lg:row-span-2',
+					wide && 'sm:col-span-2',
+				]}
+			>
+				{tile.photo ? (
+					<Image
+						src={tile.photo}
+						alt=""
+						width={lead || wide ? 1400 : 800}
+						class="absolute inset-0 -z-10 h-full w-full object-cover transition-transform duration-[1.2s] ease-out group-hover:scale-110"
+					/>
+				) : (
+					<div class="absolute inset-0 -z-10 bg-linear-to-br from-forest-600 to-forest-deep"></div>
+				)}
+				<div class="absolute inset-0 -z-10 bg-linear-to-t from-forest-deep/95 via-forest-deep/35 to-transparent transition-opacity duration-500 group-hover:from-forest-deep"></div>
 
-			<div class="absolute inset-x-0 bottom-0 bg-linear-to-t from-black/80 via-black/40 to-transparent p-5 pt-24">
-				<p class="mb-1.5 text-xs font-semibold tracking-wider text-olive-300 uppercase">
-					{tile.date ? <FormattedDate date={tile.date} /> : tile.eyebrow}
-				</p>
-				<h2
-					class:list={[
-						'font-semibold leading-tight text-balance text-white',
-						tile.featured ? 'text-2xl md:text-3xl' : 'text-lg',
-					]}
-				>
-					{tile.title}
-				</h2>
-				{tile.description && (
-					<p
+				{tile.badge != null && (
+					<div class="absolute top-4 right-4 flex flex-col items-center rounded-2xl bg-accent px-3 py-2 text-forest-deep shadow-lg">
+						<span class="text-2xl leading-none font-bold tabular-nums">{tile.badge}</span>
+						{tile.badgeLabel && <span class="mt-0.5 text-[0.6rem] font-semibold tracking-widest uppercase">{tile.badgeLabel}</span>}
+					</div>
+				)}
+
+				<div class="absolute top-4 left-4 grid size-10 translate-y-1 place-items-center rounded-full bg-white/15 opacity-0 backdrop-blur-md transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100">
+					<ArrowUpRight class="size-5" aria-hidden="true" />
+				</div>
+
+				<div class="flex h-full flex-col justify-end p-6">
+					<p class="mb-2 flex flex-wrap items-center gap-x-2 text-xs font-semibold tracking-wider text-accent uppercase">
+						{tile.date && <FormattedDate date={tile.date} />}
+						{tile.date && tile.eyebrow && <span aria-hidden="true" class="size-1 rounded-full bg-accent/60"></span>}
+						{tile.eyebrow && <span class="text-white/80">{tile.eyebrow}</span>}
+					</p>
+					<h3
 						class:list={[
-							'mt-1.5 line-clamp-2 text-white/80',
-							tile.featured ? 'max-w-xl text-base' : 'text-sm',
+							'leading-[1.05] font-semibold tracking-tight text-balance',
+							lead ? 'text-3xl md:text-5xl' : wide ? 'text-2xl md:text-3xl' : 'text-xl md:text-2xl',
 						]}
 					>
-						{tile.description}
-					</p>
-				)}
-			</div>
-		</a>
-	))}
+						{tile.title}
+					</h3>
+					{tile.description && (
+						<p
+							class:list={[
+								'mt-2 text-white/75',
+								lead ? 'line-clamp-3 max-w-xl text-base md:text-lg' : 'line-clamp-2 text-sm',
+							]}
+						>
+							{tile.description}
+						</p>
+					)}
+				</div>
+			</a>
+		);
+	})}
 </div>

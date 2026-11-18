@@ -1,0 +1,62 @@
+---
+import { Image } from 'astro:assets';
+import ArrowUpRight from '@lucide/astro/icons/arrow-up-right';
+import FormattedDate from './FormattedDate.astro';
+import { coverPhoto, getCourseMap, getRounds, postHref } from '../lib/courses';
+
+// Full screen photo from the latest round, with the tagline and a card for that round
+const [rounds, courses] = await Promise.all([getRounds(), getCourseMap()]);
+const latest = rounds[0];
+const course = latest?.data.course && courses.get(latest.data.course.id);
+const photo = latest && coverPhoto(latest);
+---
+
+<section class="relative isolate flex min-h-svh overflow-hidden bg-forest-deep text-cream">
+	{photo && (
+		<Image
+			src={photo}
+			alt=""
+			widths={[800, 1400, 2200]}
+			sizes="100vw"
+			loading="eager"
+			fetchpriority="high"
+			class="absolute inset-0 -z-20 h-full w-full animate-kenburns object-cover"
+		/>
+	)}
+	<div class="absolute inset-0 -z-10 bg-linear-to-t from-forest-deep via-forest-deep/40 to-forest-deep/50"></div>
+	<div class="absolute inset-0 -z-10 bg-linear-to-r from-forest-deep/70 to-transparent"></div>
+
+	<div class="mx-auto mt-auto grid w-full max-w-7xl gap-10 px-5 pt-36 pb-10 md:px-8 md:pb-20 lg:grid-cols-[1fr_21rem] lg:items-end lg:gap-14">
+		<div>
+			<h1 class="text-[clamp(2.9rem,6.4vw,6.25rem)] leading-[0.92] font-semibold tracking-tighter text-balance">
+				<span class="text-cream/55">Not a review site.</span>
+				<span class="block">Just my golf, and the moments <span class="text-accent italic">worth keeping.</span></span>
+			</h1>
+		</div>
+
+		{latest && (
+			<a
+				href={postHref(latest.id)}
+				class="group block rounded-[1.75rem] border border-cream/15 bg-forest-deep/40 p-5 backdrop-blur-xl transition-colors hover:border-accent/60 hover:bg-forest-deep/60"
+			>
+				<div class="flex items-center justify-between text-xs font-semibold tracking-[0.2em] uppercase">
+					<span class="text-accent">Latest round</span>
+					<ArrowUpRight class="size-5 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" aria-hidden="true" />
+				</div>
+				<p class="mt-4 text-2xl leading-tight font-semibold tracking-tight text-balance">{latest.data.title}</p>
+				<div class="mt-5 flex items-end justify-between gap-4 border-t border-cream/15 pt-4">
+					<div class="text-sm text-cream/70">
+						{course && <p class="font-medium text-cream">{course.data.name}</p>}
+						<FormattedDate date={latest.data.pubDate} />
+					</div>
+					{latest.data.score != null && (
+						<p class="text-right">
+							<span class="block text-4xl leading-none font-bold text-accent tabular-nums">{latest.data.score}</span>
+							<span class="text-[0.65rem] font-semibold tracking-widest text-cream/60 uppercase">Score</span>
+						</p>
+					)}
+				</div>
+			</a>
+		)}
+	</div>
+</section>

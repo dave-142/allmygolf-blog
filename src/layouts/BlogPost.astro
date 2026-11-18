@@ -1,91 +1,247 @@
 ---
-import { Image } from 'astro:assets';
+import { Image, getImage } from 'astro:assets';
 import { type CollectionEntry, getEntry } from 'astro:content';
-import BaseHead from '../components/BaseHead.astro';
-import Footer from '../components/Footer.astro';
+import ArrowLeft from '@lucide/astro/icons/arrow-left';
+import ArrowUpRight from '@lucide/astro/icons/arrow-up-right';
+import Expand from '@lucide/astro/icons/expand';
+import X from '@lucide/astro/icons/x';
 import FormattedDate from '../components/FormattedDate.astro';
-import Header from '../components/Header.astro';
-import { courseHref } from '../lib/courses';
+import PageHero from '../components/PageHero.astro';
+import PostGrid from '../components/PostGrid.astro';
+import SectionHeader from '../components/SectionHeader.astro';
+import Stars from '../components/Stars.astro';
+import { courseHref, courseLocation, getCourseMap, getPosts, postTile } from '../lib/courses';
+import Page from './Page.astro';
 
-type Props = CollectionEntry<'blog'>['data'];
+// The about page uses this layout too, so everything beyond title, description and date is optional
+type Props = Partial<CollectionEntry<'blog'>['data']> &
+	Pick<CollectionEntry<'blog'>['data'], 'title' | 'description' | 'pubDate'> & {
+		id?: string;
+		readingTime?: number;
+	};
 
-const { title, description, pubDate, updatedDate, heroImage, course: courseRef } = Astro.props;
+const {
+	id,
+	title,
+	description,
+	pubDate,
+	updatedDate,
+	heroImage,
+	gallery = [],
+	course: courseRef,
+	score,
+	rating,
+	verdict,
+	tags = [],
+	readingTime,
+} = Astro.props;
+
 const course = courseRef && (await getEntry(courseRef));
+const hero = heroImage ?? gallery[0]?.image;
+
+// Large versions for the lightbox
+const photos = await Promise.all(
+	gallery.map(async (photo) => ({
+		...photo,
+		full: (await getImage({ src: photo.image, width: 2000 })).src,
+	})),
+);
+
+// Three more recent posts to keep reading
+const more = id
+	? await Promise.all([getPosts(), getCourseMap()]).then(([posts, courses]) =>
+			posts
+				.filter((p) => p.id !== id)
+				.slice(0, 3)
+				.map((p) => postTile(p, courses)),
+		)
+	: [];
+
+const scorecard = [
+	course && { label: 'Course', value: course.data.name, href: courseHref(course.id) },
+	{ label: 'Played', date: pubDate },
+	score != null && { label: 'Score', value: String(score), big: true },
+	course?.data.par != null && score != null && {
+		label: 'To par',
+		value: `${score - course.data.par > 0 ? '+' : ''}${score - course.data.par}`,
+		big: true,
+	},
+	rating != null && { label: 'Rating', rating },
+].filter(Boolean) as { label: string; value?: string; href?: string; date?: Date; big?: boolean; rating?: number }[];
 ---
 
-<html lang="en">
-	<head>
-		<BaseHead title={title} description={description} />
-		<style>
-			main {
-				width: calc(100% - 2em);
-				max-width: 100%;
-				margin: 0;
-			}
-			.hero-image {
-				width: 100%;
-			}
-			.hero-image img {
-				display: block;
-				margin: 0 auto;
-				border-radius: 12px;
-				box-shadow: var(--box-shadow);
-			}
-			.prose {
-				width: 720px;
-				max-width: calc(100% - 2em);
-				margin: auto;
-				padding: 1em;
-				color: rgb(var(--gray-dark));
-			}
-			.title {
-				margin-bottom: 1em;
-				padding: 1em 0;
-				text-align: center;
-				line-height: 1;
-			}
-			.title h1 {
-				margin: 0 0 0.5em 0;
-			}
-			.date {
-				margin-bottom: 0.5em;
-				color: rgb(var(--gray));
-			}
-			.last-updated-on {
-				font-style: italic;
-			}
-		</style>
-	</head>
+<Page title={title} description={description} image={hero}>
+	<PageHero eyebrow={course ? courseLocation(course) || course.data.name : undefined} title={title} image={hero} tall={!!hero}>
+		<div class="mt-6 flex flex-wrap items-center gap-x-4 gap-y-2 text-sm text-cream/70">
+			<FormattedDate date={pubDate} />
+			{readingTime && (
+				<>
+					<span aria-hidden="true" class="size-1 rounded-full bg-accent"></span>
+					<span>{readingTime} min read</span>
+				</>
+			)}
+			{updatedDate && (
+				<>
+					<span aria-hidden="true" class="size-1 rounded-full bg-accent"></span>
+					<span>Updated <FormattedDate date={updatedDate} /></span>
+				</>
+			)}
+		</div>
+	</PageHero>
 
-	<body>
-		<Header />
-		<main>
-			<article>
-				<div class="hero-image">
-					{heroImage && <Image width={1020} height={510} src={heroImage} alt="" />}
-				</div>
-				<div class="prose">
-					<div class="title">
-						<div class="date">
-							<FormattedDate date={pubDate} />
-							{updatedDate && (
-								<div class="last-updated-on">
-									Last updated on <FormattedDate date={updatedDate} />
-								</div>
-							)}
+	<article class="relative">
+		{scorecard.length > 1 && (
+			<div class="mx-auto -mt-10 max-w-5xl px-5 md:-mt-14 md:px-8">
+				<dl
+					data-reveal
+					class="grid grid-cols-2 gap-px overflow-hidden rounded-[1.75rem] bg-ink/10 shadow-[0_30px_60px_-30px_rgb(11_29_20/0.45)] ring-1 ring-ink/5 md:grid-flow-col md:auto-cols-fr md:grid-cols-none"
+				>
+					{scorecard.map((cell, i) => (
+						<div
+							class:list={[
+								'flex flex-col justify-between gap-2 bg-white p-5 md:p-6',
+								i === 0 && scorecard.length % 2 === 1 && 'col-span-2 md:col-span-1',
+							]}
+						>
+							<dt class="text-[0.65rem] font-semibold tracking-[0.2em] text-ink/40 uppercase">{cell.label}</dt>
+							<dd class:list={[cell.big ? 'text-4xl font-extralight tracking-tighter tabular-nums' : 'text-lg leading-tight font-semibold']}>
+								{cell.href ? (
+									<a href={cell.href} class="group inline-flex items-start gap-1 hover:text-forest-600">
+										{cell.value}
+										<ArrowUpRight class="size-4 shrink-0 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" aria-hidden="true" />
+									</a>
+								) : cell.date ? (
+									<FormattedDate date={cell.date} />
+								) : cell.rating != null ? (
+									<Stars rating={cell.rating} class="text-xl text-forest-600" />
+								) : (
+									cell.value
+								)}
+							</dd>
 						</div>
-						<h1>{title}</h1>
-						{course && (
-							<p>
-								<a href={courseHref(course.id)}>{course.data.name}</a>
-							</p>
-						)}
-						<hr />
-					</div>
-					<slot />
+					))}
+				</dl>
+			</div>
+		)}
+
+		<div class="mx-auto max-w-3xl px-5 pt-14 pb-16 md:px-8 md:pt-20">
+			{verdict && (
+				<figure data-reveal class="relative mb-14 pl-8 md:pl-12">
+					<span aria-hidden="true" class="absolute -top-3 left-0 font-serif text-8xl leading-none text-accent-dark md:-top-5 md:text-9xl">&ldquo;</span>
+					<blockquote class="text-3xl leading-tight font-medium tracking-tight text-balance md:text-4xl">{verdict}</blockquote>
+					<figcaption class="mt-4 text-xs font-semibold tracking-[0.2em] text-forest-600 uppercase">The verdict</figcaption>
+				</figure>
+			)}
+
+			<p class="mb-10 text-xl leading-relaxed text-ink/70 md:text-2xl">{description}</p>
+
+			<div
+				class="prose prose-lg max-w-none prose-neutral prose-headings:font-semibold prose-headings:tracking-tight prose-h2:mt-14 prose-h2:text-3xl prose-a:text-forest-600 prose-a:decoration-accent-dark prose-a:decoration-2 prose-a:underline-offset-4 prose-blockquote:border-l-4 prose-blockquote:border-accent-dark prose-blockquote:font-medium prose-blockquote:text-ink prose-blockquote:not-italic prose-img:rounded-2xl prose-li:marker:text-forest-600"
+			>
+				<slot />
+			</div>
+
+			{tags.length > 0 && (
+				<ul class="mt-12 flex flex-wrap gap-2 border-t border-ink/10 pt-8">
+					{tags.map((tag) => (
+						<li class="rounded-full bg-sand px-4 py-1.5 text-sm font-medium text-forest">#{tag}</li>
+					))}
+				</ul>
+			)}
+		</div>
+
+		{photos.length > 0 && (
+			<section class="mx-auto max-w-7xl px-5 pb-20 md:px-8">
+				<SectionHeader label="Gallery" title="From the course" />
+				<div class="columns-1 gap-4 sm:columns-2 lg:columns-3">
+					{photos.map((photo, i) => (
+						<button
+							type="button"
+							data-reveal
+							data-lightbox-open={photo.full}
+							data-caption={photo.caption ?? ''}
+							style={`--reveal-delay: ${(i % 3) * 80}ms`}
+							class="group relative mb-4 block w-full cursor-zoom-in break-inside-avoid overflow-hidden rounded-3xl bg-forest"
+						>
+							<Image
+								src={photo.image}
+								alt={photo.caption ?? ''}
+								width={900}
+								class:list={[
+									'w-full object-cover transition-transform duration-[1.2s] ease-out group-hover:scale-105',
+									i % 3 === 0 ? 'aspect-4/5' : 'aspect-4/3',
+								]}
+							/>
+							<span class="absolute top-3 right-3 grid size-10 place-items-center rounded-full bg-forest-deep/60 text-cream opacity-0 backdrop-blur transition-opacity group-hover:opacity-100">
+								<Expand class="size-4" aria-hidden="true" />
+							</span>
+							{photo.caption && (
+								<span class="absolute inset-x-0 bottom-0 bg-linear-to-t from-forest-deep/90 to-transparent p-4 pt-10 text-left text-sm text-cream">
+									{photo.caption}
+								</span>
+							)}
+							<span class="sr-only">Open photo {i + 1} full size</span>
+						</button>
+					))}
 				</div>
-			</article>
-		</main>
-		<Footer />
-	</body>
-</html>
+			</section>
+		)}
+	</article>
+
+	{more.length > 0 && (
+		<section class="bg-sand/60 py-20 md:py-24">
+			<div class="mx-auto max-w-7xl px-5 md:px-8">
+				<SectionHeader label="Keep reading" title="More rounds" link={{ href: '/blog/', label: 'All rounds' }} />
+				<PostGrid tiles={more.map((t) => ({ ...t, featured: false }))} columns={3} />
+			</div>
+		</section>
+	)}
+
+	{id && (
+		<div class="mx-auto max-w-7xl px-5 py-10 md:px-8">
+			<a href="/blog/" class="group inline-flex items-center gap-2 text-sm font-semibold text-forest-600">
+				<ArrowLeft class="size-4 transition-transform group-hover:-translate-x-1" aria-hidden="true" />
+				Back to all rounds
+			</a>
+		</div>
+	)}
+
+	{photos.length > 0 && (
+		<dialog
+			data-lightbox
+			class="m-auto max-h-none max-w-none bg-transparent p-0 backdrop:bg-forest-deep/95 backdrop:backdrop-blur-sm"
+		>
+			<figure class="flex h-svh w-screen flex-col items-center justify-center gap-4 p-4 md:p-10">
+				<img data-lightbox-img alt="" class="max-h-[85svh] max-w-full rounded-2xl object-contain shadow-2xl" />
+				<figcaption data-lightbox-caption class="text-sm text-cream/70"></figcaption>
+			</figure>
+			<form method="dialog">
+				<button class="fixed top-4 right-4 grid size-12 place-items-center rounded-full bg-accent text-forest-deep transition-transform hover:rotate-90">
+					<X class="size-5" aria-hidden="true" />
+					<span class="sr-only">Close</span>
+				</button>
+			</form>
+		</dialog>
+	)}
+</Page>
+
+<script>
+	const dialog = document.querySelector<HTMLDialogElement>('[data-lightbox]');
+	const img = dialog?.querySelector<HTMLImageElement>('[data-lightbox-img]');
+	const caption = dialog?.querySelector<HTMLElement>('[data-lightbox-caption]');
+
+	if (dialog && img && caption) {
+		document.querySelectorAll<HTMLButtonElement>('[data-lightbox-open]').forEach((button) =>
+			button.addEventListener('click', () => {
+				img.src = button.dataset.lightboxOpen ?? '';
+				img.alt = button.dataset.caption ?? '';
+				caption.textContent = button.dataset.caption ?? '';
+				dialog.showModal();
+			}),
+		);
+		// Clicking the dark area around the photo closes it
+		dialog.addEventListener('click', (e) => {
+			if (e.target !== img) dialog.close();
+		});
+	}
+</script>
