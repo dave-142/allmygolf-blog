@@ -4,9 +4,9 @@ import ArrowUpRight from '@lucide/astro/icons/arrow-up-right';
 import FormattedDate from './FormattedDate.astro';
 import { coverPhoto, getCourseMap, getRounds, postHref } from '../lib/courses';
 
-// Full screen photo from the latest round, with the tagline and a card for that round
+// Full screen photo from the latest round with photos, with the tagline and a card for that round
 const [rounds, courses] = await Promise.all([getRounds(), getCourseMap()]);
-const latest = rounds[0];
+const latest = rounds.find((round) => coverPhoto(round)) ?? rounds[0];
 const course = latest?.data.course && courses.get(latest.data.course.id);
 const photo = latest && coverPhoto(latest);
 ---

@@ -9,4 +9,5 @@ gallery:
 pubDate: 2025-05-17T00:00:00.000Z
 type: round
 course: dunfermline-pitreavie
+score: 78
 ---

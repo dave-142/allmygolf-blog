@@ -1,9 +1,12 @@
 ---
+import { Image } from 'astro:assets';
 import { type CollectionEntry, getCollection } from 'astro:content';
 import PageHero from '../../components/PageHero.astro';
+import StatStrip, { type Stat } from '../../components/StatStrip.astro';
+import Stars from '../../components/Stars.astro';
 import { SITE_TITLE } from '../../consts';
 import Page from '../../layouts/Page.astro';
-import { coverPhoto, getRounds } from '../../lib/courses';
+import { bestScore, coverPhoto, getRounds, latestPhoto, postHref } from '../../lib/courses';
 
 export async function getStaticPaths() {
 	const courses = await getCollection('courses');
@@ -15,25 +18,97 @@ export async function getStaticPaths() {
 type Props = CollectionEntry<'courses'>;
 
 const course = Astro.props;
-const latest = (await getRounds()).find((r) => r.data.course?.id === course.id);
-const photo = latest && coverPhoto(latest);
+const { par, yardage } = course.data;
+// Newest first
+const rounds = (await getRounds()).filter((r) => r.data.course?.id === course.id);
+const photo = latestPhoto(rounds);
 
-// Small facts shown as chips under the name
-const facts = [
-	course.data.par != null && `Par ${course.data.par}`,
-	course.data.holes != null && `${course.data.holes} holes`,
-	course.data.yardage != null && `${course.data.yardage.toLocaleString('en-GB')} yards`,
-].filter(Boolean);
+const scores = rounds.map((r) => r.data.score).filter((s): s is number => s != null);
+const best = bestScore(rounds);
+const average = scores.length > 0 ? scores.reduce((sum, s) => sum + s, 0) / scores.length : undefined;
+const fullDate = (date: Date) => date.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
+// +11, E or -2. Blank without a par or a score
+const versusPar = (score?: number) => {
+	if (!par || score == null) return '';
+	const diff = score - par;
+	return diff === 0 ? 'E' : diff > 0 ? `+${diff}` : `${diff}`;
+};
+
+// The stats strip: my record here, then the course. A 0 means not filled in yet
+const stats: Stat[] = [
+	...(rounds.length > 0 ? [{ label: 'Played', value: rounds.length }] : []),
+	...(best != null ? [{ label: 'Best', value: best, extra: versusPar(best) }] : []),
+	...(average != null && scores.length > 1 ? [{ label: 'Average', value: average.toFixed(1) }] : []),
+	...(par ? [{ label: 'Par', value: par }] : []),
+	...(yardage ? [{ label: 'Yards', value: yardage.toLocaleString('en-GB') }] : []),
+];
 ---
 
 <Page title={`${course.data.name} | ${SITE_TITLE}`} description={`My rounds at ${course.data.name}.`} image={photo}>
-	<PageHero eyebrow="Course" title={course.data.name} image={photo} tall={!!photo}>
-		{facts.length > 0 && (
-			<ul class="mt-8 flex flex-wrap gap-2">
-				{facts.map((fact) => (
-					<li class="rounded-full border border-paper/20 bg-paper/10 px-4 py-2 text-sm font-medium backdrop-blur">{fact}</li>
-				))}
-			</ul>
-		)}
-	</PageHero>
+	<PageHero title={course.data.name} image={photo} tall={!!photo} />
+	<StatStrip stats={stats} />
+
+	{rounds.length > 0 && (
+		<section class="mx-auto max-w-7xl px-5 py-16 md:px-8 md:py-24">
+			<h2 data-reveal class="mb-10 text-4xl leading-[0.95] font-semibold tracking-tighter md:mb-14 md:text-6xl">Rounds</h2>
+
+			<div
+				data-reveal
+				class="overflow-hidden rounded-[1.75rem] bg-white shadow-[0_1px_0_rgb(0_0_0/0.04),0_20px_40px_-30px_rgb(28_35_38/0.35)] ring-1 ring-ink/5"
+			>
+				<table class="w-full text-left">
+					<thead class="bg-night-800 text-xs font-semibold tracking-widest text-mist uppercase">
+						<tr>
+							<th scope="col" class="py-4 pr-2 pl-5 md:pl-7">Date</th>
+							<th scope="col" class="px-2 py-4">Score</th>
+							<th scope="col" class="hidden px-2 py-4 sm:table-cell">Rating</th>
+							<th scope="col" class="py-4 pr-5 pl-2 text-right md:pr-7"><span class="sr-only">Photos</span></th>
+						</tr>
+					</thead>
+					<tbody>
+						{rounds.map((round) => {
+							const { pubDate, score, rating, verdict } = round.data;
+							const isBest = best != null && score === best;
+							const thumb = coverPhoto(round);
+							return (
+								<tr
+									class:list={[
+										'group relative border-b border-ink/5 transition-colors last:border-0 hover:bg-panel/40',
+										isBest && 'bg-accent/10',
+									]}
+								>
+									<td class="py-3 pr-2 pl-5 md:pl-7">
+										<a href={postHref(round.id)} class="font-semibold after:absolute after:inset-0 group-hover:underline">
+											{fullDate(pubDate)}
+										</a>
+										{isBest && (
+											<span class="ml-2 rounded-full bg-accent px-2 py-0.5 text-[0.65rem] font-semibold tracking-wider text-night uppercase">
+												Best
+											</span>
+										)}
+										{verdict && <p class="mt-0.5 text-sm text-ink/60 italic">"{verdict}"</p>}
+										{rating && <Stars rating={rating} class="mt-1 text-sm text-accent-dark sm:hidden" />}
+									</td>
+									<td class="px-2 py-3 whitespace-nowrap tabular-nums">
+										{score != null && <span class="text-lg font-semibold">{score}</span>}
+										{versusPar(score) && <span class="ml-1.5 text-sm text-ink/50">{versusPar(score)}</span>}
+									</td>
+									<td class="hidden px-2 py-3 sm:table-cell">
+										{rating && <Stars rating={rating} class="text-accent-dark" />}
+									</td>
+									<td class="py-3 pr-5 pl-2 md:pr-7">
+										{thumb && (
+											<span class="ml-auto block size-11 overflow-hidden rounded-lg bg-night-800">
+												<Image src={thumb} alt="" widths={[96]} sizes="44px" quality={70} class="h-full w-full object-cover" />
+												<span class="sr-only">Has photos</span>
+											</span>
+										)}									</td>
+								</tr>
+							);
+						})}
+					</tbody>
+				</table>
+			</div>
+		</section>
+	)}
 </Page>

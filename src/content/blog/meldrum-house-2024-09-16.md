@@ -11,4 +11,5 @@ gallery:
 pubDate: 2024-09-16T00:00:00.000Z
 type: round
 course: meldrum-house
+score: 76
 ---

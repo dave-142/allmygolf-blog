@@ -14,4 +14,5 @@ gallery:
 pubDate: 2024-10-26T00:00:00.000Z
 type: round
 course: newburgh-on-ythan
+score: 85
 ---

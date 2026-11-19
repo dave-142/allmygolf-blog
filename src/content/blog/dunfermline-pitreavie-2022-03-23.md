@@ -8,4 +8,5 @@ gallery:
 pubDate: 2022-03-23T00:00:00.000Z
 type: round
 course: dunfermline-pitreavie
+score: 85
 ---

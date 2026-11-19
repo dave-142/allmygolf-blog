@@ -16,4 +16,5 @@ gallery:
 pubDate: 2026-09-20T00:00:00.000Z
 type: round
 course: royal-aberdeen
+score: 93
 ---

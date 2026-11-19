@@ -20,4 +20,5 @@ gallery:
 pubDate: 2023-08-31T00:00:00.000Z
 type: round
 course: standrews-craigtoun
+score: 84
 ---

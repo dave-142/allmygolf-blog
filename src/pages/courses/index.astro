@@ -3,15 +3,15 @@ import PageHero from '../../components/PageHero.astro';
 import PostGrid from '../../components/PostGrid.astro';
 import { SITE_TITLE } from '../../consts';
 import Page from '../../layouts/Page.astro';
-import { type Tile, courseHref, coverPhoto, getCourseSummaries, getStats } from '../../lib/courses';
+import { type Tile, courseHref, getCourseSummaries, getStats, latestPhoto } from '../../lib/courses';
 
 const [summaries, stats] = await Promise.all([getCourseSummaries(), getStats()]);
 
-const tiles: Tile[] = summaries.map(({ course, rounds, latest, best }) => ({
+const tiles: Tile[] = summaries.map(({ course, rounds, best }) => ({
 	href: courseHref(course.id),
 	title: course.data.name,
 	eyebrow: rounds.length === 1 ? 'Played once' : rounds.length > 1 ? `Played ${rounds.length} times` : 'Not played yet',
-	photo: latest && coverPhoto(latest),
+	photo: latestPhoto(rounds),
 	badge: best,
 	badgeLabel: best != null ? 'Best' : undefined,
 }));

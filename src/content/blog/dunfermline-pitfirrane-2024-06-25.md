@@ -7,4 +7,5 @@ gallery:
 pubDate: 2024-06-25T00:00:00.000Z
 type: round
 course: dunfermline-pitfirrane
+score: 83
 ---

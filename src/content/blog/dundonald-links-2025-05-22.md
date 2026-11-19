@@ -26,4 +26,5 @@ gallery:
 pubDate: 2025-05-22T00:00:00.000Z
 type: round
 course: dundonald-links
+score: 78
 ---

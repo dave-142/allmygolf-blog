@@ -8,4 +8,5 @@ gallery:
 pubDate: 2025-05-11T00:00:00.000Z
 type: round
 course: strathmore
+score: 83
 ---

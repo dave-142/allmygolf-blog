@@ -7,4 +7,5 @@ gallery:
 pubDate: 2026-01-17T00:00:00.000Z
 type: round
 course: newburgh-on-ythan
+score: 77
 ---

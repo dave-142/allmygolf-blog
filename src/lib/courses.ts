@@ -29,6 +29,10 @@ export const postHref = (id: string) => `/blog/${id}/`;
 export const coverPhoto = (post: Post): ImageMetadata | undefined =>
 	post.data.heroImage ?? post.data.gallery?.[0]?.image;
 
+// The cover photo of the newest round that has one. Rounds from Garmin have no photos, so the newest round may not
+export const latestPhoto = (posts: Post[]): ImageMetadata | undefined =>
+	posts.map(coverPhoto).find((photo) => photo != null);
+
 export const bestScore = (rounds: Post[]) => {
 	const scores = rounds.map((r) => r.data.score).filter((s): s is number => s != null);
 	return scores.length > 0 ? Math.min(...scores) : undefined;

@@ -29,4 +29,5 @@ gallery:
 pubDate: 2025-10-20T00:00:00.000Z
 type: round
 course: turnberry-ailsa
+score: 79
 ---

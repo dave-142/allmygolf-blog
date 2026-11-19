@@ -19,4 +19,5 @@ gallery:
 pubDate: 2021-08-31T00:00:00.000Z
 type: round
 course: royal-dornoch
+score: 86
 ---

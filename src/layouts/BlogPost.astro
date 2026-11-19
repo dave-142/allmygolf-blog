@@ -5,12 +5,11 @@ import ArrowLeft from '@lucide/astro/icons/arrow-left';
 import ArrowUpRight from '@lucide/astro/icons/arrow-up-right';
 import Expand from '@lucide/astro/icons/expand';
 import X from '@lucide/astro/icons/x';
-import GolferCelebrating from '../assets/illustrations/golfer-celebrating.svg';
 import FormattedDate from '../components/FormattedDate.astro';
 import PageHero from '../components/PageHero.astro';
 import PostGrid from '../components/PostGrid.astro';
 import SectionHeader from '../components/SectionHeader.astro';
-import Stars from '../components/Stars.astro';
+import StatStrip, { type Stat } from '../components/StatStrip.astro';
 import { bestScore, courseHref, getCourseMap, getPosts, getRounds, postTile } from '../lib/courses';
 import Page from './Page.astro';
 
@@ -18,7 +17,6 @@ import Page from './Page.astro';
 type Props = Partial<CollectionEntry<'blog'>['data']> &
 	Pick<CollectionEntry<'blog'>['data'], 'title' | 'description' | 'pubDate'> & {
 		id?: string;
-		readingTime?: number;
 	};
 
 const {
@@ -34,7 +32,6 @@ const {
 	rating,
 	verdict,
 	tags = [],
-	readingTime,
 } = Astro.props;
 
 const course = courseRef && (await getEntry(courseRef));
@@ -56,78 +53,41 @@ const more = id
 const roundsHere = course ? (await getRounds()).filter((r) => r.data.course?.id === course.id) : [];
 const courseBest = score != null && roundsHere.length > 1 && score === bestScore(roundsHere);
 
-const scorecard = [
-	course && { label: 'Course', value: course.data.name, href: courseHref(course.id) },
-	{ label: 'Played', date: pubDate },
-	score != null && { label: 'Score', value: String(score), big: true, best: courseBest },
-	course?.data.par != null && score != null && {
-		label: 'To par',
-		value: `${score - course.data.par > 0 ? '+' : ''}${score - course.data.par}`,
-		big: true,
-	},
-	rating != null && { label: 'Rating', rating },
-].filter(Boolean) as { label: string; value?: string; href?: string; date?: Date; big?: boolean; rating?: number; best?: boolean }[];
+// Score against par, e.g. +9, E or -2
+const par = course?.data.par;
+const toPar = par && score != null ? (score === par ? 'E' : score > par ? `+${score - par}` : `${score - par}`) : undefined;
+
+// The stats strip, shown on rounds. Other pages (equipment, about) show the date under the title instead
+const stats: Stat[] = course
+	? [
+			{ label: 'Played', date: pubDate },
+			...(score != null ? [{ label: 'Score', value: score, extra: toPar, best: courseBest }] : []),
+			...(rating != null ? [{ label: 'Rating', rating }] : []),
+		]
+	: [];
+
+// Imported rounds use the course id as their description. That is only for search engines, so it is not shown
+const showDescription = description && description !== course?.id;
 ---
 
 <Page title={title} description={description} image={hero}>
-	<PageHero eyebrow={course?.data.name} title={title} image={hero} tall={!!hero}>
-		<div class="mt-6 flex flex-wrap items-center gap-x-4 gap-y-2 text-sm text-paper/70">
-			<FormattedDate date={pubDate} />
-			{readingTime && (
-				<>
-					<span aria-hidden="true" class="size-1 rounded-full bg-accent"></span>
-					<span>{readingTime} min read</span>
-				</>
-			)}
-			{updatedDate && (
-				<>
-					<span aria-hidden="true" class="size-1 rounded-full bg-accent"></span>
-					<span>Updated <FormattedDate date={updatedDate} /></span>
-				</>
-			)}
-		</div>
+	<PageHero title={title} image={hero} tall={!!hero}>
+		{(stats.length === 0 || updatedDate) && (
+			<ul class="mt-6 flex flex-wrap items-center gap-x-4 gap-y-2 text-sm text-paper/70 [&>li+li]:before:mr-4 [&>li+li]:before:inline-block [&>li+li]:before:size-1 [&>li+li]:before:rounded-full [&>li+li]:before:bg-accent [&>li+li]:before:align-middle [&>li+li]:before:content-['']">
+				{stats.length === 0 && <li><FormattedDate date={pubDate} /></li>}
+				{updatedDate && <li>Updated <FormattedDate date={updatedDate} /></li>}
+			</ul>
+		)}
 	</PageHero>
 
 	<article class="relative">
-		{scorecard.length > 1 && (
-			<div class="mx-auto -mt-10 max-w-5xl px-5 md:-mt-14 md:px-8">
-				<dl
-					data-reveal
-					class="grid grid-cols-2 gap-px overflow-hidden rounded-[1.75rem] bg-ink/10 shadow-[0_30px_60px_-30px_rgb(28_35_38/0.45)] ring-1 ring-ink/5 md:grid-flow-col md:auto-cols-fr md:grid-cols-none"
-				>
-					{scorecard.map((cell, i) => (
-						<div
-							class:list={[
-								'flex flex-col justify-between gap-2 bg-white p-5 md:p-6',
-								i === 0 && scorecard.length % 2 === 1 && 'col-span-2 md:col-span-1',
-							]}
-						>
-							<dt class="text-[0.65rem] font-semibold tracking-[0.2em] text-ink/40 uppercase">{cell.label}</dt>
-							<dd class:list={[cell.big ? 'text-4xl font-extralight tracking-tighter tabular-nums' : 'text-lg leading-tight font-semibold']}>
-								{cell.href ? (
-									<a href={cell.href} class="group inline-flex items-start gap-1 hover:text-slate">
-										{cell.value}
-										<ArrowUpRight class="size-4 shrink-0 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" aria-hidden="true" />
-									</a>
-								) : cell.date ? (
-									<FormattedDate date={cell.date} />
-								) : cell.rating != null ? (
-									<Stars rating={cell.rating} class="text-xl text-slate" />
-								) : cell.best ? (
-									<span class="flex items-end justify-between gap-3">
-										{cell.value}
-										<GolferCelebrating class="-mb-1 h-14 w-auto text-ink" />
-									</span>
-								) : (
-									cell.value
-								)}
-							</dd>
-							{cell.best && (
-								<p class="-mt-1 text-[0.65rem] font-semibold tracking-[0.2em] text-accent-dark uppercase">Course best</p>
-							)}
-						</div>
-					))}
-				</dl>
+		<StatStrip stats={stats} />
+		{course && (
+			<div class="mx-auto mt-5 max-w-5xl px-5 md:px-8">
+				<a href={courseHref(course.id)} class="group inline-flex items-center gap-1.5 text-sm font-semibold text-slate hover:text-ink">
+					More rounds at {course.data.name}
+					<ArrowUpRight class="size-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" aria-hidden="true" />
+				</a>
 			</div>
 		)}
 
@@ -140,7 +100,7 @@ const scorecard = [
 				</figure>
 			)}
 
-			<p class="mb-10 text-xl leading-relaxed text-ink/70 md:text-2xl">{description}</p>
+			{showDescription && <p class="mb-10 text-xl leading-relaxed text-ink/70 md:text-2xl">{description}</p>}
 
 			<div
 				class="prose prose-lg max-w-none prose-neutral prose-headings:font-semibold prose-headings:tracking-tight prose-h2:mt-14 prose-h2:text-3xl prose-a:text-slate prose-a:decoration-accent-dark prose-a:decoration-2 prose-a:underline-offset-4 prose-blockquote:border-l-4 prose-blockquote:border-accent-dark prose-blockquote:font-medium prose-blockquote:text-ink prose-blockquote:not-italic prose-img:rounded-2xl prose-li:marker:text-slate"

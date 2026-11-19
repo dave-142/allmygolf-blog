@@ -106,7 +106,7 @@
       "town": "Aberlady",
       "lat": 56.008702,
       "lng": -2.876813,
-      "par": 0,
+      "par": 71,
       "holes": 18,
       "yardage": 0
     },
@@ -116,7 +116,7 @@
       "town": "Burntisland",
       "lat": 56.068342,
       "lng": -3.214389,
-      "par": 0,
+      "par": 70,
       "holes": 18,
       "yardage": 0
     },
@@ -126,7 +126,7 @@
       "town": "Alyth",
       "lat": 56.600461,
       "lng": -3.219555,
-      "par": 0,
+      "par": 72,
       "holes": 18,
       "yardage": 0
     },
@@ -136,7 +136,7 @@
       "town": "Carnwath",
       "lat": 55.700945,
       "lng": -3.636781,
-      "par": 0,
+      "par": 69,
       "holes": 18,
       "yardage": 0
     },
@@ -146,7 +146,7 @@
       "town": "Colinsburgh",
       "lat": 56.222689,
       "lng": -2.863854,
-      "par": 0,
+      "par": 72,
       "holes": 18,
       "yardage": 0
     },
@@ -156,7 +156,7 @@
       "town": "Lower Largo",
       "lat": 56.208089,
       "lng": -2.886722,
-      "par": 0,
+      "par": 72,
       "holes": 18,
       "yardage": 0
     },
@@ -166,7 +166,7 @@
       "town": "Perth",
       "lat": 56.3856,
       "lng": -3.4582,
-      "par": 0,
+      "par": 66,
       "holes": 18,
       "yardage": 0
     },
@@ -176,7 +176,7 @@
       "town": "Leuchars",
       "lat": 56.412727,
       "lng": -2.902454,
-      "par": 0,
+      "par": 73,
       "holes": 18,
       "yardage": 0
     },
@@ -196,7 +196,7 @@
       "town": "Crail",
       "lat": 56.282977,
       "lng": -2.599786,
-      "par": 0,
+      "par": 69,
       "holes": 18,
       "yardage": 0
     },
@@ -206,7 +206,7 @@
       "town": "Aberdeen",
       "lat": 57.138886,
       "lng": -2.060816,
-      "par": 0,
+      "par": 70,
       "holes": 18,
       "yardage": 0
     },
@@ -216,7 +216,7 @@
       "town": "Aberdeen",
       "lat": 57.187504,
       "lng": -2.076019,
-      "par": 0,
+      "par": 71,
       "holes": 18,
       "yardage": 0
     },
@@ -226,7 +226,7 @@
       "town": "Aberdeen",
       "lat": 57.205542,
       "lng": -2.070352,
-      "par": 0,
+      "par": 71,
       "holes": 18,
       "yardage": 0
     },
@@ -236,7 +236,7 @@
       "town": "Aberdeen",
       "lat": 57.1422,
       "lng": -2.1706,
-      "par": 0,
+      "par": 70,
       "holes": 18,
       "yardage": 0
     },
@@ -266,7 +266,7 @@
       "town": "Dunfermline",
       "lat": 56.069,
       "lng": -3.5042,
-      "par": 0,
+      "par": 72,
       "holes": 18,
       "yardage": 0
     },
@@ -276,7 +276,7 @@
       "town": "Albufeira",
       "lat": 37.095912,
       "lng": -8.328318,
-      "par": 0,
+      "par": 72,
       "holes": 18,
       "yardage": 0
     },
@@ -286,7 +286,7 @@
       "town": "Gullane",
       "lat": 56.030191,
       "lng": -2.845539,
-      "par": 0,
+      "par": 71,
       "holes": 18,
       "yardage": 0
     },
@@ -296,7 +296,7 @@
       "town": "Irvine",
       "lat": 55.585159,
       "lng": -4.652831,
-      "par": 0,
+      "par": 72,
       "holes": 18,
       "yardage": 0
     },
@@ -306,7 +306,7 @@
       "town": "West Calder",
       "lat": 55.8372,
       "lng": -3.5366,
-      "par": 0,
+      "par": 71,
       "holes": 18,
       "yardage": 0
     },
@@ -316,7 +316,7 @@
       "town": "Ladybank",
       "lat": 56.286199,
       "lng": -3.122826,
-      "par": 0,
+      "par": 71,
       "holes": 18,
       "yardage": 0
     },
@@ -346,7 +346,7 @@
       "town": "Lundin Links",
       "lat": 56.208761,
       "lng": -2.970442,
-      "par": 0,
+      "par": 71,
       "holes": 18,
       "yardage": 0
     },
@@ -376,7 +376,7 @@
       "town": "Lossiemouth",
       "lat": 57.719244,
       "lng": -3.315384,
-      "par": 0,
+      "par": 71,
       "holes": 18,
       "yardage": 0
     },
@@ -386,7 +386,7 @@
       "town": "St Andrews",
       "lat": 56.319424,
       "lng": -2.849532,
-      "par": 0,
+      "par": 71,
       "holes": 18,
       "yardage": 0
     },
@@ -406,7 +406,7 @@
       "town": "Portlethen",
       "lat": 57.06576,
       "lng": -2.14301,
-      "par": 0,
+      "par": 72,
       "holes": 18,
       "yardage": 0
     },
@@ -416,7 +416,7 @@
       "town": "Oldmeldrum",
       "lat": 57.347452,
       "lng": -2.316175,
-      "par": 0,
+      "par": 70,
       "holes": 18,
       "yardage": 0
     },
@@ -426,7 +426,7 @@
       "town": "West Linton",
       "lat": 55.753174,
       "lng": -3.379163,
-      "par": 0,
+      "par": 69,
       "holes": 18,
       "yardage": 0
     },
@@ -436,7 +436,7 @@
       "town": "Newburgh, Aberdeenshire",
       "lat": 57.312736,
       "lng": -1.999336,
-      "par": 0,
+      "par": 72,
       "holes": 18,
       "yardage": 0
     },
@@ -446,7 +446,37 @@
       "town": "Dunfermline",
       "lat": 56.053963,
       "lng": -3.426419,
-      "par": 0,
+      "par": 70,
+      "holes": 18,
+      "yardage": 0
+    },
+    {
+      "id": "ballumbie",
+      "name": "Ballumbie Golf Club",
+      "town": "Dundee",
+      "lat": 56.490025,
+      "lng": -3.032097,
+      "par": 69,
+      "holes": 18,
+      "yardage": 0
+    },
+    {
+      "id": "kings-links",
+      "name": "Kings Links Golf Course",
+      "town": "Aberdeen",
+      "lat": 57.166419,
+      "lng": -2.0816888,
+      "par": 71,
+      "holes": 18,
+      "yardage": 0
+    },
+    {
+      "id": "peterculter",
+      "name": "Peterculter Golf Club",
+      "town": "Peterculter",
+      "lat": 57.08602,
+      "lng": -2.26382,
+      "par": 71,
       "holes": 18,
       "yardage": 0
     }

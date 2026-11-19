@@ -12,7 +12,8 @@
     "astro": "astro",
     "import-photos": "node scripts/import-photos.js",
     "find-coords": "node scripts/find-coords.js",
-    "shrink-photos": "node scripts/shrink-photos.js"
+    "shrink-photos": "node scripts/shrink-photos.js",
+    "import-garmin": "node scripts/import-garmin.js"
   },
   "dependencies": {
     "@astrojs/rss": "^4.0.19",

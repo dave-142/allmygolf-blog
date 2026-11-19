@@ -2,7 +2,7 @@
 import { Image } from 'astro:assets';
 import { getCollection } from 'astro:content';
 import ArrowUpRight from '@lucide/astro/icons/arrow-up-right';
-import { type Round, bestScore, courseHref, coverPhoto, getRounds } from '../lib/courses';
+import { type Round, bestScore, courseHref, getRounds, latestPhoto } from '../lib/courses';
 
 const [rounds, courses] = await Promise.all([getRounds(), getCollection('courses')]);
 const courseById = new Map(courses.map((course) => [course.id, course]));
@@ -35,7 +35,7 @@ const formatMonth = (date: Date) => date.toLocaleDateString('en-GB', { month: 's
 					const course = courseById.get(id);
 					if (!course) return null;
 					const latest = yearRounds[0];
-					const photo = coverPhoto(latest);
+					const photo = latestPhoto(yearRounds);
 					const best = bestScore(yearRounds);
 					return (
 						<li data-reveal style={`--reveal-delay: ${i * 80}ms`}>

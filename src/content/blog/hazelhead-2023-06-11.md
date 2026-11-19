@@ -12,4 +12,5 @@ gallery:
 pubDate: 2023-06-11T00:00:00.000Z
 type: round
 course: hazelhead
+score: 74
 ---

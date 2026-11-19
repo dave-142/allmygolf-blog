@@ -20,4 +20,5 @@ gallery:
 pubDate: 2026-08-10T00:00:00.000Z
 type: round
 course: crail-balcomie
+score: 79
 ---

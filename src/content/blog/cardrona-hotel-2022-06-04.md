@@ -22,4 +22,5 @@ gallery:
 pubDate: 2022-06-04T00:00:00.000Z
 type: round
 course: cardrona-hotel
+score: 88
 ---
