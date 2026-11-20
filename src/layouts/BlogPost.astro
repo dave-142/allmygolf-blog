@@ -17,6 +17,8 @@ import Page from './Page.astro';
 type Props = Partial<CollectionEntry<'blog'>['data']> &
 	Pick<CollectionEntry<'blog'>['data'], 'title' | 'description' | 'pubDate'> & {
 		id?: string;
+		// False when a post has nothing under the frontmatter. The about page leaves it out
+		hasBody?: boolean;
 	};
 
 const {
@@ -31,7 +33,10 @@ const {
 	score,
 	rating,
 	verdict,
+	type,
+	roundNotes,
 	tags = [],
+	hasBody = true,
 } = Astro.props;
 
 const course = courseRef && (await getEntry(courseRef));
@@ -60,6 +65,22 @@ const toPar = par && score != null ? (score === par ? 'E' : score > par ? `+${sc
 
 // Imported rounds use the course id as their description, and some repeat the title. Neither is worth showing
 const showDescription = description && description !== course?.id && description.trim().toLowerCase() !== title.trim().toLowerCase();
+
+// Round notes, only on rounds. Each answered question becomes one item, so unanswered ones never show
+const notes = type === 'round' ? roundNotes : undefined;
+// 1st, 2nd, 3rd, 4th, 11th, 12th, 13th, 21st
+const ordinal = (n: number) => {
+	const teen = n % 100 >= 11 && n % 100 <= 13;
+	return `${n}${teen ? 'th' : ({ 1: 'st', 2: 'nd', 3: 'rd' } as Record<number, string>)[n % 10] ?? 'th'}`;
+};
+const hole = notes?.holeWorthKnowing;
+const noteItems = [
+	{ label: 'The hole worth knowing', heading: hole?.hole ? `The ${ordinal(hole.hole)}` : undefined, text: hole?.note },
+	{ label: 'Best shot', text: notes?.bestShot },
+	{ label: 'Worst shot', text: notes?.worstShot },
+	{ label: "Next time I'd", text: notes?.nextTime },
+	{ label: 'Conditions', text: notes?.conditions },
+].filter((item) => item.heading || item.text);
 
 const prose =
 	'prose prose-lg max-w-none prose-neutral prose-headings:font-semibold prose-headings:tracking-tight prose-h2:mt-12 prose-h2:text-3xl prose-a:text-slate prose-a:decoration-accent-dark prose-a:decoration-2 prose-a:underline-offset-4 prose-blockquote:border-l-4 prose-blockquote:border-accent-dark prose-blockquote:font-medium prose-blockquote:text-ink prose-blockquote:not-italic prose-img:rounded-2xl prose-li:marker:text-slate [&>:first-child]:mt-0';
@@ -103,7 +124,7 @@ const prose =
 			)}
 
 			{course && (
-				<aside data-reveal class="self-start rounded-[1.75rem] bg-night p-6 text-paper shadow-[0_30px_60px_-30px_rgb(28_35_38/0.6)] lg:sticky lg:top-28">
+				<aside data-reveal class="self-start rounded-[1.75rem] bg-night p-6 text-paper shadow-[0_30px_60px_-30px_rgb(28_35_38/0.6)]">
 					<p class="font-semibold tracking-[0.2em] text-paper/60 uppercase"><FormattedDate date={pubDate} /></p>
 
 					<a href={courseHref(course.id)} class="group mt-4 flex items-start justify-between gap-3 text-2xl leading-tight font-semibold tracking-tight text-balance hover:text-accent">
@@ -130,14 +151,15 @@ const prose =
 									<dd class="mt-2 text-5xl leading-none font-semibold tabular-nums">{par}</dd>
 								</div>
 							) : null}
-							{yardage ? (
-								<div>
-									<dt class="text-[0.65rem] font-semibold tracking-widest text-paper/60 uppercase">Yards</dt>
-									<dd class="mt-2 text-lg leading-none font-semibold tabular-nums">{yardage.toLocaleString('en-GB')}</dd>
-								</div>
-							) : null}
 						</dl>
 					</div>
+
+					{yardage ? (
+						<dl class="mt-5 flex items-baseline justify-between gap-4 border-t border-paper/15 pt-5">
+							<dt class="font-semibold tracking-widest text-paper/60 uppercase">Yards</dt>
+							<dd class="text-lg leading-none font-semibold tabular-nums">{yardage.toLocaleString('en-GB')}</dd>
+						</dl>
+					) : null}
 
 					{courseBest && (
 						<p class="mt-4 inline-block rounded-full bg-accent px-3 py-1 text-[0.65rem] font-semibold tracking-wider text-night uppercase">Course best</p>
@@ -152,13 +174,37 @@ const prose =
 				</aside>
 			)}
 
-			<div>
-				<div class={prose}>
-					<slot />
-				</div>
+			<div class="flex flex-col gap-12">
+				{notes?.purpose && (
+					<p data-reveal>
+						<span class="block text-xs font-semibold tracking-[0.2em] text-slate uppercase">The plan</span>
+						<span class="mt-2 block text-2xl leading-snug font-medium tracking-tight text-balance">{notes.purpose}</span>
+					</p>
+				)}
+
+				{hasBody && (
+					<div class={prose}>
+						<slot />
+					</div>
+				)}
+
+				{noteItems.length > 0 && (
+					<section aria-labelledby="round-notes" data-reveal>
+						<h2 id="round-notes" class="text-3xl font-semibold tracking-tight">Round notes</h2>
+						<dl class="mt-6 grid gap-x-10 md:grid-cols-2">
+							{noteItems.map((item) => (
+								<div class="border-t border-ink/10 py-5">
+									<dt class="text-xs font-semibold tracking-[0.2em] text-slate uppercase">{item.label}</dt>
+									{item.heading && <dd class="mt-2 text-2xl font-semibold tracking-tight">{item.heading}</dd>}
+									{item.text && <dd class="mt-2 text-lg leading-relaxed whitespace-pre-line text-ink/80">{item.text}</dd>}
+								</div>
+							))}
+						</dl>
+					</section>
+				)}
 
 				{tags.length > 0 && (
-					<ul class="mt-12 flex flex-wrap gap-2 border-t border-ink/10 pt-8">
+					<ul class="flex flex-wrap gap-2 border-t border-ink/10 pt-8">
 						{tags.map((tag) => (
 							<li class="rounded-full bg-panel px-4 py-1.5 text-sm font-medium text-night-800">#{tag}</li>
 						))}

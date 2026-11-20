@@ -8,6 +8,9 @@ course: dunfermline-pitreavie
 score: 79
 rating: 2
 verdict: Pretty poor
+roundNotes:
+  purpose: A bit of practice for playing Murcar on Sunday. The plan was to work on my driving.
+  worstShot: Hooked it into the trees on the 7th and 8th.
 featured: false
 ---
 This was just a bit of practice for playing Murcar on Sunday.  

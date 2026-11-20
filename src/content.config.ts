@@ -6,6 +6,37 @@ import { z } from 'astro/zod';
 const blank = (value: unknown) => (value === '' || value === null ? undefined : value);
 const optional = <T extends z.ZodType>(schema: T) => z.preprocess(blank, schema.optional());
 
+// Strips blank answers from a group of fields, and drops the group when nothing is left.
+// Decap saves every field in a group as "" or null once it has been opened, even if nothing was typed
+const compact = (value: unknown): unknown => {
+	if (typeof value === 'string') return value.trim() === '' ? undefined : value;
+	if (value === null || typeof value !== 'object' || Array.isArray(value)) return blank(value);
+	const entries = Object.entries(value)
+		.map(([key, v]) => [key, compact(v)])
+		.filter(([, v]) => v !== undefined);
+	return entries.length > 0 ? Object.fromEntries(entries) : undefined;
+};
+
+// The standard questions answered after a round. All optional
+const roundNotes = z.preprocess(
+	compact,
+	z
+		.object({
+			purpose: z.string().optional(),
+			holeWorthKnowing: z
+				.object({
+					hole: z.number().int().min(1).max(36).optional(),
+					note: z.string().optional(),
+				})
+				.optional(),
+			bestShot: z.string().optional(),
+			worstShot: z.string().optional(),
+			nextTime: z.string().optional(),
+			conditions: z.string().optional(),
+		})
+		.optional(),
+);
+
 // Courses are reference data, all kept in one file that Decap edits as a list
 const courses = defineCollection({
 	loader: file('src/data/courses.json', {
@@ -50,6 +81,7 @@ const blog = defineCollection({
 				score: z.number().optional(),
 				rating: z.number().min(1).max(5).optional(),
 				verdict: z.string().optional(),
+				roundNotes,
 				tags: z.array(z.string()).default([]),
 			})
 			.refine((post) => post.type !== 'round' || post.course, {
