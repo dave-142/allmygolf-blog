@@ -62,7 +62,11 @@ const stats: Stat[] = course
 	? [
 			{ label: 'Played', date: pubDate },
 			...(score != null ? [{ label: 'Score', value: score, extra: toPar, best: courseBest }] : []),
+			// A 0 means not filled in yet
+			...(par ? [{ label: 'Par', value: par }] : []),
+			...(course.data.yardage ? [{ label: 'Yards', value: course.data.yardage.toLocaleString('en-GB') }] : []),
 			...(rating != null ? [{ label: 'Rating', rating }] : []),
+			...(photos.length > 0 ? [{ label: 'Photos', value: photos.length }] : []),
 		]
 	: [];
 
@@ -71,7 +75,7 @@ const showDescription = description && description !== course?.id;
 ---
 
 <Page title={title} description={description} image={hero}>
-	<PageHero title={title} image={hero} tall={!!hero}>
+	<PageHero title={title} intro={showDescription ? description : undefined} image={hero} tall={!!hero}>
 		{(stats.length === 0 || updatedDate) && (
 			<ul class="mt-6 flex flex-wrap items-center gap-x-4 gap-y-2 text-sm text-paper/70 [&>li+li]:before:mr-4 [&>li+li]:before:inline-block [&>li+li]:before:size-1 [&>li+li]:before:rounded-full [&>li+li]:before:bg-accent [&>li+li]:before:align-middle [&>li+li]:before:content-['']">
 				{stats.length === 0 && <li><FormattedDate date={pubDate} /></li>}
@@ -81,35 +85,34 @@ const showDescription = description && description !== course?.id;
 	</PageHero>
 
 	<article class="relative">
-		<StatStrip stats={stats} />
-		{course && (
-			<div class="mx-auto mt-5 max-w-5xl px-5 md:px-8">
-				<a href={courseHref(course.id)} class="group inline-flex items-center gap-1.5 text-sm font-semibold text-slate hover:text-ink">
+		<div class="mx-auto max-w-3xl px-5 pt-10 pb-16 md:px-8 md:pt-14">
+			<StatStrip stats={stats} slim />
+			{course && (
+				<a href={courseHref(course.id)} class="group mt-4 inline-flex items-center gap-1.5 text-sm font-semibold text-slate hover:text-ink">
 					More rounds at {course.data.name}
 					<ArrowUpRight class="size-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" aria-hidden="true" />
 				</a>
-			</div>
-		)}
-
-		<div class="mx-auto max-w-3xl px-5 pt-14 pb-16 md:px-8 md:pt-20">
-			{verdict && (
-				<figure data-reveal class="relative mb-14 pl-8 md:pl-12">
-					<span aria-hidden="true" class="absolute -top-3 left-0 font-serif text-8xl leading-none text-accent-dark md:-top-5 md:text-9xl">&ldquo;</span>
-					<blockquote class="text-3xl leading-tight font-medium tracking-tight text-balance md:text-4xl">{verdict}</blockquote>
-					<figcaption class="mt-4 text-xs font-semibold tracking-[0.2em] text-slate uppercase">The verdict</figcaption>
-				</figure>
 			)}
 
-			{showDescription && <p class="mb-10 text-xl leading-relaxed text-ink/70 md:text-2xl">{description}</p>}
-
 			<div
-				class="prose prose-lg max-w-none prose-neutral prose-headings:font-semibold prose-headings:tracking-tight prose-h2:mt-14 prose-h2:text-3xl prose-a:text-slate prose-a:decoration-accent-dark prose-a:decoration-2 prose-a:underline-offset-4 prose-blockquote:border-l-4 prose-blockquote:border-accent-dark prose-blockquote:font-medium prose-blockquote:text-ink prose-blockquote:not-italic prose-img:rounded-2xl prose-li:marker:text-slate"
+				class:list={[
+					'prose prose-lg max-w-none prose-neutral prose-headings:font-semibold prose-headings:tracking-tight prose-h2:mt-14 prose-h2:text-3xl prose-a:text-slate prose-a:decoration-accent-dark prose-a:decoration-2 prose-a:underline-offset-4 prose-blockquote:border-l-4 prose-blockquote:border-accent-dark prose-blockquote:font-medium prose-blockquote:text-ink prose-blockquote:not-italic prose-img:rounded-2xl prose-li:marker:text-slate',
+					stats.length > 0 ? 'mt-12' : 'mt-4',
+					id && 'drop-cap',
+				]}
 			>
 				<slot />
 			</div>
 
+			{verdict && (
+				<figure data-reveal class="mt-14 border-y border-ink/10 py-10 text-center">
+					<blockquote class="mx-auto max-w-2xl font-serif text-2xl leading-snug text-balance italic md:text-3xl">&ldquo;{verdict}&rdquo;</blockquote>
+					<figcaption class="mt-4 text-xs font-semibold tracking-[0.2em] text-slate uppercase">The verdict</figcaption>
+				</figure>
+			)}
+
 			{tags.length > 0 && (
-				<ul class="mt-12 flex flex-wrap gap-2 border-t border-ink/10 pt-8">
+				<ul class:list={['mt-12 flex flex-wrap gap-2', !verdict && 'border-t border-ink/10 pt-8']}>
 					{tags.map((tag) => (
 						<li class="rounded-full bg-panel px-4 py-1.5 text-sm font-medium text-night-800">#{tag}</li>
 					))}

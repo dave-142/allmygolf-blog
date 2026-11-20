@@ -49,6 +49,11 @@
 	}
 }
 
+/* Drop cap on the first paragraph of a post */
+.drop-cap > p:first-of-type::first-letter {
+	@apply float-left mt-1.5 mr-3 text-7xl leading-[0.8] font-semibold text-accent-dark;
+}
+
 /* Scroll reveal. Only hides content when JS has run, so nothing is lost without it */
 .js [data-reveal] {
 	opacity: 0;
