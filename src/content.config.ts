@@ -22,16 +22,19 @@ const roundNotes = z.preprocess(
 	compact,
 	z
 		.object({
+			// Shown as "The plan"
 			purpose: z.string().optional(),
+			didItWork: z.string().optional(),
+			wentWell: z.string().optional(),
+			// Shown as "What didn't"
+			wentBadly: z.string().optional(),
+			nextTime: z.string().optional(),
 			holeWorthKnowing: z
 				.object({
 					hole: z.number().int().min(1).max(36).optional(),
 					note: z.string().optional(),
 				})
 				.optional(),
-			bestShot: z.string().optional(),
-			worstShot: z.string().optional(),
-			nextTime: z.string().optional(),
 			conditions: z.string().optional(),
 		})
 		.optional(),

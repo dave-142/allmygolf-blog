@@ -52,11 +52,31 @@ collections:
         required: false
         hint: Rounds only. Answer the ones you have something for and skip the rest.
         fields:
-          - label: Purpose
+          - label: The plan
             name: purpose
             widget: string
             required: false
             hint: What the round was for, e.g. Working on my driving, Club medal.
+          - label: Did it work?
+            name: didItWork
+            widget: text
+            required: false
+            hint: A short answer on whether the plan came off.
+          - label: What went well
+            name: wentWell
+            widget: text
+            required: false
+            hint: A sentence or two.
+          - label: What didn't
+            name: wentBadly
+            widget: text
+            required: false
+            hint: A sentence or two.
+          - label: Next time
+            name: nextTime
+            widget: text
+            required: false
+            hint: The one thing you'd do differently.
           - label: The hole worth knowing
             name: holeWorthKnowing
             widget: object
@@ -68,13 +88,6 @@ collections:
                 widget: text
                 required: false
                 hint: A few sentences.
-          - { label: Best shot, name: bestShot, widget: text, required: false, hint: A sentence or two. }
-          - { label: Worst shot, name: worstShot, widget: text, required: false, hint: A sentence or two. }
-          - label: Next time I'd
-            name: nextTime
-            widget: text
-            required: false
-            hint: The one thing you'd do differently.
           - label: Conditions
             name: conditions
             widget: text

@@ -66,7 +66,8 @@ const toPar = par && score != null ? (score === par ? 'E' : score > par ? `+${sc
 // Imported rounds use the course id as their description, and some repeat the title. Neither is worth showing
 const showDescription = description && description !== course?.id && description.trim().toLowerCase() !== title.trim().toLowerCase();
 
-// Round notes, only on rounds. Each answered question becomes one item, so unanswered ones never show
+// Round notes, only on rounds. The plan and Did it work? sit at the top of the post, the rest in the Round notes section.
+// Each answered question becomes one item, so unanswered ones never show
 const notes = type === 'round' ? roundNotes : undefined;
 // 1st, 2nd, 3rd, 4th, 11th, 12th, 13th, 21st
 const ordinal = (n: number) => {
@@ -75,12 +76,16 @@ const ordinal = (n: number) => {
 };
 const hole = notes?.holeWorthKnowing;
 const noteItems = [
+	{ label: 'What went well', text: notes?.wentWell },
+	{ label: "What didn't", text: notes?.wentBadly },
+	{ label: 'Next time', text: notes?.nextTime },
 	{ label: 'The hole worth knowing', heading: hole?.hole ? `The ${ordinal(hole.hole)}` : undefined, text: hole?.note },
-	{ label: 'Best shot', text: notes?.bestShot },
-	{ label: 'Worst shot', text: notes?.worstShot },
-	{ label: "Next time I'd", text: notes?.nextTime },
 	{ label: 'Conditions', text: notes?.conditions },
 ].filter((item) => item.heading || item.text);
+const planItems = [
+	{ label: 'The plan', text: notes?.purpose },
+	{ label: 'Did it work?', text: notes?.didItWork },
+].filter((item) => item.text);
 
 const prose =
 	'prose prose-lg max-w-none prose-neutral prose-headings:font-semibold prose-headings:tracking-tight prose-h2:mt-12 prose-h2:text-3xl prose-a:text-slate prose-a:decoration-accent-dark prose-a:decoration-2 prose-a:underline-offset-4 prose-blockquote:border-l-4 prose-blockquote:border-accent-dark prose-blockquote:font-medium prose-blockquote:text-ink prose-blockquote:not-italic prose-img:rounded-2xl prose-li:marker:text-slate [&>:first-child]:mt-0';
@@ -175,11 +180,15 @@ const prose =
 			)}
 
 			<div class="flex flex-col gap-12">
-				{notes?.purpose && (
-					<p data-reveal>
-						<span class="block text-xs font-semibold tracking-[0.2em] text-slate uppercase">The plan</span>
-						<span class="mt-2 block text-2xl leading-snug font-medium tracking-tight text-balance">{notes.purpose}</span>
-					</p>
+				{planItems.length > 0 && (
+					<dl data-reveal class="grid gap-x-10 gap-y-6 md:grid-cols-2">
+						{planItems.map((item) => (
+							<div>
+								<dt class="text-xs font-semibold tracking-[0.2em] text-slate uppercase">{item.label}</dt>
+								<dd class="mt-2 text-2xl leading-snug font-medium tracking-tight text-balance whitespace-pre-line">{item.text}</dd>
+							</div>
+						))}
+					</dl>
 				)}
 
 				{hasBody && (
