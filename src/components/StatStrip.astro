@@ -3,8 +3,7 @@ import GolferCelebrating from '../assets/illustrations/golfer-celebrating.svg';
 import FormattedDate from './FormattedDate.astro';
 import Stars from './Stars.astro';
 
-// Stats for course and round pages. By default a white strip of cards that overlaps the bottom of the page hero.
-// Slim is a single row between thin rules, used inside the reading column on round pages.
+// White strip of stats that overlaps the bottom of the page hero. Used on course and round pages.
 export interface Stat {
 	label: string;
 	value?: string | number;
@@ -18,38 +17,12 @@ export interface Stat {
 
 interface Props {
 	stats: Stat[];
-	slim?: boolean;
 }
 
-const { stats, slim = false } = Astro.props;
+const { stats } = Astro.props;
 ---
 
-{stats.length > 0 && slim && (
-	<dl data-reveal class="flex flex-wrap gap-x-10 gap-y-5 border-y border-ink/10 py-5">
-		{stats.map((stat) => (
-			<div>
-				<dt class="text-[0.65rem] font-semibold tracking-[0.2em] text-ink/40 uppercase">{stat.label}</dt>
-				<dd class="mt-1 flex items-center gap-2 text-lg leading-tight font-semibold tabular-nums">
-					{stat.date ? (
-						<FormattedDate date={stat.date} />
-					) : stat.rating != null ? (
-						<Stars rating={stat.rating} class="text-base text-slate" />
-					) : (
-						<span>
-							{stat.value}
-							{stat.extra && <span class="ml-1 font-normal text-ink/50">{stat.extra}</span>}
-						</span>
-					)}
-					{stat.best && (
-						<span class="rounded-full bg-accent px-2 py-0.5 text-[0.6rem] font-semibold tracking-wider text-night uppercase">Course best</span>
-					)}
-				</dd>
-			</div>
-		))}
-	</dl>
-)}
-
-{stats.length > 0 && !slim && (
+{stats.length > 0 && (
 	<div class="mx-auto -mt-10 max-w-5xl px-5 md:-mt-14 md:px-8">
 		<dl
 			data-reveal

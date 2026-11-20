@@ -5,6 +5,7 @@ heroImage: ../../assets/uploads/1000043225.jpg
 pubDate: 2026-11-19T14:16:00.000+00:00
 type: round
 course: dunfermline-pitreavie
+score: 79
 rating: 2
 verdict: Pretty poor
 featured: false

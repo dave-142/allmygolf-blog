@@ -9,7 +9,7 @@ import FormattedDate from '../components/FormattedDate.astro';
 import PageHero from '../components/PageHero.astro';
 import PostGrid from '../components/PostGrid.astro';
 import SectionHeader from '../components/SectionHeader.astro';
-import StatStrip, { type Stat } from '../components/StatStrip.astro';
+import Stars from '../components/Stars.astro';
 import { bestScore, courseHref, getCourseMap, getPosts, getRounds, postTile } from '../lib/courses';
 import Page from './Page.astro';
 
@@ -55,69 +55,116 @@ const courseBest = score != null && roundsHere.length > 1 && score === bestScore
 
 // Score against par, e.g. +9, E or -2
 const par = course?.data.par;
+const yardage = course?.data.yardage;
 const toPar = par && score != null ? (score === par ? 'E' : score > par ? `+${score - par}` : `${score - par}`) : undefined;
 
-// The stats strip, shown on rounds. Other pages (equipment, about) show the date under the title instead
-const stats: Stat[] = course
-	? [
-			{ label: 'Played', date: pubDate },
-			...(score != null ? [{ label: 'Score', value: score, extra: toPar, best: courseBest }] : []),
-			// A 0 means not filled in yet
-			...(par ? [{ label: 'Par', value: par }] : []),
-			...(course.data.yardage ? [{ label: 'Yards', value: course.data.yardage.toLocaleString('en-GB') }] : []),
-			...(rating != null ? [{ label: 'Rating', rating }] : []),
-			...(photos.length > 0 ? [{ label: 'Photos', value: photos.length }] : []),
-		]
-	: [];
+// Imported rounds use the course id as their description, and some repeat the title. Neither is worth showing
+const showDescription = description && description !== course?.id && description.trim().toLowerCase() !== title.trim().toLowerCase();
 
-// Imported rounds use the course id as their description. That is only for search engines, so it is not shown
-const showDescription = description && description !== course?.id;
+const prose =
+	'prose prose-lg max-w-none prose-neutral prose-headings:font-semibold prose-headings:tracking-tight prose-h2:mt-12 prose-h2:text-3xl prose-a:text-slate prose-a:decoration-accent-dark prose-a:decoration-2 prose-a:underline-offset-4 prose-blockquote:border-l-4 prose-blockquote:border-accent-dark prose-blockquote:font-medium prose-blockquote:text-ink prose-blockquote:not-italic prose-img:rounded-2xl prose-li:marker:text-slate [&>:first-child]:mt-0';
 ---
 
 <Page title={title} description={description} image={hero}>
-	<PageHero title={title} intro={showDescription ? description : undefined} image={hero} tall={!!hero}>
-		{(stats.length === 0 || updatedDate) && (
+	<PageHero title={title} intro={showDescription ? description : undefined} image={hero} tall={!course && !!hero}>
+		{(!course || updatedDate) && (
 			<ul class="mt-6 flex flex-wrap items-center gap-x-4 gap-y-2 text-sm text-paper/70 [&>li+li]:before:mr-4 [&>li+li]:before:inline-block [&>li+li]:before:size-1 [&>li+li]:before:rounded-full [&>li+li]:before:bg-accent [&>li+li]:before:align-middle [&>li+li]:before:content-['']">
-				{stats.length === 0 && <li><FormattedDate date={pubDate} /></li>}
+				{!course && <li><FormattedDate date={pubDate} /></li>}
 				{updatedDate && <li>Updated <FormattedDate date={updatedDate} /></li>}
 			</ul>
 		)}
 	</PageHero>
 
 	<article class="relative">
-		<div class="mx-auto max-w-3xl px-5 pt-10 pb-16 md:px-8 md:pt-14">
-			<StatStrip stats={stats} slim />
+		<div
+			class:list={[
+				'mx-auto px-5 pt-10 pb-16 md:px-8 md:pt-16 md:pb-20',
+				course ? 'grid max-w-6xl gap-10 lg:grid-cols-[20rem_minmax(0,1fr)] lg:gap-16' : 'max-w-3xl',
+			]}
+		>
+			{id && (
+				<nav
+					aria-label="Post"
+					class:list={['flex flex-wrap items-center justify-between gap-3 border-b border-ink/10 pb-6', course ? 'lg:col-span-2' : 'mb-10']}
+				>
+					<ul class="flex flex-wrap items-center gap-2">
+						<li>
+							<a
+								href="/blog/"
+								class="group inline-flex items-center gap-2 rounded-full border border-ink/15 px-5 py-2.5 text-sm font-semibold text-ink transition-colors hover:border-night-800 hover:bg-night-800 hover:text-paper"
+							>
+								<ArrowLeft class="size-4 transition-transform group-hover:-translate-x-0.5" aria-hidden="true" />
+								All rounds
+							</a>
+						</li>
+					</ul>
+					{/* Room on the right for more navigation later, e.g. previous and next round */}
+				</nav>
+			)}
+
 			{course && (
-				<a href={courseHref(course.id)} class="group mt-4 inline-flex items-center gap-1.5 text-sm font-semibold text-slate hover:text-ink">
-					More rounds at {course.data.name}
-					<ArrowUpRight class="size-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" aria-hidden="true" />
-				</a>
+				<aside data-reveal class="self-start rounded-[1.75rem] bg-night p-6 text-paper shadow-[0_30px_60px_-30px_rgb(28_35_38/0.6)] lg:sticky lg:top-28">
+					<p class="font-semibold tracking-[0.2em] text-paper/60 uppercase"><FormattedDate date={pubDate} /></p>
+
+					<a href={courseHref(course.id)} class="group mt-4 flex items-start justify-between gap-3 text-2xl leading-tight font-semibold tracking-tight text-balance hover:text-accent">
+						{course.data.name}
+						<ArrowUpRight class="mt-0.5 size-5 shrink-0 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" aria-hidden="true" />
+					</a>
+
+					<div class="mt-5 flex items-stretch justify-between gap-4 border-t border-paper/15 pt-5">
+						{score != null ? (
+							<div class="flex flex-col justify-between">
+								<p class="font-semibold tracking-widest text-paper/60 uppercase">Score</p>
+								<p class="mt-2">
+									<span class="text-6xl leading-none font-bold text-accent tabular-nums">{score}</span>
+									{toPar && <span class="ml-2 text-xl font-medium text-paper/60 tabular-nums">{toPar}</span>}
+								</p>
+							</div>
+						) : (
+							<span></span>
+						)}
+						<dl class="flex gap-5 text-right [&>div]:flex [&>div]:flex-col [&>div]:justify-between">
+							{par ? (
+								<div>
+									<dt class="font-semibold tracking-widest text-paper/60 uppercase">Par</dt>
+									<dd class="mt-2 text-5xl leading-none font-semibold tabular-nums">{par}</dd>
+								</div>
+							) : null}
+							{yardage ? (
+								<div>
+									<dt class="text-[0.65rem] font-semibold tracking-widest text-paper/60 uppercase">Yards</dt>
+									<dd class="mt-2 text-lg leading-none font-semibold tabular-nums">{yardage.toLocaleString('en-GB')}</dd>
+								</div>
+							) : null}
+						</dl>
+					</div>
+
+					{courseBest && (
+						<p class="mt-4 inline-block rounded-full bg-accent px-3 py-1 text-[0.65rem] font-semibold tracking-wider text-night uppercase">Course best</p>
+					)}
+
+					{(rating != null || verdict) && (
+						<div class="mt-5 border-t border-paper/15 pt-5">
+							{rating != null && <Stars rating={rating} class="text-lg text-accent" />}
+							{verdict && <p class="mt-3 font-serif text-xl leading-snug text-paper/90 italic">&ldquo;{verdict}&rdquo;</p>}
+						</div>
+					)}
+				</aside>
 			)}
 
-			<div
-				class:list={[
-					'prose prose-lg max-w-none prose-neutral prose-headings:font-semibold prose-headings:tracking-tight prose-h2:mt-14 prose-h2:text-3xl prose-a:text-slate prose-a:decoration-accent-dark prose-a:decoration-2 prose-a:underline-offset-4 prose-blockquote:border-l-4 prose-blockquote:border-accent-dark prose-blockquote:font-medium prose-blockquote:text-ink prose-blockquote:not-italic prose-img:rounded-2xl prose-li:marker:text-slate',
-					stats.length > 0 ? 'mt-12' : 'mt-4',
-					id && 'drop-cap',
-				]}
-			>
-				<slot />
+			<div>
+				<div class={prose}>
+					<slot />
+				</div>
+
+				{tags.length > 0 && (
+					<ul class="mt-12 flex flex-wrap gap-2 border-t border-ink/10 pt-8">
+						{tags.map((tag) => (
+							<li class="rounded-full bg-panel px-4 py-1.5 text-sm font-medium text-night-800">#{tag}</li>
+						))}
+					</ul>
+				)}
 			</div>
-
-			{verdict && (
-				<figure data-reveal class="mt-14 border-y border-ink/10 py-10 text-center">
-					<blockquote class="mx-auto max-w-2xl font-serif text-2xl leading-snug text-balance italic md:text-3xl">&ldquo;{verdict}&rdquo;</blockquote>
-					<figcaption class="mt-4 text-xs font-semibold tracking-[0.2em] text-slate uppercase">The verdict</figcaption>
-				</figure>
-			)}
-
-			{tags.length > 0 && (
-				<ul class:list={['mt-12 flex flex-wrap gap-2', !verdict && 'border-t border-ink/10 pt-8']}>
-					{tags.map((tag) => (
-						<li class="rounded-full bg-panel px-4 py-1.5 text-sm font-medium text-night-800">#{tag}</li>
-					))}
-				</ul>
-			)}
 		</div>
 
 		{photos.length > 0 && (
@@ -169,14 +216,6 @@ const showDescription = description && description !== course?.id;
 		</section>
 	)}
 
-	{id && (
-		<div class="mx-auto max-w-7xl px-5 py-10 md:px-8">
-			<a href="/blog/" class="group inline-flex items-center gap-2 text-sm font-semibold text-slate">
-				<ArrowLeft class="size-4 transition-transform group-hover:-translate-x-1" aria-hidden="true" />
-				Back to all rounds
-			</a>
-		</div>
-	)}
 
 	{photos.length > 0 && (
 		<dialog
