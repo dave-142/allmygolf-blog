@@ -14,7 +14,6 @@ export interface Tile {
 	date?: Date;
 	eyebrow?: string;
 	photo?: ImageMetadata;
-	featured?: boolean;
 	// Big number in the corner, e.g. a score, with a tiny label under it
 	badge?: string | number;
 	badgeLabel?: string;
@@ -65,7 +64,6 @@ export function postTile(post: Post, courses: Map<string, Course>): Tile {
 		date: post.data.pubDate,
 		eyebrow: course ? course.data.name : post.data.type === 'equipment' ? 'Equipment' : undefined,
 		photo: coverPhoto(post),
-		featured: post.data.featured,
 		badge: post.data.score,
 		badgeLabel: post.data.score != null ? 'Score' : undefined,
 		year: post.data.pubDate.getFullYear(),

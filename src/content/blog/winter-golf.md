@@ -1,6 +1,7 @@
 ---
-title: "Winter golf "
-description: Winter golf asd asd as da sd
+title: Getting the Driver Ready for Murcar
+description: A winter practice round at Pitreavie, working on my driving before
+  a trip to Murcar on Sunday.
 heroImage: ../../assets/uploads/1000043225.jpg
 gallery:
   - image: ../../assets/uploads/pxl_20261119_135112018.jpg
@@ -14,30 +15,13 @@ course: dunfermline-pitreavie
 score: 79
 rating: 2
 verdict: Pretty poor
-roundNotes:
-  purpose: A bit of practice for playing Murcar this Sunday. The plan was to work
-    on my driving.
-  wentBadly: Back-to-back hooks into the trees on the 7th and 8th
-  holeWorthKnowing:
-    hole: 3
-    note: Always a good hole, but one upside of winter golf is that it plays much
-      shorter, and in my opinion it’s more fun for it.
-  wentWell: Driving the green on the 5th, finishing 10 feet from the pin
-  conditions: It’s winter, so expectations were low. The greens were struggling,
-    the course was rough around the edges, and the tees were moved all over the
-    place
-  nextTime: Putting was terrible today
-  didItWork: Not really.  4 of 6 drives were good and 2 hooked into the trees!
-featured: false
 ---
-## The plan
+# A Winter Warm-Up at Pitreavie
 
-A bit of practice for playing Murcar this Sunday. The plan was to work on my driving.
+With Murcar coming up on Sunday, I headed out to Pitreavie for a practice round, a walk and some fresh air. The plan was simple: sort out my driving.
 
-## Did it work
+Did it work? Not really. Four of my six drives were good, but the other two hooked straight into the trees on the 7th and 8th. Not the miss I'd been worrying about, but a miss all the same. The highlight was driving the green on the 5th and finishing 10 feet from the pin, which is exactly why I keep coming back.
 
-Not really.  4 of 6 drives were good and 2 hooked into the trees!
+My putting was terrible, so before Sunday I'll be spending some time on the putting green.
 
-## What went well
-
-Driving the green on the 5th, finishing 10 feet from the pin
+It’s winter, so I wasn’t expecting much from the course. The greens were struggling, it was rough around the edges, and the tees were moved all over the place.

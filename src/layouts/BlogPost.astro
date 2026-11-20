@@ -33,8 +33,6 @@ const {
 	score,
 	rating,
 	verdict,
-	type,
-	roundNotes,
 	tags = [],
 	hasBody = true,
 } = Astro.props;
@@ -65,27 +63,6 @@ const toPar = par && score != null ? (score === par ? 'E' : score > par ? `+${sc
 
 // Imported rounds use the course id as their description, and some repeat the title. Neither is worth showing
 const showDescription = description && description !== course?.id && description.trim().toLowerCase() !== title.trim().toLowerCase();
-
-// Round notes, only on rounds. The plan and Did it work? sit at the top of the post, the rest in the Round notes section.
-// Each answered question becomes one item, so unanswered ones never show
-const notes = type === 'round' ? roundNotes : undefined;
-// 1st, 2nd, 3rd, 4th, 11th, 12th, 13th, 21st
-const ordinal = (n: number) => {
-	const teen = n % 100 >= 11 && n % 100 <= 13;
-	return `${n}${teen ? 'th' : ({ 1: 'st', 2: 'nd', 3: 'rd' } as Record<number, string>)[n % 10] ?? 'th'}`;
-};
-const hole = notes?.holeWorthKnowing;
-const noteItems = [
-	{ label: 'What went well', text: notes?.wentWell },
-	{ label: "What didn't", text: notes?.wentBadly },
-	{ label: 'Next time', text: notes?.nextTime },
-	{ label: 'The hole worth knowing', heading: hole?.hole ? `The ${ordinal(hole.hole)}` : undefined, text: hole?.note },
-	{ label: 'Conditions', text: notes?.conditions },
-].filter((item) => item.heading || item.text);
-const planItems = [
-	{ label: 'The plan', text: notes?.purpose },
-	{ label: 'Did it work?', text: notes?.didItWork },
-].filter((item) => item.text);
 
 const prose =
 	'prose prose-lg max-w-none prose-neutral prose-headings:font-semibold prose-headings:tracking-tight prose-h2:mt-12 prose-h2:text-3xl prose-a:text-slate prose-a:decoration-accent-dark prose-a:decoration-2 prose-a:underline-offset-4 prose-blockquote:border-l-4 prose-blockquote:border-accent-dark prose-blockquote:font-medium prose-blockquote:text-ink prose-blockquote:not-italic prose-img:rounded-2xl prose-li:marker:text-slate [&>:first-child]:mt-0';
@@ -137,6 +114,14 @@ const prose =
 						<ArrowUpRight class="mt-0.5 size-5 shrink-0 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" aria-hidden="true" />
 					</a>
 
+					{/* Rating and verdict are about the course, so they sit with its name, above the round's numbers */}
+					{(rating != null || verdict) && (
+						<div class="mt-5">
+							{rating != null && <Stars rating={rating} class="text-lg text-accent" />}
+							{verdict && <p class="mt-3 font-serif text-xl leading-snug text-paper/90 italic first:mt-0">&ldquo;{verdict}&rdquo;</p>}
+						</div>
+					)}
+
 					<div class="mt-5 flex items-stretch justify-between gap-4 border-t border-paper/15 pt-5">
 						{score != null ? (
 							<div class="flex flex-col justify-between">
@@ -169,47 +154,14 @@ const prose =
 					{courseBest && (
 						<p class="mt-4 inline-block rounded-full bg-accent px-3 py-1 text-[0.65rem] font-semibold tracking-wider text-night uppercase">Course best</p>
 					)}
-
-					{(rating != null || verdict) && (
-						<div class="mt-5 border-t border-paper/15 pt-5">
-							{rating != null && <Stars rating={rating} class="text-lg text-accent" />}
-							{verdict && <p class="mt-3 font-serif text-xl leading-snug text-paper/90 italic">&ldquo;{verdict}&rdquo;</p>}
-						</div>
-					)}
 				</aside>
 			)}
 
 			<div class="flex flex-col gap-12">
-				{planItems.length > 0 && (
-					<dl data-reveal class="grid gap-x-10 gap-y-6 md:grid-cols-2">
-						{planItems.map((item) => (
-							<div>
-								<dt class="text-xs font-semibold tracking-[0.2em] text-slate uppercase">{item.label}</dt>
-								<dd class="mt-2 text-2xl leading-snug font-medium tracking-tight text-balance whitespace-pre-line">{item.text}</dd>
-							</div>
-						))}
-					</dl>
-				)}
-
 				{hasBody && (
 					<div class={prose}>
 						<slot />
 					</div>
-				)}
-
-				{noteItems.length > 0 && (
-					<section aria-labelledby="round-notes" data-reveal>
-						<h2 id="round-notes" class="text-3xl font-semibold tracking-tight">Round notes</h2>
-						<dl class="mt-6 grid gap-x-10 md:grid-cols-2">
-							{noteItems.map((item) => (
-								<div class="border-t border-ink/10 py-5">
-									<dt class="text-xs font-semibold tracking-[0.2em] text-slate uppercase">{item.label}</dt>
-									{item.heading && <dd class="mt-2 text-2xl font-semibold tracking-tight">{item.heading}</dd>}
-									{item.text && <dd class="mt-2 text-lg leading-relaxed whitespace-pre-line text-ink/80">{item.text}</dd>}
-								</div>
-							))}
-						</dl>
-					</section>
 				)}
 
 				{tags.length > 0 && (
@@ -224,7 +176,7 @@ const prose =
 
 		{photos.length > 0 && (
 			<section class="mx-auto max-w-7xl px-5 pb-20 md:px-8">
-				<SectionHeader label="Gallery" title="From the course" />
+				<SectionHeader label="GALLERY" title="From the course" />
 				<div class="columns-1 gap-4 sm:columns-2 lg:columns-3">
 					{photos.map((photo, i) => (
 						<button
@@ -266,7 +218,7 @@ const prose =
 		<section class="bg-panel/60 py-20 md:py-24">
 			<div class="mx-auto max-w-7xl px-5 md:px-8">
 				<SectionHeader label="Keep reading" title="More rounds" link={{ href: '/blog/', label: 'All rounds' }} />
-				<PostGrid tiles={more.map((t) => ({ ...t, featured: false }))} columns={3} />
+				<PostGrid tiles={more} columns={3} />
 			</div>
 		</section>
 	)}
