@@ -7,4 +7,5 @@ type: round
 course: murcar-links
 score: 83
 rating: 4
+verdict: Great course and it's in amazing condition considering the time of year
 ---
