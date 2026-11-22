@@ -1,6 +1,6 @@
 ---
-title: "Fun round but another terrible score at Murcar "
-description: Not bad for 12 holes
+title: If Only Golf Were 12 Holes
+description: Murcar, the Mini Driver and Not Much Else
 heroImage: ../../assets/uploads/1000043335.jpg
 gallery:
   - image: ../../assets/uploads/1000043336.jpg
