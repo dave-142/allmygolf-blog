@@ -6,6 +6,8 @@ gallery:
   - image: ../../assets/uploads/1000043336.jpg
   - image: ../../assets/uploads/1000043355.jpg
   - image: ../../assets/uploads/1000043367.jpg
+  - image: ../../assets/uploads/1000043420.jpg
+  - image: ../../assets/uploads/1000043340.jpg
 pubDate: 2026-11-22T15:15:00.000+00:00
 type: round
 course: murcar-links
