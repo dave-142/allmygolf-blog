@@ -19,7 +19,8 @@ course: murcar-links
 score: 83
 rating: 4
 verdict: Great course and it's in amazing condition considering the time of year
-tags: []
+tags:
+  - links
 ---
 
 After a disappointing practice round at Pitreavie during the week, I didn't hold out much hope for Murcar today, and I wasn't disappointed.

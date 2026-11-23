@@ -15,7 +15,8 @@ course: fairmont-torrance
 score: 81
 rating: 4
 verdict: Excellent layout and in great condition
-tags: []
+tags:
+  - links
 ---
 
 On 14 November I headed to the Fairmont St Andrews for a game with three folk from Scottish Golf Connect, hosted by Duncan. I'd been to the Fairmont before but had only played the Kittocks, so this was my first time on the Torrance. I was expecting it to be cold, but the weather turned out great, and once we got going it was perfect.
