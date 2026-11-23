@@ -4,17 +4,24 @@ description: Murcar, the Mini Driver and Not Much Else
 heroImage: ../../assets/uploads/1000043335.jpg
 gallery:
   - image: ../../assets/uploads/1000043336.jpg
+    caption: ''
   - image: ../../assets/uploads/1000043355.jpg
+    caption: ''
   - image: ../../assets/uploads/1000043367.jpg
+    caption: ''
   - image: ../../assets/uploads/1000043420.jpg
+    caption: ''
   - image: ../../assets/uploads/1000043340.jpg
+    caption: ''
 pubDate: 2026-11-22T15:15:00.000+00:00
 type: round
 course: murcar-links
 score: 83
 rating: 4
 verdict: Great course and it's in amazing condition considering the time of year
+tags: []
 ---
+
 After a disappointing practice round at Pitreavie during the week, I didn't hold out much hope for Murcar today, and I wasn't disappointed.
 
 

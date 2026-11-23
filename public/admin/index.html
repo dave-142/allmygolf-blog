@@ -8,6 +8,12 @@
     <link href="/admin/config.yml" type="text/yaml" rel="cms-config-url" />
   </head>
   <body>
-    <script src="https://unpkg.com/decap-cms@3.17.3/dist/decap-cms.js"></script>
+    <!-- Pinned version. The integrity hash stops the browser running the file if the CDN ever serves anything else.
+         When upgrading, change the version and recompute the hash (sha384 of the file) -->
+    <script
+      src="https://unpkg.com/@sveltia/cms@0.270.1/dist/sveltia-cms.js"
+      integrity="sha384-6aH7dw/OV71bMlW+rllu0kenv2UPIkv2mFQxKq1P5/YP8nwjyhb5ouDU5AKTEd2j"
+      crossorigin="anonymous"
+    ></script>
   </body>
 </html>

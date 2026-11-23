@@ -1,4 +1,3 @@
-local_backend: true
 backend:
   name: github
   repo: dave-142/allmygolf-blog
@@ -6,8 +5,22 @@ backend:
   base_url: https://www.allmy.golf
   auth_endpoint: api/auth
 
-media_folder: src/assets/uploads
-public_folder: ../../assets/uploads
+# Uploads live in src/assets so Astro can optimise them. Sveltia needs the global public_folder to start with "/",
+# so the relative path Astro needs (../../assets/uploads, from a post) is set on the Posts collection below
+media_folder: /src/assets/uploads
+public_folder: /src/assets/uploads
+
+# Photos are shrunk in the browser before upload: converted to WebP and fitted inside 2048 x 2048.
+# That covers the largest size the site serves (2000px wide), and Astro makes the smaller sizes at build time
+media_libraries:
+  default:
+    config:
+      transformations:
+        raster_image:
+          format: webp
+          quality: 85
+          width: 2048
+          height: 2048
 
 collections:
   - name: blog
@@ -15,6 +28,8 @@ collections:
     folder: src/content/blog
     create: true
     extension: md
+    media_folder: /src/assets/uploads
+    public_folder: ../../assets/uploads
     fields:
       - { label: Title, name: title, widget: string }
       - { label: Description, name: description, widget: string }
@@ -25,7 +40,7 @@ collections:
         widget: list
         required: false
         fields:
-          - { label: Image, name: image, widget: image, allow_multiple: false }
+          - { label: Image, name: image, widget: image }
           - { label: Caption, name: caption, widget: string, required: false }
       - { label: Date, name: pubDate, widget: datetime }
       - label: Type
