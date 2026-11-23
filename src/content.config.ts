@@ -2,7 +2,7 @@ import { defineCollection, reference } from 'astro:content';
 import { file, glob } from 'astro/loaders';
 import { z } from 'astro/zod';
 
-// Decap can save a blank optional field as "" or null, so treat those as missing
+// The CMS saves a blank optional field as "" or null, so treat those as missing
 const blank = (value: unknown) => (value === '' || value === null ? undefined : value);
 const optional = <T extends z.ZodType>(schema: T) => z.preprocess(blank, schema.optional());
 
@@ -40,15 +40,15 @@ const blog = defineCollection({
 					.array(
 						z.object({
 							image: image(),
-							caption: z.string().optional(),
+							caption: optional(z.string()),
 						}),
 					)
 					.default([]),
 				type: z.enum(['round', 'equipment']).default('round'),
 				course: optional(reference('courses')),
-				score: z.number().optional(),
-				rating: z.number().min(1).max(5).optional(),
-				verdict: z.string().optional(),
+				score: optional(z.number()),
+				rating: optional(z.number().min(1).max(5)),
+				verdict: optional(z.string()),
 				tags: z.array(z.string()).default([]),
 			})
 			.refine((post) => post.type !== 'round' || post.course, {
