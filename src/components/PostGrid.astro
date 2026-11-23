@@ -37,6 +37,7 @@ const tiles: Tile[] =
 				href={tile.href}
 				data-reveal
 				data-year={tile.year}
+				data-tags={tile.tags?.length ? `|${tile.tags.join('|')}|` : undefined}
 				style={`--reveal-delay: ${(i % 4) * 70}ms`}
 				class:list={[
 					'group relative isolate block overflow-hidden rounded-[1.75rem] bg-night-800 text-white shadow-[0_20px_50px_-30px_rgb(28_35_38/0.6)] transition-shadow duration-500 hover:shadow-[0_30px_70px_-25px_rgb(28_35_38/0.7)]',

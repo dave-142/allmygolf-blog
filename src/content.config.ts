@@ -49,7 +49,10 @@ const blog = defineCollection({
 				score: optional(z.number()),
 				rating: optional(z.number().min(1).max(5)),
 				verdict: optional(z.string()),
-				tags: z.array(z.string()).default([]),
+				// Free text in the CMS, so tidied here: lowercase, trimmed, no blanks or repeats
+				tags: z
+					.preprocess(blank, z.array(z.string()).default([]))
+					.transform((tags) => [...new Set(tags.map((t) => t.trim().toLowerCase()).filter(Boolean))]),
 			})
 			.refine((post) => post.type !== 'round' || post.course, {
 				message: 'Rounds must have a course',

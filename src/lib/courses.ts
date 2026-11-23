@@ -19,6 +19,8 @@ export interface Tile {
 	badgeLabel?: string;
 	// Used by the year filter on the rounds page
 	year?: number;
+	// Used by the tag filter on the rounds page
+	tags?: string[];
 }
 
 export const courseHref = (id: string) => `/courses/${id}/`;
@@ -67,6 +69,7 @@ export function postTile(post: Post, courses: Map<string, Course>): Tile {
 		badge: post.data.score,
 		badgeLabel: post.data.score != null ? 'Score' : undefined,
 		year: post.data.pubDate.getFullYear(),
+		tags: post.data.tags,
 	};
 }
 

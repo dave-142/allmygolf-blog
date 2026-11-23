@@ -8,6 +8,15 @@ import { getCourseMap, getPosts, postTile } from '../../lib/courses';
 const [posts, courses] = await Promise.all([getPosts(), getCourseMap()]);
 const tiles = posts.map((post) => postTile(post, courses));
 const years = [...new Set(tiles.map((t) => t.year))];
+const showYears = years.length > 1;
+
+// Every tag with how many rounds use it, most used first
+const tagCounts = new Map<string, number>();
+tiles.flatMap((t) => t.tags ?? []).forEach((tag) => tagCounts.set(tag, (tagCounts.get(tag) ?? 0) + 1));
+const tags = [...tagCounts].sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]));
+
+const label = 'w-12 shrink-0 text-xs font-semibold tracking-[0.2em] text-slate uppercase';
+const row = 'flex flex-col gap-3 px-5 py-4 md:flex-row md:items-center md:gap-6 md:px-6';
 ---
 
 <Page title={`Rounds | ${SITE_TITLE}`} description="Every round, newest first.">
@@ -15,39 +24,127 @@ const years = [...new Set(tiles.map((t) => t.year))];
 
 	<section class="py-12 md:py-20">
 		<div class="mx-auto max-w-7xl px-5 md:px-8">
-			{years.length > 1 && (
-				<div class="-mx-5 mb-8 overflow-x-auto px-5 md:mx-0 md:px-0" role="group" aria-label="Filter by year">
-					<div class="flex w-max gap-2 rounded-full border border-ink/10 bg-white p-1.5 shadow-sm">
-						{['All', ...years].map((year, i) => (
-							<button
-								type="button"
-								data-year-filter={year}
-								aria-pressed={i === 0 ? 'true' : 'false'}
-								class="rounded-full px-5 py-2 text-sm font-semibold text-ink/60 transition-colors hover:text-ink aria-pressed:bg-night-800 aria-pressed:text-accent"
-							>
-								{year}
-							</button>
-						))}
+			{(showYears || tags.length > 0) && (
+				<div class="mb-10 overflow-hidden rounded-[1.75rem] bg-white shadow-[0_1px_0_rgb(0_0_0/0.04),0_20px_40px_-30px_rgb(28_35_38/0.35)] ring-1 ring-ink/5">
+					{showYears && (
+						<div class={row}>
+							<p id="filter-year" class={label}>Year</p>
+							<div class="-mx-5 overflow-x-auto px-5 md:mx-0 md:px-0" role="group" aria-labelledby="filter-year">
+								<div class="flex w-max gap-1 rounded-full bg-paper p-1">
+									{['All', ...years].map((year, i) => (
+										<button
+											type="button"
+											data-year-filter={year}
+											aria-pressed={i === 0 ? 'true' : 'false'}
+											class="cursor-pointer rounded-full px-5 py-2 text-sm font-semibold text-ink/60 transition-colors hover:text-ink aria-pressed:bg-night-800 aria-pressed:text-accent"
+										>
+											{year}
+										</button>
+									))}
+								</div>
+							</div>
+						</div>
+					)}
+
+					{tags.length > 0 && (
+						<div class:list={[row, showYears && 'border-t border-ink/5']}>
+							<p id="filter-tag" class={label}>Tag</p>
+							<div class="flex flex-wrap gap-2" role="group" aria-labelledby="filter-tag">
+								{tags.map(([tag, count]) => (
+									<button
+										type="button"
+										data-tag-filter={tag}
+										aria-pressed="false"
+										class="group/tag inline-flex cursor-pointer items-center gap-1 rounded-full border border-ink/10 py-1.5 pr-1.5 pl-3.5 text-sm font-semibold text-ink/70 transition-colors hover:border-ink/30 hover:text-ink aria-pressed:border-night-800 aria-pressed:bg-night-800 aria-pressed:text-accent"
+									>
+										<span aria-hidden="true" class="text-ink/30 group-aria-pressed/tag:text-accent/60">#</span>
+										{tag}
+										<span class="ml-1 min-w-6 rounded-full bg-paper px-1.5 py-0.5 text-center text-xs text-ink/50 tabular-nums group-aria-pressed/tag:bg-white/10 group-aria-pressed/tag:text-paper/70">
+											<span class="sr-only">(</span>{count}<span class="sr-only"> rounds)</span>
+										</span>
+									</button>
+								))}
+							</div>
+						</div>
+					)}
+
+					<div class="flex min-h-12 items-center justify-between gap-4 border-t border-ink/5 bg-paper/50 px-5 py-3 text-sm text-ink/60 md:px-6">
+						<p data-filter-status aria-live="polite">Showing all {tiles.length} rounds</p>
+						<button
+							type="button"
+							data-filter-clear
+							hidden
+							class="cursor-pointer font-semibold text-slate underline decoration-accent-dark decoration-2 underline-offset-4 hover:text-ink"
+						>
+							Clear filters
+						</button>
 					</div>
 				</div>
 			)}
 			<PostGrid tiles={tiles} leadFirst />
+			<div data-filter-empty hidden class="rounded-[1.75rem] border border-dashed border-ink/15 px-6 py-16 text-center">
+				<p class="text-lg font-semibold">No rounds match those filters</p>
+				<button
+					type="button"
+					data-filter-reset
+					class="mt-3 cursor-pointer text-sm font-semibold text-slate underline decoration-accent-dark decoration-2 underline-offset-4 hover:text-ink"
+				>
+					Show all rounds
+				</button>
+			</div>
 		</div>
 	</section>
 </Page>
 
 <script>
-	const buttons = document.querySelectorAll<HTMLButtonElement>('[data-year-filter]');
-	const cards = document.querySelectorAll<HTMLElement>('[data-post-grid] > [data-year]');
+	// Year and tag filters work together: a round shows when it matches both. One year and one tag at a time
+	const yearButtons = [...document.querySelectorAll<HTMLButtonElement>('[data-year-filter]')];
+	const tagButtons = [...document.querySelectorAll<HTMLButtonElement>('[data-tag-filter]')];
+	const cards = [...document.querySelectorAll<HTMLElement>('[data-post-grid] > [data-year]')];
+	const status = document.querySelector<HTMLElement>('[data-filter-status]');
+	const clear = document.querySelector<HTMLButtonElement>('[data-filter-clear]');
+	const empty = document.querySelector<HTMLElement>('[data-filter-empty]');
 
-	buttons.forEach((button) =>
-		button.addEventListener('click', () => {
-			const year = button.dataset.yearFilter;
-			buttons.forEach((b) => b.setAttribute('aria-pressed', String(b === button)));
-			cards.forEach((card) => {
-				card.hidden = year !== 'All' && card.dataset.year !== year;
-				card.classList.add('is-visible');
-			});
+	let year = 'All';
+	let tag = '';
+
+	function apply() {
+		yearButtons.forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.yearFilter === year)));
+		tagButtons.forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.tagFilter === tag)));
+
+		let shown = 0;
+		cards.forEach((card) => {
+			const match =
+				(year === 'All' || card.dataset.year === year) && (!tag || (card.dataset.tags ?? '').includes(`|${tag}|`));
+			card.hidden = !match;
+			card.classList.add('is-visible');
+			if (match) shown++;
+		});
+
+		const filtered = year !== 'All' || tag !== '';
+		if (status) status.textContent = filtered ? `Showing ${shown} of ${cards.length} rounds` : `Showing all ${cards.length} rounds`;
+		if (clear) clear.hidden = !filtered;
+		if (empty) empty.hidden = shown > 0;
+	}
+
+	yearButtons.forEach((b) =>
+		b.addEventListener('click', () => {
+			year = b.dataset.yearFilter ?? 'All';
+			apply();
+		}),
+	);
+	// Clicking the selected tag again turns it off
+	tagButtons.forEach((b) =>
+		b.addEventListener('click', () => {
+			tag = tag === b.dataset.tagFilter ? '' : (b.dataset.tagFilter ?? '');
+			apply();
+		}),
+	);
+	document.querySelectorAll<HTMLButtonElement>('[data-filter-clear], [data-filter-reset]').forEach((b) =>
+		b.addEventListener('click', () => {
+			year = 'All';
+			tag = '';
+			apply();
 		}),
 	);
 </script>
