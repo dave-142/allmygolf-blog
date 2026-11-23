@@ -10,7 +10,7 @@ import PageHero from '../components/PageHero.astro';
 import PostGrid from '../components/PostGrid.astro';
 import SectionHeader from '../components/SectionHeader.astro';
 import Stars from '../components/Stars.astro';
-import { bestScore, courseHref, getCourseMap, getPosts, getRounds, postTile } from '../lib/courses';
+import { bestScore, courseHref, getCourseMap, getFeed, getRounds, postTile } from '../lib/courses';
 import Page from './Page.astro';
 
 // The about page uses this layout too, so everything beyond title, description and date is optional
@@ -44,7 +44,7 @@ const photos = gallery;
 
 // Three more recent posts to keep reading
 const more = id
-	? await Promise.all([getPosts(), getCourseMap()]).then(([posts, courses]) =>
+	? await Promise.all([getFeed(), getCourseMap()]).then(([posts, courses]) =>
 			posts
 				.filter((p) => p.id !== id)
 				.slice(0, 3)

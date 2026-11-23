@@ -30,6 +30,8 @@ collections:
     extension: md
     media_folder: /src/assets/uploads
     public_folder: ../../assets/uploads
+    # How each post is labelled in the post list and search results. The date tells same-course rounds apart
+    summary: "{{pubDate | date('D MMM YYYY')}} · {{title}}"
     fields:
       - { label: Title, name: title, widget: string }
       - { label: Description, name: description, widget: string }

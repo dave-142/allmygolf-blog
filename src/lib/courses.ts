@@ -52,6 +52,34 @@ export async function getRounds() {
 	);
 }
 
+// The first time each course best was shot, at courses played more than once.
+// A tie with an earlier best does not count, so a repeated best score only shows once
+export function firstCourseBests(rounds: Post[]) {
+	const byCourse = new Map<string, Post[]>();
+	rounds.forEach((r) => {
+		const id = r.data.course?.id;
+		if (id) byCourse.set(id, [...(byCourse.get(id) ?? []), r]);
+	});
+	const ids = new Set<string>();
+	byCourse.forEach((played) => {
+		const best = bestScore(played);
+		if (played.length < 2 || best == null) return;
+		const first = [...played].sort((a, b) => -newestFirst(a, b)).find((r) => r.data.score === best);
+		if (first) ids.add(first.id);
+	});
+	return ids;
+}
+
+// Posts worth reading, newest first. Garmin imports with no photos and no write-up are left out unless they
+// are a course best. They still count in every stat and are listed on their course page
+export async function getFeed() {
+	const [posts, rounds] = await Promise.all([getPosts(), getRounds()]);
+	const bests = firstCourseBests(rounds);
+	return posts.filter(
+		(post) => post.data.type !== 'round' || coverPhoto(post) != null || !!post.body?.trim() || bests.has(post.id),
+	);
+}
+
 export async function getCourseMap() {
 	return new Map((await getCollection('courses')).map((course) => [course.id, course]));
 }

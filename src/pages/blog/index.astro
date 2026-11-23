@@ -3,9 +3,9 @@ import PageHero from '../../components/PageHero.astro';
 import PostGrid from '../../components/PostGrid.astro';
 import { SITE_TITLE } from '../../consts';
 import Page from '../../layouts/Page.astro';
-import { getCourseMap, getPosts, postTile } from '../../lib/courses';
+import { getCourseMap, getFeed, postTile } from '../../lib/courses';
 
-const [posts, courses] = await Promise.all([getPosts(), getCourseMap()]);
+const [posts, courses] = await Promise.all([getFeed(), getCourseMap()]);
 const tiles = posts.map((post) => postTile(post, courses));
 // Every year with how many rounds, newest first. "All" leads with the total
 const yearCounts = new Map<string, number>();

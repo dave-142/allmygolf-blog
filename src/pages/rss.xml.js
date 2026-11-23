@@ -1,9 +1,10 @@
-import { getCollection } from 'astro:content';
 import rss from '@astrojs/rss';
 import { SITE_DESCRIPTION, SITE_TITLE } from '../consts';
+import { getFeed } from '../lib/courses';
 
 export async function GET(context) {
-	const posts = await getCollection('blog');
+	// Only posts worth reading, the same as the rounds page
+	const posts = await getFeed();
 	return rss({
 		title: SITE_TITLE,
 		description: SITE_DESCRIPTION,

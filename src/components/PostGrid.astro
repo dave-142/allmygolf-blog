@@ -2,7 +2,7 @@
 import { Image } from 'astro:assets';
 import ArrowUpRight from '@lucide/astro/icons/arrow-up-right';
 import FormattedDate from './FormattedDate.astro';
-import { type Tile, getCourseMap, getPosts, postTile } from '../lib/courses';
+import { type Tile, getCourseMap, getFeed, postTile } from '../lib/courses';
 
 interface Props {
 	// Defaults to the most recent posts
@@ -18,7 +18,7 @@ const { limit = 12, leadFirst = false, columns = 4 } = Astro.props;
 
 const tiles: Tile[] =
 	Astro.props.tiles ??
-	(await Promise.all([getPosts(), getCourseMap()]).then(([posts, courses]) =>
+	(await Promise.all([getFeed(), getCourseMap()]).then(([posts, courses]) =>
 		posts.slice(0, limit).map((post) => postTile(post, courses)),
 	));
 ---
