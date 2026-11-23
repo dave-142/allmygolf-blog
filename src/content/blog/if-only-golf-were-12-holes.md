@@ -21,10 +21,7 @@ rating: 4
 verdict: Great course and it's in amazing condition considering the time of year
 tags:
   - links
-<<<<<<< HEAD
-=======
   - bounce
->>>>>>> 337c1b78abda60c61cb00cb6fe5483016d4449e9
 ---
 
 After a disappointing practice round at Pitreavie during the week, I didn't hold out much hope for Murcar today, and I wasn't disappointed.
