@@ -1,0 +1,53 @@
+---
+import Mail from '@lucide/astro/icons/mail';
+import GolferDriving from '../assets/illustrations/golfer-driving.svg';
+import Contours from './Contours.astro';
+
+// The email address is put together in the browser so spam bots reading the page source don't find it
+const user = 'allmygolf';
+const domain = 'gmail.com';
+---
+
+<section class="pb-16 md:pb-24">
+	<div class="mx-auto max-w-7xl px-5 md:px-8">
+		<div
+			data-reveal
+			class="relative isolate grid items-center gap-10 overflow-hidden rounded-card bg-night px-6 py-12 text-paper shadow-card-dark md:grid-cols-[1fr_auto] md:gap-16 md:px-14 md:py-16"
+		>
+			<Contours class="text-accent/7" />
+
+			<div>
+				<h2 class="text-4xl leading-[0.95] font-semibold tracking-tighter text-balance md:text-6xl">
+					Want one of these for your golf?
+				</h2>
+				<p class="mt-4 max-w-xl text-lg text-paper/60">
+					Your rounds, your photos, your write ups, on a site you own.
+				</p>
+				<div class="mt-8 flex flex-wrap items-center gap-x-6 gap-y-4">
+					<a
+						data-email
+						data-user={user}
+						data-domain={domain}
+						class="inline-flex cursor-pointer items-center gap-2 rounded-full bg-accent px-5 py-3 text-sm font-semibold text-night transition-transform hover:-translate-y-0.5"
+					>
+						<Mail class="size-4" aria-hidden="true" />
+						Get in touch
+					</a>
+					{/* Shown as text too, for people whose browser has no mail app set up */}
+					<p data-email-text class="text-lg font-semibold tracking-tight text-paper select-all md:text-xl"></p>
+				</div>
+			</div>
+
+			<GolferDriving aria-hidden="true" class="mx-auto hidden h-56 w-auto text-paper/85 md:block lg:h-72" />
+		</div>
+	</div>
+</section>
+
+<script>
+	document.querySelectorAll<HTMLAnchorElement>('[data-email]').forEach((link) => {
+		const address = `${link.dataset.user}@${link.dataset.domain}`;
+		link.href = `mailto:${address}`;
+		const text = link.parentElement?.querySelector('[data-email-text]');
+		if (text) text.textContent = address;
+	});
+</script>
