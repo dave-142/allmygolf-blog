@@ -1,6 +1,7 @@
 ---
 import ArrowUp from '@lucide/astro/icons/arrow-up';
 import Rss from '@lucide/astro/icons/rss';
+import LogoMark from '../assets/brand/logo-amg.svg';
 import GolferWithBag from '../assets/illustrations/golfer-with-bag.svg';
 import { SITE_DESCRIPTION } from '../consts';
 import Contours from './Contours.astro';
@@ -20,7 +21,9 @@ const links = [
 	<div class="mx-auto max-w-7xl px-5 pt-20 pb-10 md:px-8 md:pt-28">
 		<div class="grid gap-12 md:grid-cols-[1.5fr_1fr_auto]">
 			<div>
-				<p class="max-w-sm text-2xl leading-snug font-light text-balance text-paper/80">{SITE_DESCRIPTION}</p>
+				{/* Drawn in black, so its fill is forced to the footer text colour */}
+				<LogoMark aria-hidden="true" class="size-20 text-paper md:size-24 [&_path]:fill-current!" />
+				<p class="mt-6 max-w-sm text-2xl leading-snug font-light text-balance text-paper/80">{SITE_DESCRIPTION}</p>
 			</div>
 
 			<nav aria-label="Footer">
