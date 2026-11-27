@@ -4,7 +4,6 @@ import Rss from '@lucide/astro/icons/rss';
 import GolferWithBag from '../assets/illustrations/golfer-with-bag.svg';
 import { SITE_DESCRIPTION } from '../consts';
 import Contours from './Contours.astro';
-import Logo from './Logo.astro';
 
 const year = new Date().getFullYear();
 
@@ -12,7 +11,6 @@ const links = [
 	{ href: '/blog/', label: 'Rounds' },
 	{ href: '/courses/', label: 'Courses' },
 	{ href: '/#map', label: 'Map' },
-	{ href: '/about/', label: 'About' },
 ];
 ---
 
@@ -22,8 +20,7 @@ const links = [
 	<div class="mx-auto max-w-7xl px-5 pt-20 pb-10 md:px-8 md:pt-28">
 		<div class="grid gap-12 md:grid-cols-[1.5fr_1fr_auto]">
 			<div>
-				<Logo class="size-12" />
-				<p class="mt-6 max-w-sm text-2xl leading-snug font-light text-balance text-paper/80">{SITE_DESCRIPTION}</p>
+				<p class="max-w-sm text-2xl leading-snug font-light text-balance text-paper/80">{SITE_DESCRIPTION}</p>
 			</div>
 
 			<nav aria-label="Footer">
@@ -57,21 +54,14 @@ const links = [
 			</div>
 		</div>
 
-		<!-- A golfer leaning on his bag, standing on a line above the wordmark -->
+		<!-- A golfer leaning on his bag, standing on a line above the copyright -->
 		<div class="mt-16 flex justify-end border-b border-paper/15 pr-2 md:pr-10">
 			<GolferWithBag class="-mb-px h-24 w-auto text-paper/85 md:h-32" />
 		</div>
 
-		<p
-			aria-hidden="true"
-			class="mt-6 -mb-[0.18em] text-[clamp(4.5rem,17vw,15rem)] leading-none font-black tracking-tighter whitespace-nowrap text-transparent select-none [-webkit-text-stroke:1px_rgb(238_242_244/0.25)]"
-		>
-			All My Golf
-		</p>
-
-		<div class="flex flex-col gap-2 border-t border-paper/10 pt-6 text-sm text-paper/50 sm:flex-row sm:justify-between">
+		<div class="flex flex-col gap-2 pt-6 text-sm text-paper/50 sm:flex-row sm:justify-between">
 			<p>&copy; {year} All My Golf</p>
-			<p>Played, walked and written up by me.</p>
+			<p>Played, walked and written by me.</p>
 		</div>
 	</div>
 </footer>

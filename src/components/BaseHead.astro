@@ -15,7 +15,7 @@ interface Props {
 
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 
-// Pages without an image (home, lists, about) are shared without one
+// Pages without an image (home and lists) are shared without one
 const { title, description, image } = Astro.props;
 
 // A 1200px copy for social sharing previews, rather than the full original

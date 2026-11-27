@@ -8,20 +8,25 @@ import SectionHeader from '../components/SectionHeader.astro';
 import StatsBand from '../components/StatsBand.astro';
 import { SITE_DESCRIPTION, SITE_TITLE } from '../consts';
 import Page from '../layouts/Page.astro';
+import { getStats } from '../lib/courses';
+
+const stats = await getStats();
+const headline = [
+	{ value: stats.rounds, label: 'Rounds played' },
+	{ value: stats.courses, label: 'Courses walked' },
+	...(stats.best != null ? [{ value: stats.best, label: 'Best score' }] : []),
+];
 ---
 
 <Page title={SITE_TITLE} description={SITE_DESCRIPTION}>
 	<HomeHero />
-	<StatsBand />
+	<StatsBand items={headline} />
 
 	<section id="latest" class="scroll-mt-24 py-20 md:py-28">
 		<div class="mx-auto max-w-7xl px-5 md:px-8">
 			<SectionHeader
-				index="01"
-				label="Latest rounds"
 				title="Fresh off the eighteenth"
 				intro="Write ups, scores and photos from the most recent rounds."
-				link={{ href: '/blog/', label: 'All rounds' }}
 			/>
 			<PostGrid limit={7} leadFirst />
 		</div>
@@ -31,10 +36,7 @@ import Page from '../layouts/Page.astro';
 		<Contours class="text-accent/6" />
 		<div class="mx-auto max-w-7xl px-5 md:px-8">
 			<SectionHeader
-				index="02"
-				label="The map"
 				title="Where I've played"
-				intro="Every course with a pin. Click one to see every round I have played there."
 				link={{ href: '/courses/', label: 'All courses' }}
 				dark
 			/>
@@ -44,7 +46,7 @@ import Page from '../layouts/Page.astro';
 
 	<section class="py-20 md:py-28">
 		<div class="mx-auto max-w-7xl px-5 md:px-8">
-			<SectionHeader index="03" label="Course log" title="Every course, year by year" />
+			<SectionHeader title="Every course, year by year" />
 			<CourseTimeline />
 		</div>
 	</section>

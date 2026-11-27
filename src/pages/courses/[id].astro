@@ -2,8 +2,9 @@
 import { Image } from 'astro:assets';
 import { type CollectionEntry, getCollection } from 'astro:content';
 import PageHero from '../../components/PageHero.astro';
-import StatStrip, { type Stat } from '../../components/StatStrip.astro';
+import SectionHeader from '../../components/SectionHeader.astro';
 import Stars from '../../components/Stars.astro';
+import StatsBand, { type StatItem } from '../../components/StatsBand.astro';
 import { SITE_TITLE } from '../../consts';
 import Page from '../../layouts/Page.astro';
 import { bestScore, coverPhoto, getRounds, latestPhoto, postHref } from '../../lib/courses';
@@ -34,81 +35,86 @@ const versusPar = (score?: number) => {
 	return diff === 0 ? 'E' : diff > 0 ? `+${diff}` : `${diff}`;
 };
 
-// The stats strip: my record here, then the course. A 0 means not filled in yet
-const stats: Stat[] = [
-	...(rounds.length > 0 ? [{ label: 'Played', value: rounds.length }] : []),
+// The stats band under the hero: my record here, then the course
+const stats: StatItem[] = [
+	...(rounds.length > 0 ? [{ label: 'Rounds', value: rounds.length }] : []),
 	...(best != null ? [{ label: 'Best', value: best, extra: versusPar(best) }] : []),
 	...(average != null && scores.length > 1 ? [{ label: 'Average', value: average.toFixed(1) }] : []),
 	...(par ? [{ label: 'Par', value: par }] : []),
 	...(yardage ? [{ label: 'Yards', value: yardage.toLocaleString('en-GB') }] : []),
 ];
+
+// Date, score, rating, photo. Rating moves under the date on small screens
+const columns = 'grid grid-cols-[minmax(0,1fr)_auto_2.75rem] items-center gap-x-4 sm:grid-cols-[minmax(0,1fr)_6rem_7.5rem_2.75rem] sm:gap-x-6';
 ---
 
 <Page title={`${course.data.name} | ${SITE_TITLE}`} description={`My rounds at ${course.data.name}.`} image={photo}>
 	<PageHero title={course.data.name} image={photo} tall={!!photo} />
-	<StatStrip stats={stats} />
+	<StatsBand items={stats} />
 
-	{rounds.length > 0 && (
-		<section class="mx-auto max-w-7xl px-5 py-16 md:px-8 md:py-24">
-			<h2 data-reveal class="mb-10 text-4xl leading-[0.95] font-semibold tracking-tighter md:mb-14 md:text-6xl">Rounds</h2>
+	<section class="mx-auto max-w-7xl px-5 py-16 md:px-8 md:py-24">
+		<SectionHeader
+			title="Rounds"
+			intro={rounds.length > 0 ? 'Every round I have played here, newest first.' : 'Not played yet.'}
+		/>
 
+		{rounds.length > 0 && (
 			<div
 				data-reveal
 				class="overflow-hidden rounded-[1.75rem] bg-white shadow-[0_1px_0_rgb(0_0_0/0.04),0_20px_40px_-30px_rgb(28_35_38/0.35)] ring-1 ring-ink/5"
 			>
-				<table class="w-full text-left">
-					<thead class="bg-night-800 text-xs font-semibold tracking-widest text-mist uppercase">
-						<tr>
-							<th scope="col" class="py-4 pr-2 pl-5 md:pl-7">Date</th>
-							<th scope="col" class="px-2 py-4">Score</th>
-							<th scope="col" class="hidden px-2 py-4 sm:table-cell">Rating</th>
-							<th scope="col" class="py-4 pr-5 pl-2 text-right md:pr-7"><span class="sr-only">Photos</span></th>
-						</tr>
-					</thead>
-					<tbody>
-						{rounds.map((round) => {
-							const { pubDate, score, rating, verdict } = round.data;
-							const isBest = best != null && score === best;
-							const thumb = coverPhoto(round);
-							return (
-								<tr
-									class:list={[
-										'group relative border-b border-ink/5 transition-colors last:border-0 hover:bg-panel/40',
-										isBest && 'bg-accent/10',
-									]}
-								>
-									<td class="py-3 pr-2 pl-5 md:pl-7">
-										<a href={postHref(round.id)} class="font-semibold after:absolute after:inset-0 group-hover:underline">
+				<div aria-hidden="true" class:list={[columns, 'bg-night-800 px-5 py-4 text-xs font-semibold tracking-widest text-mist uppercase md:px-8']}>
+					<span>Date</span>
+					<span>Score</span>
+					<span class="hidden sm:block">Rating</span>
+					<span></span>
+				</div>
+				<ol>
+					{rounds.map((round) => {
+						const { pubDate, score, rating, verdict } = round.data;
+						const thumb = coverPhoto(round);
+						const isBest = best != null && score === best;
+						return (
+							<li
+								class:list={[
+									'group relative border-b border-ink/5 px-5 py-4 transition-colors last:border-0 hover:bg-panel/40 md:px-8',
+									isBest && 'bg-accent/10',
+								]}
+							>
+								<div class={columns}>
+									<div>
+										<a href={postHref(round.id)} class="text-lg font-semibold after:absolute after:inset-0 group-hover:underline">
 											{fullDate(pubDate)}
 										</a>
-										{isBest && (
-											<span class="ml-2 rounded-full bg-accent px-2 py-0.5 text-[0.65rem] font-semibold tracking-wider text-night uppercase">
-												Best
-											</span>
-										)}
-										{verdict && <p class="mt-0.5 text-sm text-ink/60 italic">"{verdict}"</p>}
 										{rating && <Stars rating={rating} class="mt-1 text-sm text-accent-dark sm:hidden" />}
-									</td>
-									<td class="px-2 py-3 whitespace-nowrap tabular-nums">
-										{score != null && <span class="text-lg font-semibold">{score}</span>}
-										{versusPar(score) && <span class="ml-1.5 text-sm text-ink/50">{versusPar(score)}</span>}
-									</td>
-									<td class="hidden px-2 py-3 sm:table-cell">
-										{rating && <Stars rating={rating} class="text-accent-dark" />}
-									</td>
-									<td class="py-3 pr-5 pl-2 md:pr-7">
+									</div>
+									<p class="whitespace-nowrap tabular-nums">
+										<span class="sr-only">Score: </span>
+										{score != null ? (
+											<>
+												<span class="text-lg font-semibold">{score}</span>
+												{versusPar(score) && <span class="ml-1.5 text-ink/50">{versusPar(score)}</span>}
+											</>
+										) : (
+											<span class="font-medium text-ink/55">No score</span>
+										)}
+									</p>
+									<div class="hidden sm:block">{rating && <Stars rating={rating} class="text-accent-dark" />}</div>
+									<div>
 										{thumb && (
-											<span class="ml-auto block size-11 overflow-hidden rounded-lg bg-night-800">
+											<span class="block size-11 overflow-hidden rounded-lg bg-night-800">
 												<Image src={thumb} alt="" widths={[96]} sizes="44px" quality={70} class="h-full w-full object-cover" />
 												<span class="sr-only">Has photos</span>
 											</span>
-										)}									</td>
-								</tr>
-							);
-						})}
-					</tbody>
-				</table>
+										)}
+									</div>
+								</div>
+								{verdict && <p class="mt-2 text-lg text-ink/70 italic">&ldquo;{verdict}&rdquo;</p>}
+							</li>
+						);
+					})}
+				</ol>
 			</div>
-		</section>
-	)}
+		)}
+	</section>
 </Page>

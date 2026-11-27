@@ -1,33 +1,46 @@
 ---
-import { getStats } from '../lib/courses';
+// Headline numbers in a dark band under the page hero, styled like the totals row on a scorecard.
+// Used on the homepage and course pages
+export interface StatItem {
+	label: string;
+	value: string | number;
+	// Smaller text after the value, e.g. "+8" after a score
+	extra?: string;
+}
 
-// Headline numbers, styled like the totals row on a scorecard
-const stats = await getStats();
+interface Props {
+	items: StatItem[];
+}
 
-const items = [
-	{ value: stats.rounds, label: 'Rounds played' },
-	{ value: stats.courses, label: 'Courses walked' },
-	{ value: stats.best, label: 'Best score' },
-].filter((item) => item.value != null);
+const { items } = Astro.props;
+// Two to a row on phones, with the first spanning the row when the count is odd. Three or fewer always share one row
+const few = items.length <= 3;
+// Written out in full so Tailwind finds the class names
+const mobileCols = ['', 'grid-cols-1', 'grid-cols-2', 'grid-cols-3'][items.length] ?? 'grid-cols-2';
+const desktopCols = ['', 'md:grid-cols-1', 'md:grid-cols-2', 'md:grid-cols-3', 'md:grid-cols-4', 'md:grid-cols-5'][items.length] ?? 'md:grid-cols-5';
 ---
 
-<section class="bg-night-800 text-paper">
-	<dl class="mx-auto grid max-w-7xl grid-cols-3">
-		{items.map((item, i) => (
-			<div
-				data-reveal
-				style={`--reveal-delay: ${i * 90}ms`}
-				class:list={[
-					// Reversed so the number shows first; justify-end packs it to the top so numbers line up when labels wrap
-					'flex flex-col-reverse justify-end gap-2 border-paper/10 px-4 py-10 sm:px-5 md:px-8 md:py-14',
-					i < items.length - 1 && 'border-r',
-				]}
-			>
-				<dt class="text-xs font-semibold tracking-[0.2em] text-paper/60 uppercase">{item.label}</dt>
-				<dd class="text-6xl leading-none font-extralight tracking-tighter text-accent tabular-nums md:text-8xl" data-count={item.value}>
-					{item.value}
-				</dd>
-			</div>
-		))}
-	</dl>
-</section>
+{items.length > 0 && (
+	<section class="bg-night-800 text-paper">
+		<dl class:list={['mx-auto grid max-w-7xl gap-px bg-paper/10', mobileCols, desktopCols]}>
+			{items.map((item, i) => (
+				<div
+					data-reveal
+					style={`--reveal-delay: ${i * 90}ms`}
+					class:list={[
+						// Reversed so the number shows first; justify-end packs it to the top so numbers line up when labels wrap
+						'flex flex-col-reverse justify-end gap-2 bg-night-800 px-4 py-10 sm:px-5 md:px-8 md:py-14',
+						!few && i === 0 && items.length % 2 === 1 && 'col-span-2 md:col-span-1',
+					]}
+				>
+					<dt class="text-xs font-semibold tracking-[0.2em] text-paper/60 uppercase">{item.label}</dt>
+					<dd class:list={['leading-none font-extralight tracking-tighter text-accent tabular-nums', few ? 'text-6xl md:text-8xl' : 'text-6xl md:text-7xl']}>
+						{/* Whole numbers count up from zero. Others, like 82.3 or 6,123, would end up wrong */}
+						<span data-count={typeof item.value === 'number' && Number.isInteger(item.value) ? item.value : undefined}>{item.value}</span>
+						{item.extra && <span class="ml-1 text-2xl font-normal tracking-normal text-paper/50 md:text-3xl">{item.extra}</span>}
+					</dd>
+				</div>
+			))}
+		</dl>
+	</section>
+)}

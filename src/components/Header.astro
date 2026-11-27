@@ -1,11 +1,10 @@
 ---
-import Logo from './Logo.astro';
+import BrandLogo from '../assets/brand/allmygolf-logo.svg';
 
 const links = [
 	{ href: '/blog/', label: 'Rounds' },
 	{ href: '/courses/', label: 'Courses' },
 	{ href: '/#map', label: 'Map' },
-	{ href: '/about/', label: 'About' },
 ];
 
 const current = Astro.url.pathname;
@@ -22,9 +21,10 @@ const isActive = (href: string) => !href.includes('#') && current.startsWith(hre
 	>
 	</div>
 	<div class="mx-auto flex max-w-7xl items-center justify-between px-5 py-4 md:px-8 md:py-5">
-		<a href="/" class="group/logo flex items-center gap-2.5 text-lg font-bold tracking-tight md:text-xl">
-			<Logo class="size-8 transition-transform duration-500 group-hover/logo:-rotate-12" />
-			All My Golf
+		<a href="/" class="flex items-center">
+			{/* The logo file is drawn in black. Forcing its fill to the text colour lets it turn from white to dark on scroll like the rest of the header */}
+			<BrandLogo aria-hidden="true" class="h-11 w-auto md:h-12 [&_path]:fill-current!" />
+			<span class="sr-only">All My Golf</span>
 		</a>
 
 		<nav aria-label="Main" class="hidden md:block">

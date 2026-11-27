@@ -1,28 +1,25 @@
 ---
 import { Image } from 'astro:assets';
 import { type CollectionEntry, getEntry } from 'astro:content';
-import ArrowLeft from '@lucide/astro/icons/arrow-left';
 import ArrowUpRight from '@lucide/astro/icons/arrow-up-right';
 import Expand from '@lucide/astro/icons/expand';
 import X from '@lucide/astro/icons/x';
 import FormattedDate from '../components/FormattedDate.astro';
 import PageHero from '../components/PageHero.astro';
-import PostGrid from '../components/PostGrid.astro';
 import SectionHeader from '../components/SectionHeader.astro';
 import Stars from '../components/Stars.astro';
-import { bestScore, courseHref, getCourseMap, getFeed, getRounds, postTile } from '../lib/courses';
+import { bestScore, courseHref, getRounds } from '../lib/courses';
 import Page from './Page.astro';
 
-// The about page uses this layout too, so everything beyond title, description and date is optional
+// Everything beyond title, description and date is optional
 type Props = Partial<CollectionEntry<'blog'>['data']> &
 	Pick<CollectionEntry<'blog'>['data'], 'title' | 'description' | 'pubDate'> & {
 		id?: string;
-		// False when a post has nothing under the frontmatter. The about page leaves it out
+		// False when a post has nothing under the frontmatter
 		hasBody?: boolean;
 	};
 
 const {
-	id,
 	title,
 	description,
 	pubDate,
@@ -41,16 +38,6 @@ const course = courseRef && (await getEntry(courseRef));
 const hero = heroImage ?? gallery[0]?.image;
 
 const photos = gallery;
-
-// Three more recent posts to keep reading
-const more = id
-	? await Promise.all([getFeed(), getCourseMap()]).then(([posts, courses]) =>
-			posts
-				.filter((p) => p.id !== id)
-				.slice(0, 3)
-				.map((p) => postTile(p, courses)),
-		)
-	: [];
 
 // Course best: this round matches your lowest score at the course, and you have played it more than once
 const roundsHere = course ? (await getRounds()).filter((r) => r.data.course?.id === course.id) : [];
@@ -85,26 +72,6 @@ const prose =
 				course ? 'grid max-w-6xl gap-10 lg:grid-cols-[20rem_minmax(0,1fr)] lg:gap-16' : 'max-w-3xl',
 			]}
 		>
-			{id && (
-				<nav
-					aria-label="Post"
-					class:list={['flex flex-wrap items-center justify-between gap-3 border-b border-ink/10 pb-6', course ? 'lg:col-span-2' : 'mb-10']}
-				>
-					<ul class="flex flex-wrap items-center gap-2">
-						<li>
-							<a
-								href="/blog/"
-								class="group inline-flex items-center gap-2 rounded-full border border-ink/15 px-5 py-2.5 text-sm font-semibold text-ink transition-colors hover:border-night-800 hover:bg-night-800 hover:text-paper"
-							>
-								<ArrowLeft class="size-4 transition-transform group-hover:-translate-x-0.5" aria-hidden="true" />
-								All rounds
-							</a>
-						</li>
-					</ul>
-					{/* Room on the right for more navigation later, e.g. previous and next round */}
-				</nav>
-			)}
-
 			{course && (
 				<aside data-reveal class="self-start rounded-[1.75rem] bg-night p-6 text-paper shadow-[0_30px_60px_-30px_rgb(28_35_38/0.6)]">
 					<p class="font-semibold tracking-[0.2em] text-paper/60 uppercase"><FormattedDate date={pubDate} /></p>
@@ -176,7 +143,7 @@ const prose =
 
 		{photos.length > 0 && (
 			<section class="mx-auto max-w-7xl px-5 pb-20 md:px-8">
-				<SectionHeader label="GALLERY" title="From the course" />
+				<SectionHeader title="From the course" />
 				<div class="columns-1 gap-4 sm:columns-2 lg:columns-3">
 					{photos.map((photo, i) => (
 						<button
@@ -213,16 +180,6 @@ const prose =
 			</section>
 		)}
 	</article>
-
-	{more.length > 0 && (
-		<section class="bg-panel/60 py-20 md:py-24">
-			<div class="mx-auto max-w-7xl px-5 md:px-8">
-				<SectionHeader label="Keep reading" title="More rounds" link={{ href: '/blog/', label: 'All rounds' }} />
-				<PostGrid tiles={more} columns={3} />
-			</div>
-		</section>
-	)}
-
 
 	{photos.length > 0 && (
 		<dialog
