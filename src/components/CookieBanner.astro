@@ -1,0 +1,76 @@
+---
+// Asks before Google Analytics loads. Shows until the visitor answers, and again from "Cookie settings" in the footer.
+// Accept and Reject look the same so neither is pushed
+const button =
+	'flex-1 cursor-pointer rounded-full border border-paper/20 px-5 py-2.5 text-sm font-semibold transition-colors hover:border-accent hover:bg-accent hover:text-night';
+---
+
+<section
+	data-cookie-banner
+	hidden
+	aria-label="Cookie consent"
+	class="fixed inset-x-4 bottom-4 z-60 rounded-card bg-night p-6 text-paper shadow-card-dark ring-1 ring-paper/10 sm:inset-x-auto sm:right-6 sm:bottom-6 sm:max-w-sm"
+>
+	<p class="caps-label text-mist">Cookies</p>
+	<p class="mt-3 text-paper/80">I use Google Analytics cookies to see which rounds people read. They only load if you accept.</p>
+	<div class="mt-5 flex gap-3">
+		<button type="button" data-consent="granted" class={button}>Accept</button>
+		<button type="button" data-consent="denied" class={button}>Reject</button>
+	</div>
+</section>
+
+<script>
+	type AnalyticsWindow = Window & { loadAnalytics?: () => void; [key: string]: unknown };
+	const win = window as AnalyticsWindow;
+	const banner = document.querySelector<HTMLElement>('[data-cookie-banner]');
+	const KEY = 'cookie-consent';
+
+	const read = () => {
+		try {
+			return localStorage.getItem(KEY);
+		} catch {
+			return null;
+		}
+	};
+	const save = (value: string) => {
+		try {
+			localStorage.setItem(KEY, value);
+		} catch {
+			// Storage blocked. The answer still applies to this page
+		}
+	};
+
+	// Stops tracking on this page and removes Google's cookies, for someone who accepted before and now rejects
+	const removeAnalytics = () => {
+		win['ga-disable-G-PVE1KBPW52'] = true;
+		const domains = ['', location.hostname, `.${location.hostname.replace(/^www\./, '')}`];
+		document.cookie.split(';').forEach((cookie) => {
+			const name = cookie.split('=')[0].trim();
+			if (!name.startsWith('_ga')) return;
+			domains.forEach((domain) => {
+				document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/${domain ? `; domain=${domain}` : ''}`;
+			});
+		});
+	};
+
+	if (banner) {
+		if (!read()) banner.hidden = false;
+
+		banner.querySelectorAll<HTMLButtonElement>('[data-consent]').forEach((button) =>
+			button.addEventListener('click', () => {
+				const choice = button.dataset.consent ?? 'denied';
+				save(choice);
+				if (choice === 'granted') win.loadAnalytics?.();
+				else removeAnalytics();
+				banner.hidden = true;
+			}),
+		);
+
+		document.querySelectorAll<HTMLButtonElement>('[data-cookie-settings]').forEach((button) =>
+			button.addEventListener('click', () => {
+				banner.hidden = false;
+				banner.querySelector<HTMLButtonElement>('[data-consent]')?.focus();
+			}),
+		);
+	}
+</script>

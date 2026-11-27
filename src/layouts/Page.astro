@@ -1,6 +1,7 @@
 ---
 import type { ImageMetadata } from 'astro';
 import BaseHead from '../components/BaseHead.astro';
+import CookieBanner from '../components/CookieBanner.astro';
 import Footer from '../components/Footer.astro';
 import Header from '../components/Header.astro';
 
@@ -33,6 +34,7 @@ const { title, description, image } = Astro.props;
 			<slot />
 		</main>
 		<Footer />
+		<CookieBanner />
 
 		<script>
 			// Reveal on scroll

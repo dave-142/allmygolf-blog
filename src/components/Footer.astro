@@ -63,7 +63,11 @@ const links = [
 		</div>
 
 		<div class="flex flex-col gap-2 pt-6 text-sm text-paper/50 sm:flex-row sm:justify-between">
-			<p>&copy; {year} All My Golf</p>
+			<p>
+				&copy; {year} All My Golf
+				<span aria-hidden="true" class="mx-2">&middot;</span>
+				<button type="button" data-cookie-settings class="cursor-pointer underline-offset-4 hover:text-accent hover:underline">Cookie settings</button>
+			</p>
 			<p>Played, walked and written by me.</p>
 		</div>
 	</div>

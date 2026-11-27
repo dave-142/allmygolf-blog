@@ -34,15 +34,31 @@ const shareImage = image && (await getImage({ src: image, width: 1200, format: '
 />
 <meta name="generator" content={Astro.generator} />
 
-<!-- Google Analytics. is:inline keeps Astro from bundling these scripts -->
-<script is:inline async src="https://www.googletagmanager.com/gtag/js?id=G-PVE1KBPW52"></script>
+<!--
+	Google Analytics, only after the visitor accepts in the cookie banner. Nothing from Google loads before that.
+	is:inline keeps Astro from bundling it, so it runs as early as possible on return visits
+-->
 <script is:inline>
 	window.dataLayer = window.dataLayer || [];
 	function gtag() {
 		dataLayer.push(arguments);
 	}
-	gtag('js', new Date());
-	gtag('config', 'G-PVE1KBPW52');
+	window.loadAnalytics = function () {
+		if (window.analyticsLoaded) return;
+		window.analyticsLoaded = true;
+		window['ga-disable-G-PVE1KBPW52'] = false;
+		var script = document.createElement('script');
+		script.async = true;
+		script.src = 'https://www.googletagmanager.com/gtag/js?id=G-PVE1KBPW52';
+		document.head.appendChild(script);
+		gtag('js', new Date());
+		gtag('config', 'G-PVE1KBPW52');
+	};
+	try {
+		if (localStorage.getItem('cookie-consent') === 'granted') window.loadAnalytics();
+	} catch (e) {
+		// Storage blocked, so treat it as no answer yet
+	}
 </script>
 
 <Font cssVariable="--font-outfit" preload />
