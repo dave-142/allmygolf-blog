@@ -40,7 +40,7 @@ const tiles: Tile[] =
 				data-tags={tile.tags?.length ? `|${tile.tags.join('|')}|` : undefined}
 				style={`--reveal-delay: ${(i % 4) * 70}ms`}
 				class:list={[
-					'group relative isolate block overflow-hidden rounded-[1.75rem] bg-night-800 text-white shadow-[0_20px_50px_-30px_rgb(28_35_38/0.6)] transition-shadow duration-500 hover:shadow-[0_30px_70px_-25px_rgb(28_35_38/0.7)]',
+					'group relative isolate block overflow-hidden rounded-card bg-night-800 text-paper shadow-card-dark',
 					lead && 'sm:col-span-2 lg:row-span-2',
 				]}
 			>
@@ -59,21 +59,21 @@ const tiles: Tile[] =
 				<div class="absolute inset-0 -z-10 bg-linear-to-t from-night/95 via-night/35 to-transparent transition-opacity duration-500 group-hover:from-night"></div>
 
 				{tile.badge != null && (
-					<div class="absolute top-4 right-4 flex flex-col items-center rounded-2xl bg-accent px-3 py-2 text-night shadow-lg">
-						<span class="text-2xl leading-none font-bold tabular-nums">{tile.badge}</span>
-						{tile.badgeLabel && <span class="mt-0.5 text-[0.6rem] font-semibold tracking-widest uppercase">{tile.badgeLabel}</span>}
+					<div class="absolute top-4 right-4 flex flex-col items-center rounded-2xl bg-accent px-3 py-2 text-night">
+						<span class="text-2xl leading-none font-semibold tracking-tight tabular-nums">{tile.badge}</span>
+						{tile.badgeLabel && <span class="mt-1 text-[0.625rem] font-semibold tracking-[0.2em] uppercase">{tile.badgeLabel}</span>}
 					</div>
 				)}
 
-				<div class="absolute top-4 left-4 grid size-10 translate-y-1 place-items-center rounded-full bg-white/15 opacity-0 backdrop-blur-md transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100">
+				<div class="absolute top-4 left-4 grid size-10 translate-y-1 place-items-center rounded-full bg-paper/15 opacity-0 backdrop-blur-md transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100">
 					<ArrowUpRight class="size-5" aria-hidden="true" />
 				</div>
 
 				<div class="flex h-full flex-col justify-end p-6">
-					<p class="mb-2 flex flex-wrap items-center gap-x-2 text-xs font-semibold tracking-wider text-mist uppercase">
+					<p class="mb-2 flex flex-wrap items-center gap-x-2 caps-label text-mist">
 						{tile.date && <FormattedDate date={tile.date} />}
 						{tile.date && tile.eyebrow && <span aria-hidden="true" class="size-1 rounded-full bg-accent/60"></span>}
-						{tile.eyebrow && <span class="text-white/80">{tile.eyebrow}</span>}
+						{tile.eyebrow && <span class="text-paper/80">{tile.eyebrow}</span>}
 					</p>
 					<h3
 						class:list={[
@@ -86,7 +86,7 @@ const tiles: Tile[] =
 					{tile.description && (
 						<p
 							class:list={[
-								'mt-2 text-white/75',
+								'mt-2 text-paper/75',
 								lead ? 'line-clamp-3 max-w-xl text-base md:text-lg' : 'line-clamp-2 text-sm',
 							]}
 						>

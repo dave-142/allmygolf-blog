@@ -38,7 +38,7 @@ const versusPar = (score?: number) => {
 // The stats band under the hero: my record here, then the course
 const stats: StatItem[] = [
 	...(rounds.length > 0 ? [{ label: 'Rounds', value: rounds.length }] : []),
-	...(best != null ? [{ label: 'Best', value: best, extra: versusPar(best) }] : []),
+	...(best != null ? [{ label: 'Best', value: best, extra: versusPar(best), accent: true }] : []),
 	...(average != null && scores.length > 1 ? [{ label: 'Average', value: average.toFixed(1) }] : []),
 	...(par ? [{ label: 'Par', value: par }] : []),
 	...(yardage ? [{ label: 'Yards', value: yardage.toLocaleString('en-GB') }] : []),
@@ -61,9 +61,9 @@ const columns = 'grid grid-cols-[minmax(0,1fr)_auto_2.75rem] items-center gap-x-
 		{rounds.length > 0 && (
 			<div
 				data-reveal
-				class="overflow-hidden rounded-[1.75rem] bg-white shadow-[0_1px_0_rgb(0_0_0/0.04),0_20px_40px_-30px_rgb(28_35_38/0.35)] ring-1 ring-ink/5"
+				class="overflow-hidden rounded-card bg-white shadow-card ring-1 ring-ink/5"
 			>
-				<div aria-hidden="true" class:list={[columns, 'bg-night-800 px-5 py-4 text-xs font-semibold tracking-widest text-mist uppercase md:px-8']}>
+				<div aria-hidden="true" class:list={[columns, 'bg-night-800 px-5 py-4 caps-label text-mist md:px-8']}>
 					<span>Date</span>
 					<span>Score</span>
 					<span class="hidden sm:block">Rating</span>
@@ -77,8 +77,9 @@ const columns = 'grid grid-cols-[minmax(0,1fr)_auto_2.75rem] items-center gap-x-
 						return (
 							<li
 								class:list={[
-									'group relative border-b border-ink/5 px-5 py-4 transition-colors last:border-0 hover:bg-panel/40 md:px-8',
-									isBest && 'bg-accent/10',
+									'group relative border-b border-ink/5 px-5 py-4 transition-colors last:border-0 md:px-8',
+									// The best round keeps its highlight. Other rows get a neutral hover
+									isBest ? 'bg-accent/10' : 'hover:bg-paper',
 								]}
 							>
 								<div class={columns}>
@@ -109,7 +110,7 @@ const columns = 'grid grid-cols-[minmax(0,1fr)_auto_2.75rem] items-center gap-x-
 										)}
 									</div>
 								</div>
-								{verdict && <p class="mt-2 text-lg text-ink/70 italic">&ldquo;{verdict}&rdquo;</p>}
+								{verdict && <p class="mt-2 text-lg text-ink/70">&ldquo;{verdict}&rdquo;</p>}
 							</li>
 						);
 					})}

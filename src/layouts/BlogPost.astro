@@ -68,13 +68,14 @@ const prose =
 	<article class="relative">
 		<div
 			class:list={[
-				'mx-auto px-5 pt-10 pb-16 md:px-8 md:pt-16 md:pb-20',
-				course ? 'grid max-w-6xl gap-10 lg:grid-cols-[20rem_minmax(0,1fr)] lg:gap-16' : 'max-w-3xl',
+				// Same width as the hero so the left edges line up. Text keeps a readable line length inside it
+				'mx-auto max-w-7xl px-5 py-16 md:px-8 md:py-24',
+				course && 'grid gap-10 lg:grid-cols-[20rem_minmax(0,1fr)] lg:gap-16',
 			]}
 		>
 			{course && (
-				<aside data-reveal class="self-start rounded-[1.75rem] bg-night p-6 text-paper shadow-[0_30px_60px_-30px_rgb(28_35_38/0.6)]">
-					<p class="font-semibold tracking-[0.2em] text-paper/60 uppercase"><FormattedDate date={pubDate} /></p>
+				<aside data-reveal class="self-start rounded-card bg-night p-6 text-paper shadow-card-dark">
+					<p class="caps-label text-mist"><FormattedDate date={pubDate} /></p>
 
 					<a href={courseHref(course.id)} class="group mt-4 flex items-start justify-between gap-3 text-2xl leading-tight font-semibold tracking-tight text-balance hover:text-accent">
 						{course.data.name}
@@ -85,16 +86,16 @@ const prose =
 					{(rating != null || verdict) && (
 						<div class="mt-5">
 							{rating != null && <Stars rating={rating} class="text-lg text-accent" />}
-							{verdict && <p class="mt-3 font-serif text-xl leading-snug text-paper/90 italic first:mt-0">&ldquo;{verdict}&rdquo;</p>}
+							{verdict && <p class="mt-3 text-xl leading-snug text-paper/80 first:mt-0">&ldquo;{verdict}&rdquo;</p>}
 						</div>
 					)}
 
 					<div class="mt-5 flex items-stretch justify-between gap-4 border-t border-paper/15 pt-5">
 						{score != null ? (
 							<div class="flex flex-col justify-between">
-								<p class="font-semibold tracking-widest text-paper/60 uppercase">Score</p>
+								<p class="caps-label text-mist">Score</p>
 								<p class="mt-2">
-									<span class="text-6xl leading-none font-bold text-accent tabular-nums">{score}</span>
+									<span class="text-6xl leading-none font-semibold tracking-tight text-accent tabular-nums">{score}</span>
 									{toPar && <span class="ml-2 text-xl font-medium text-paper/60 tabular-nums">{toPar}</span>}
 								</p>
 							</div>
@@ -104,8 +105,8 @@ const prose =
 						<dl class="flex gap-5 text-right [&>div]:flex [&>div]:flex-col [&>div]:justify-between">
 							{par ? (
 								<div>
-									<dt class="font-semibold tracking-widest text-paper/60 uppercase">Par</dt>
-									<dd class="mt-2 text-5xl leading-none font-semibold tabular-nums">{par}</dd>
+									<dt class="caps-label text-mist">Par</dt>
+									<dd class="mt-2 text-5xl leading-none font-semibold tracking-tight tabular-nums">{par}</dd>
 								</div>
 							) : null}
 						</dl>
@@ -113,18 +114,18 @@ const prose =
 
 					{yardage ? (
 						<dl class="mt-5 flex items-baseline justify-between gap-4 border-t border-paper/15 pt-5">
-							<dt class="font-semibold tracking-widest text-paper/60 uppercase">Yards</dt>
+							<dt class="caps-label text-mist">Yards</dt>
 							<dd class="text-lg leading-none font-semibold tabular-nums">{yardage.toLocaleString('en-GB')}</dd>
 						</dl>
 					) : null}
 
 					{courseBest && (
-						<p class="mt-4 inline-block rounded-full bg-accent px-3 py-1 text-[0.65rem] font-semibold tracking-wider text-night uppercase">Course best</p>
+						<p class="mt-5 inline-block rounded-full bg-accent px-3 py-1 caps-label text-night">Course best</p>
 					)}
 				</aside>
 			)}
 
-			<div class="flex flex-col gap-12">
+			<div class="flex max-w-3xl flex-col gap-12">
 				{hasBody && (
 					<div class={prose}>
 						<slot />
@@ -134,7 +135,7 @@ const prose =
 				{tags.length > 0 && (
 					<ul class="flex flex-wrap gap-2 border-t border-ink/10 pt-8">
 						{tags.map((tag) => (
-							<li class="rounded-full bg-panel px-4 py-1.5 text-sm font-medium text-night-800">#{tag}</li>
+							<li class="rounded-full border border-ink/10 px-3.5 py-1.5 text-sm font-semibold text-ink/70"><span aria-hidden="true" class="text-ink/30">#</span>{tag}</li>
 						))}
 					</ul>
 				)}
@@ -142,7 +143,7 @@ const prose =
 		</div>
 
 		{photos.length > 0 && (
-			<section class="mx-auto max-w-7xl px-5 pb-20 md:px-8">
+			<section class="mx-auto max-w-7xl px-5 pb-16 md:px-8 md:pb-24">
 				<SectionHeader title="From the course" />
 				<div class="columns-1 gap-4 sm:columns-2 lg:columns-3">
 					{photos.map((photo, i) => (
@@ -152,7 +153,7 @@ const prose =
 							data-lightbox-open
 							data-caption={photo.caption ?? ''}
 							style={`--reveal-delay: ${(i % 3) * 80}ms`}
-							class="group relative mb-4 block w-full cursor-zoom-in break-inside-avoid overflow-hidden rounded-3xl bg-night-800"
+							class="group relative mb-4 block w-full cursor-zoom-in break-inside-avoid overflow-hidden rounded-card bg-night-800"
 						>
 							<Image
 								src={photo.image}

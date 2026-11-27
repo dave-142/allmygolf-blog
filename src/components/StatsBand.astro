@@ -6,6 +6,8 @@ export interface StatItem {
 	value: string | number;
 	// Smaller text after the value, e.g. "+8" after a score
 	extra?: string;
+	// Scores are orange, supporting numbers are light
+	accent?: boolean;
 }
 
 interface Props {
@@ -33,11 +35,11 @@ const desktopCols = ['', 'md:grid-cols-1', 'md:grid-cols-2', 'md:grid-cols-3', '
 						!few && i === 0 && items.length % 2 === 1 && 'col-span-2 md:col-span-1',
 					]}
 				>
-					<dt class="text-xs font-semibold tracking-[0.2em] text-paper/60 uppercase">{item.label}</dt>
-					<dd class:list={['leading-none font-extralight tracking-tighter text-accent tabular-nums', few ? 'text-6xl md:text-8xl' : 'text-6xl md:text-7xl']}>
+					<dt class="caps-label text-mist">{item.label}</dt>
+					<dd class:list={['leading-none font-semibold tracking-tight tabular-nums', item.accent ? 'text-accent' : 'text-paper', few ? 'text-5xl md:text-7xl' : 'text-5xl md:text-6xl']}>
 						{/* Whole numbers count up from zero. Others, like 82.3 or 6,123, would end up wrong */}
 						<span data-count={typeof item.value === 'number' && Number.isInteger(item.value) ? item.value : undefined}>{item.value}</span>
-						{item.extra && <span class="ml-1 text-2xl font-normal tracking-normal text-paper/50 md:text-3xl">{item.extra}</span>}
+						{item.extra && <span class="ml-1.5 text-xl font-medium tracking-normal text-paper/60 md:text-2xl">{item.extra}</span>}
 					</dd>
 				</div>
 			))}

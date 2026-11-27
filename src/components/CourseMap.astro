@@ -19,16 +19,16 @@ const pins = summaries.map(({ course }, i) => ({
 ---
 
 <div class="grid gap-4 lg:grid-cols-[1fr_22rem]">
-	<div data-reveal class="relative overflow-hidden rounded-[1.75rem] border border-paper/10 shadow-2xl shadow-black/30">
+	<div data-reveal class="relative overflow-hidden rounded-card border border-paper/10 shadow-card-dark">
 		<div data-course-map data-pins={JSON.stringify(pins)} class="isolate h-[380px] w-full md:h-[520px]"></div>
 		<p class="pointer-events-none absolute bottom-3 left-3 z-500 rounded-full bg-night/80 px-3 py-1 text-xs text-paper/70 backdrop-blur" data-map-hint>
 			Click the map to zoom with your mouse wheel
 		</p>
 	</div>
 
-	<div data-reveal style="--reveal-delay: 120ms" class="flex max-h-[520px] flex-col rounded-[1.75rem] border border-paper/10 bg-night-800/60 p-5 backdrop-blur">
+	<div data-reveal style="--reveal-delay: 120ms" class="flex max-h-[520px] flex-col rounded-card border border-paper/10 bg-night-800/60 p-5 backdrop-blur">
 		<p class="flex items-baseline justify-between border-b border-paper/10 pb-4">
-			<span class="text-xs font-semibold tracking-[0.2em] text-mist uppercase">The list</span>
+			<span class="caps-label text-mist">The list</span>
 			<span class="text-sm text-paper/60"><strong class="text-paper">{summaries.length}</strong> courses</span>
 		</p>
 		<!-- -mx-3 px-3 makes room for the links' -mx-3 hover backgrounds, so nothing overflows sideways -->

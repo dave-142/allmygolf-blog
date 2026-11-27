@@ -38,7 +38,7 @@ const formatMonth = (date: Date) => date.toLocaleDateString('en-GB', { month: 's
 						<li data-reveal style={`--reveal-delay: ${i * 80}ms`}>
 							<a
 								href={courseHref(id)}
-								class="group grid grid-cols-1 overflow-hidden rounded-[1.75rem] bg-white shadow-[0_1px_0_rgb(0_0_0/0.04),0_20px_40px_-30px_rgb(28_35_38/0.35)] ring-1 ring-ink/5 transition-all duration-500 hover:-translate-y-1 hover:shadow-[0_30px_60px_-30px_rgb(28_35_38/0.45)] sm:grid-cols-[15rem_1fr]"
+								class="group grid grid-cols-1 overflow-hidden rounded-card bg-white shadow-card ring-1 ring-ink/5 transition-all duration-500 hover:-translate-y-1 hover:shadow-card-dark sm:grid-cols-[15rem_1fr]"
 							>
 								<div class="relative aspect-16/10 overflow-hidden bg-night-800 sm:aspect-auto sm:min-h-52">
 									{photo && (
@@ -56,7 +56,7 @@ const formatMonth = (date: Date) => date.toLocaleDateString('en-GB', { month: 's
 								<div class="flex flex-col p-5 md:p-7">
 									<div class="flex items-start justify-between gap-4">
 										<div>
-											<p class="text-xs font-semibold tracking-wider text-slate uppercase">
+											<p class="caps-label text-slate">
 												{formatMonth(latest.data.pubDate)}
 											</p>
 											<h3 class="mt-1.5 text-2xl leading-tight font-semibold tracking-tight text-balance md:text-3xl">
@@ -69,24 +69,24 @@ const formatMonth = (date: Date) => date.toLocaleDateString('en-GB', { month: 's
 									</div>
 
 									{latest.data.verdict && (
-										<p class="mt-3 text-lg text-ink/60 italic">"{latest.data.verdict}"</p>
+										<p class="mt-3 text-lg text-ink/70">&ldquo;{latest.data.verdict}&rdquo;</p>
 									)}
 
 									<dl class="mt-auto flex gap-8 border-t border-ink/10 pt-4 text-sm md:mt-6">
 										<div>
-											<dt class="text-[0.65rem] font-semibold tracking-widest text-ink/40 uppercase">Rounds</dt>
-											<dd class="text-2xl font-semibold tabular-nums">{yearRounds.length}</dd>
+											<dt class="caps-label text-slate">Rounds</dt>
+											<dd class="mt-1 text-2xl leading-none font-semibold tracking-tight tabular-nums">{yearRounds.length}</dd>
 										</div>
 										{best != null && (
 											<div>
-												<dt class="text-[0.65rem] font-semibold tracking-widest text-ink/40 uppercase">Best</dt>
-												<dd class="text-2xl font-semibold tabular-nums">{best}</dd>
+												<dt class="caps-label text-slate">Best</dt>
+												<dd class="mt-1 text-2xl leading-none font-semibold tracking-tight tabular-nums">{best}</dd>
 											</div>
 										)}
 										{course.data.par != null && (
 											<div>
-												<dt class="text-[0.65rem] font-semibold tracking-widest text-ink/40 uppercase">Par</dt>
-												<dd class="text-2xl font-semibold tabular-nums">{course.data.par}</dd>
+												<dt class="caps-label text-slate">Par</dt>
+												<dd class="mt-1 text-2xl leading-none font-semibold tracking-tight tabular-nums">{course.data.par}</dd>
 											</div>
 										)}
 									</dl>

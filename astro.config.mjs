@@ -17,30 +17,9 @@ export default defineConfig({
 			provider: fontProviders.google(),
 			name: 'Outfit',
 			cssVariable: '--font-outfit',
-			weights: [100, 200, 300, 400, 500, 600, 700, 800, 900],
+			// Only the weights the site uses
+			weights: [200, 300, 400, 500, 600, 700],
 			fallbacks: ['sans-serif'],
-		},
-		{
-			provider: fontProviders.local(),
-			name: 'Atkinson',
-			cssVariable: '--font-atkinson',
-			fallbacks: ['sans-serif'],
-			options: {
-				variants: [
-					{
-						src: ['./src/assets/fonts/atkinson-regular.woff'],
-						weight: 400,
-						style: 'normal',
-						display: 'swap',
-					},
-					{
-						src: ['./src/assets/fonts/atkinson-bold.woff'],
-						weight: 700,
-						style: 'normal',
-						display: 'swap',
-					},
-				],
-			},
 		},
 	],
 });

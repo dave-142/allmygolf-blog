@@ -15,7 +15,7 @@ const isActive = (href: string) => !href.includes('#') && current.startsWith(hre
 	Sits over the dark hero at the top of every page, then turns solid once you scroll.
 	data-scrolled and data-open are set by the script below.
 -->
-<header data-site-header class="group fixed inset-x-0 top-0 z-50 text-white transition-colors duration-300 data-scrolled:text-ink data-open:text-white">
+<header data-site-header class="group fixed inset-x-0 top-0 z-50 text-paper transition-colors duration-300 data-scrolled:text-ink data-open:text-paper">
 	<div
 		class="absolute inset-0 -z-10 border-b border-transparent transition-all duration-300 group-data-scrolled:border-ink/5 group-data-scrolled:bg-paper/80 group-data-scrolled:shadow-[0_8px_30px_-12px_rgb(0_0_0/0.15)] group-data-scrolled:backdrop-blur-xl group-data-open:bg-night!"
 	>
@@ -28,13 +28,13 @@ const isActive = (href: string) => !href.includes('#') && current.startsWith(hre
 		</a>
 
 		<nav aria-label="Main" class="hidden md:block">
-			<ul class="flex items-center gap-1 rounded-full border border-white/15 bg-white/5 p-1 text-sm font-medium backdrop-blur-md transition-colors group-data-scrolled:border-ink/10 group-data-scrolled:bg-white/60">
+			<ul class="flex items-center gap-1 rounded-full border border-paper/15 bg-paper/5 p-1 text-sm font-medium backdrop-blur-md transition-colors group-data-scrolled:border-ink/10 group-data-scrolled:bg-white/60">
 				{links.map((link) => (
 					<li>
 						<a
 							href={link.href}
 							aria-current={isActive(link.href) ? 'page' : undefined}
-							class="block rounded-full px-4 py-2 transition-colors hover:bg-white/15 group-data-scrolled:hover:bg-ink/5 aria-[current=page]:bg-accent! aria-[current=page]:text-night"
+							class="block rounded-full px-4 py-2 transition-colors hover:bg-paper/15 group-data-scrolled:hover:bg-ink/5 aria-[current=page]:bg-accent! aria-[current=page]:text-night"
 						>
 							{link.label}
 						</a>
@@ -71,7 +71,7 @@ const isActive = (href: string) => !href.includes('#') && current.startsWith(hre
 					<a
 						href={link.href}
 						aria-current={isActive(link.href) ? 'page' : undefined}
-						class="flex items-center justify-between border-b border-white/10 py-5 text-4xl font-semibold tracking-tight aria-[current=page]:text-accent"
+						class="flex items-center justify-between border-b border-paper/10 py-5 text-4xl font-semibold tracking-tight aria-[current=page]:text-accent"
 					>
 						{link.label}
 						<span aria-hidden="true" class="text-2xl text-accent">&rarr;</span>
@@ -79,7 +79,7 @@ const isActive = (href: string) => !href.includes('#') && current.startsWith(hre
 				</li>
 			))}
 		</ul>
-		<p class="mt-10 text-sm text-white/50">Not a review site. Just my golf.</p>
+		<p class="mt-10 text-sm text-paper/50">Not a review site. Just my golf.</p>
 	</nav>
 </header>
 

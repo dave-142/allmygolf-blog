@@ -16,6 +16,11 @@
 	--color-accent: #ef9e4b; /* Butterscotch */
 	--color-accent-dark: #d07f2c;
 
+	/* Every card shares one radius, and one of two shadows: white cards on the paper background, or dark cards */
+	--radius-card: 1.75rem;
+	--shadow-card: 0 1px 0 rgb(0 0 0 / 0.04), 0 20px 40px -30px rgb(28 35 38 / 0.35);
+	--shadow-card-dark: 0 30px 60px -30px rgb(28 35 38 / 0.6);
+
 	--animate-kenburns: kenburns 22s ease-out forwards;
 	--animate-ping-slow: ping 2.4s cubic-bezier(0, 0, 0.2, 1) infinite;
 
@@ -47,6 +52,11 @@
 	:focus-visible {
 		@apply outline-2 outline-offset-2 outline-accent-dark;
 	}
+}
+
+/* The one small uppercase label style. Pair it with text-mist on dark backgrounds and text-slate on light ones */
+@utility caps-label {
+	@apply text-xs font-semibold tracking-[0.2em] uppercase;
 }
 
 /* Scroll reveal. Only hides content when JS has run, so nothing is lost without it */

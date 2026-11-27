@@ -37,10 +37,10 @@ const photo = latest && coverPhoto(latest);
 		{latest && (
 			<a
 				href={postHref(latest.id)}
-				class="group block rounded-[1.75rem] border border-paper/15 bg-night/40 p-5 backdrop-blur-xl transition-colors hover:border-accent/60 hover:bg-night/60"
+				class="group block rounded-card border border-paper/15 bg-night/40 p-5 backdrop-blur-xl transition-colors hover:border-accent/60 hover:bg-night/60"
 			>
-				<div class="flex items-center justify-between text-xs font-semibold tracking-[0.2em] uppercase">
-					<span class="text-accent">Latest round</span>
+				<div class="flex items-center justify-between">
+					<span class="caps-label text-mist">Latest round</span>
 					<ArrowUpRight class="size-5 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" aria-hidden="true" />
 				</div>
 				<p class="mt-4 text-2xl leading-tight font-semibold tracking-tight text-balance">{latest.data.title}</p>
@@ -51,8 +51,8 @@ const photo = latest && coverPhoto(latest);
 					</div>
 					{latest.data.score != null && (
 						<p class="text-right">
-							<span class="block text-4xl leading-none font-bold text-accent tabular-nums">{latest.data.score}</span>
-							<span class="text-[0.65rem] font-semibold tracking-widest text-paper/60 uppercase">Score</span>
+							<span class="block text-4xl leading-none font-semibold tracking-tight text-accent tabular-nums">{latest.data.score}</span>
+							<span class="mt-2 block caps-label text-mist">Score</span>
 						</p>
 					)}
 				</div>

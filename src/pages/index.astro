@@ -14,7 +14,7 @@ const stats = await getStats();
 const headline = [
 	{ value: stats.rounds, label: 'Rounds played' },
 	{ value: stats.courses, label: 'Courses walked' },
-	...(stats.best != null ? [{ value: stats.best, label: 'Best score' }] : []),
+	...(stats.best != null ? [{ value: stats.best, label: 'Best score', accent: true }] : []),
 ];
 ---
 
@@ -22,7 +22,7 @@ const headline = [
 	<HomeHero />
 	<StatsBand items={headline} />
 
-	<section id="latest" class="scroll-mt-24 py-20 md:py-28">
+	<section id="latest" class="scroll-mt-24 py-16 md:py-24">
 		<div class="mx-auto max-w-7xl px-5 md:px-8">
 			<SectionHeader
 				title="Fresh off the eighteenth"
@@ -32,7 +32,7 @@ const headline = [
 		</div>
 	</section>
 
-	<section id="map" class="relative isolate scroll-mt-20 overflow-hidden bg-night py-20 text-paper md:py-28">
+	<section id="map" class="relative isolate scroll-mt-20 overflow-hidden bg-night py-16 text-paper md:py-24">
 		<Contours class="text-accent/6" />
 		<div class="mx-auto max-w-7xl px-5 md:px-8">
 			<SectionHeader
@@ -44,7 +44,7 @@ const headline = [
 		</div>
 	</section>
 
-	<section class="py-20 md:py-28">
+	<section class="py-16 md:py-24">
 		<div class="mx-auto max-w-7xl px-5 md:px-8">
 			<SectionHeader title="Every course, year by year" />
 			<CourseTimeline />
